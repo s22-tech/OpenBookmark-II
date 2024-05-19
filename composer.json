@@ -1,9 +1,9 @@
 {
-    "name": "s22-tech/openbookmark",
+    "name": "s22-tech/OpenNookmark-II",
     "type": "project",
-    "description": "An open source bookmark manager.",
+    "description": "An open source bookmark manager written in PHP.",
     "version": "v2.0",
-    "homepage": "https://github.com/s22-tech/openbookmark",
+    "homepage": "https://github.com/s22-tech/OpenNookmark-II",
     "license": "GPL-3.0+",
     "require": {
         "php": ">=8.0",
