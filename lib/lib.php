@@ -33,7 +33,7 @@ function message($message) {
 	if (isset($message)) {
 		echo '<p>' . $message . '</p>';
 	}
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 }
 
 
@@ -45,7 +45,7 @@ function logged_in_only() {
 	if (empty($_SESSION['logged_in']) || ! $_SESSION['logged_in']) {
 		global $auth;
 		$auth->display_login_form();
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+		require_once(APPLICATION_PATH . '/footer.php');
 	}
 }
 
@@ -495,18 +495,18 @@ function set_num_array($array){
 }
 
 
-function get_version() {
-	return file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/VERSION');
+function get_local_version() {
+	return file_get_contents(APPLICATION_PATH . '/VERSION');
 }
 
 function check_for_new_version() {
-	$remote_version = trim(file_get_contents('https://raw.githubusercontent.com/s22-tech/openbookmark/master/VERSION'));
+	$remote_version = trim(file_get_contents('https://raw.githubusercontent.com/s22-tech/OpenBookmark-II/master/VERSION'));
 	echo $remote_version;
-	if (version_compare($remote_version, get_version(), '>')) {
+	if (version_compare($remote_version, get_local_version(), '>')) {
 		echo " -- <em>There's a <b>newer version</b> available!</em>";
 	}
 	else {
-		echo " [ you're up-to-date ]";
+		echo " [ You're up-to-date! ]";
 	}
 }
 
@@ -516,9 +516,9 @@ function print_footer() {
 	object_count();
 	echo '<br>' . PHP_EOL;
 
-	echo 'OBM v' . get_version();
+	echo 'OBM v' . get_local_version();
 	echo '&nbsp; PHP v'. phpversion();
-	echo '&nbsp; &copy; <a class="footer" href="https://github.com/s22-tech/openbookmark">s22 Tech</a>';
+	echo '&nbsp; &copy; <a class="footer" href="https://github.com/s22-tech/OpenBookmark-II">s22 Tech</a>';
 	echo "</div>\n";
 }
 
