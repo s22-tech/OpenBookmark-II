@@ -1,16 +1,6 @@
-https://github.com/s22-tech/openbookmark
-
-
-See http://www.frech.ch/openbookmark/installation.php for installation instructions.
-
-If you are upgrading from an old version, please manually create the following column on the `user` table:
-	theme varchar(50) NOT NULL default ''
-
-
+https://github.com/s22-tech/OpenBookmark-II
 
 ------
-
-
 
 New Installation:
 
