@@ -1,0 +1,39 @@
+2024-05-18
+- More code cleanup for PHP 8.3
+- Changed favicon format to SVG as they are much smaller files.
+- Favicons are named per domain now, so there won't be multiple icons saved for the same domain.  E.g.if you save a lot of YouTube videos, you don't need a separate icon for all of them.  Just one will do the trick.  Helps keep your inode count down.
+
+2021-04-11, Version 0.9.1 beta
+- Refactored the code for PHP 8 by s22_tech.
+- Cleaned up the code as I went -- still a lot more to do.
+- Swapped out Google search for DuckDuckGo.
+
+2008-04-20, Version 0.8.9 beta
+- Added the possibility to either convert favicon using ImageMagick or
+  leave them in the ICO format. Updating favicon.php and install.php accordingly.
+
+2008-05-04, Version 0.8.10 beta
+- Changed the "Select folder" link to a button in /bookmarks/edit_bookmark.php and /bookmarks/new_bookmark.php files.
+- Fixed HTML encoded strings when importing bookmarks in Netscape format.
+- Fixed some typos in index.php and added the "My Bookmarks" link in search mode.
+
+2008-05-17, Version 0.8.11_beta
+- Added a link to use OpenBookmark as a real Firefox Sidebar. Many thanks to Adam Patterson.
+- You can find the link "Change Password" under "Settings" from now on.
+- Added completely new search lib. Many thanks to John-Paul Durrieu as well for other hints and suggestions.
+
+2008-07-22, Version 0.8.12_beta
+- Changed the look of the menu headers
+- Changed the look of the footer
+- Added sort by Title and Date to bookmarks header
+
+2008-08-01, Version 0.8.13_beta
+- Adjusted order function so that arrow changes direction when changing order.
+
+2008-08-12, Version 0.8.14_beta
+- Getting rid of dangerous $GLOBALS in export.php, import.php and folders.php.
+
+2008-04-16, Version 0.8.8 beta
+- New design.
+- Added the possibility to change the public/projects status on multiple bookmarks.
+- Added the possibility to mark bookmarks and folders public/projects when importing them.

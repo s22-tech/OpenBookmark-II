@@ -1,0 +1,12 @@
+{
+    "name": "s22-tech/openbookmark",
+    "type": "project",
+    "description": "An open source bookmark manager.",
+    "version": "v2.0",
+    "homepage": "https://github.com/s22-tech/openbookmark",
+    "license": "GPL-3.0+",
+    "require": {
+        "php": ">=8.0",
+        "simplehtmldom/simplehtmldom": "^1.9.1"
+    }
+}

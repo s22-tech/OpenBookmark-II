@@ -1,0 +1,77 @@
+<?php
+
+	if (basename ($_SERVER['SCRIPT_NAME']) == basename (__FILE__)) {
+		die ('No direct access allowed.');
+	}
+
+  ////////////////////////
+  // Load Config File ////
+  ////////////////////////
+	$cfg['user'] = get_current_user();
+	$cfg['home_path'] = exec('echo ~');
+	$cfg['database'] = '';
+	$cfg['hostspec'] = 'localhost';
+	$cfg['timezone'] = '';
+	date_default_timezone_set($cfg['timezone']);
+  ////////////////////////
+
+	$cfg['error_log'] = $_SERVER['DOCUMENT_ROOT'] . '/logs/php_error_log_obm';
+	$cfg['debug_log'] = $_SERVER['DOCUMENT_ROOT'] . '/logs/obm_d-bug.log';
+
+	$cfg['cookie'] = [
+		'name'   => 'ob_cookie',
+		'domain' => '',
+		'path'   => '/',
+		'seed'   => '4Xp2yHprO6oTy5',
+		'expire' => time() + 31_536_000,
+	];
+
+  // Feel free to add values to this list as you like, according to the PHP documentation.
+  ## http://www.php.net/manual/en/function.date.php
+	$cfg['date_formats'] = [
+		'd/m/Y',
+		'Y-m-d',
+		'm/d/Y',
+		'd.m.Y',
+		'F j, Y',
+		'dS \o\f F Y',
+		'dS F Y',
+		'd F Y',
+		'd. M Y',
+		'Y F d',
+		'F d, Y',
+		'M. d, Y',
+		'm/d/Y',
+		'm-d-Y',
+		'm.d.Y',
+		'm.d.y',
+	];
+
+	$cfg['convert_favicons'] = true;
+	$cfg['icon_size'] = '24x24';
+	$cfg['convert']   = '/usr/bin/convert';
+	$cfg['identify']  = '/usr/bin/identify';
+	$cfg['timeout']   = 5;
+	[$cfg['icon_w'], $cfg['icon_h']] = explode('x', $cfg['icon_size']);
+
+	$cfg['locale'] = 'en-US';
+	$cfg['user_agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/124.0.2478.109';
+
+	$folder_closed        = '<img src="./images/folder.gif" alt="">';
+	$folder_opened        = '<img src="./images/folder_open.gif" alt="">';
+	$folder_closed_public = '<img src="./images/folder_red.gif" alt="">';
+	$folder_opened_public = '<img src="./images/folder_open_red.gif" alt="">';
+
+	$plus           = '<img src="./images/plus.gif" alt=""> ';
+	$minus          = '<img src="./images/minus.gif" alt=""> ';
+	$neutral        = '<img src="./images/spacer.gif" width="13" height="1" alt=""> ';
+	$edit_image     = '<img src="./images/edit.gif" title="%s" alt="">';
+	$move_image     = '<img src="./images/move.gif" title="%s" alt="">';
+	$delete_image   = '<img src="./images/delete.gif" title="%s" alt="">';
+	$bookmark_image = '<img src="./images/bookmark.gif" alt="">';
+
+
+
+/*
+javascript:(function(){bmadd=window.open('https://obm.domain.com/bookmarks/new_bookmark.php?title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'bmadd','toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes,width=500,height=500,left=50,top=50');setTimeout(function(){bmadd.focus();});})();
+*/

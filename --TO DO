@@ -1,0 +1,33 @@
+OBM II
+
+
+TO DO
+
+• mobile layout is still pretty messed up
+
+• loading.gif shows twice on screen - once in the main section and once in the folders section - why?
+
+• $this->foreign_username appears to be empty in print_tree() in folders.php
+	The folders menu shows the "user's Bookmarks" but once you navigate, it changes to "My Bookmarks" and the icons change color.
+
+? the object orientation seems half-baked.  Some files are classes but others aren't.
+
+• add password update in admin
+
+• make each column scroll independently from each other.
+
+
+
+DONE
+
+√ updated to work with PHP 8.0+
+
+√ added simplehtmldom to cover all cases of favicon paths.
+
+√ fixed favicon.php
+√	Refresh Icon button now works
+√	Delete Favicons button now works
+
+√ updated mysql to mysqli
+
+√ general code cleanup, consistency
