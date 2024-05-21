@@ -11,6 +11,8 @@ The look of this script hasn't changed from the original, since CSS is not my st
 	<li>identify (linux cli tool)</li>
 </ul>
 
+## Screenshots
+![Main Screen](/images/screenshots/obm-main.png?raw=true "OBM II")
 
 ## Installation
 To install, simply copy the files to your server and adjust the values in `/config/config.php` to match your database and server.
