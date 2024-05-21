@@ -1,5 +1,5 @@
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+	require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
 
 	if ($_SESSION['logged_in']) {
 		$user = set_get_string_var('user', $username);
@@ -27,24 +27,24 @@
 	<div id="menu">
 		<h2 class="nav">Bookmarks</h2>
 		<ul class="nav">
-		  <li><a href="./index.php">My Bookmarks</a></li>
-		  <li><a href="./shared.php">Shared Bookmarks</a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/index.php">My Bookmarks</a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/shared.php">Shared Bookmarks</a></li>
 		</ul>
 
 		<h2 class="nav">Tools</h2>
 		<ul class="nav">
-			<?php if (isset ($_SESSION['logged_in']) && $_SESSION['logged_in']) { ?>
-			<?php if (admin_only()) { ?>
-			<li><a href="./admin.php">Admin</a></li>
-			<?php } ?>
-			<li><a href="./import.php">Import</a></li>
-			<li><a href="./export.php">Export</a></li>
-			<li><a href="./sidebar.php">View as Sidebar</a></li>
-			<li><a href="./settings.php">Settings</a></li>
-			<li><a href="./index.php?logout=1">Logout</a></li>
-			<?php } else { ?>
-			<li><a href="./index.php">Login</a></li>
-			<?php } ?>
+<?php if (isset ($_SESSION['logged_in']) && $_SESSION['logged_in']) : ?>
+<?php if (admin_only()) : ?>
+			<li><a href="<?= $cfg['sub_dir'] ?>/admin.php">Admin</a></li>
+<?php endif; ?>
+			<li><a href="<?= $cfg['sub_dir'] ?>/import.php">Import</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/export.php">Export</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/sidebar.php">View as Sidebar</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/settings.php">Settings</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/index.php?logout=1">Logout</a></li>
+<?php else : ?>
+			<li><a href="<?= $cfg['sub_dir'] ?>/index.php">Login</a></li>
+<?php endif; ?>
 		</ul>
 	<!-- Menu ends here. -->
 	</div>
@@ -62,7 +62,7 @@
 	<div class="folders" style="width: <?php echo (($column_width_folder == 0) ? "auto" : $column_width_folder); ?>; height: <?php echo (($table_height == 0) ? "auto" : $table_height); ?>;">
 
 <?php
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/folders/folder.php');
+		require_once(APPLICATION_PATH . '/folders/folder.php');
 		$tree = new Folder($user);
 		$tree->make_tree(0);
 		$tree->print_tree();
@@ -75,7 +75,7 @@
 	<div class="bookmarks" style="height: <?php echo (($table_height == 0) ? "auto" : $table_height); ?>;">
 
 <?php
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/bookmarks/bookmarks.php');
+		require_once(APPLICATION_PATH . '/bookmarks/bookmarks.php');
 		$query = sprintf("
 			SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(date) AS timestamp, `id`, `favicon`
 			FROM `obm_bookmarks`
@@ -84,8 +84,9 @@
 			AND `deleted` != '1'
 			AND `public` = '1'
 			ORDER BY $order[1]",
-			$mysql->escape($user),
-			$mysql->escape($folderid));
+				$mysql->escape($user),
+				$mysql->escape($folderid)
+		);
 
 		if ($mysql->query($query)) {
 			$bookmarks = [];
@@ -152,5 +153,5 @@
 
 <?php
 	print_footer();
-	require_once ($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once (APPLICATION_PATH . '/footer.php');
 ?>

@@ -1,4 +1,4 @@
-https://github.com/s22-tech/openbookmark
+https://github.com/s22-tech/OpenBookmark-II
 
 
 See http://www.frech.ch/openbookmark/installation.php for installation instructions.

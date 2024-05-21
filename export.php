@@ -2,25 +2,25 @@
 
 /* Old file - needs updating. */
 
-	if (!isset ($_POST['browser']) || $_POST['browser'] == '' ||
-				  ($_POST['browser'] != 'netscape' &&
-				   $_POST['browser'] != 'opera' &&
-				   $_POST['browser'] != 'IE')) {
+	if (empty($_POST['browser']) || $_POST['browser'] == '' ||
+				($_POST['browser'] != 'netscape' &&
+				 $_POST['browser'] != 'opera' &&
+				 $_POST['browser'] != 'IE')) {
 
-		# header.php is included here, because we want to print
-		# plain text when exporting bookmarks, so that browsers
-		# can handle results better.  header.php is needed only to
-		# display HTML.
-		require_once ('./header.php');
-		logged_in_only ();
+	  // header.php is included here, because we want to print
+	  // plain text when exporting bookmarks, so that browsers
+	  // can handle results better.  header.php is needed only to
+	  // display HTML.
+		require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
+		logged_in_only();
 
-		$folderid = set_get_folderid ();
+		$folderid = set_get_folderid();
 
-		# Get the browser type for default setting below if possible.
-		if ( preg_match ('/opera/i', $_SERVER['HTTP_USER_AGENT'])) {
+	  // Get the browser type for default setting below if possible.
+		if ( preg_match('/opera/i', $_SERVER['HTTP_USER_AGENT'])) {
 			$default_browser = 'opera';
 		}
-		else if (preg_match ('/msie/i', $_SERVER['HTTP_USER_AGENT'])) {
+		elseif (preg_match('/msie/i', $_SERVER['HTTP_USER_AGENT'])) {
 			$default_browser = 'IE';
 		}
 		else {
@@ -36,20 +36,20 @@
 	<div id="menu">
 		<h2 class="nav">Bookmarks</h2>
 		<ul class="nav">
-		  <li><a href="./index.php">My Bookmarks</a></li>
-		  <li><a href="./shared.php">Shared Bookmarks</a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/index.php">My Bookmarks</a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/shared.php">Shared Bookmarks</a></li>
 		</ul>
 
 		<h2 class="nav">Tools</h2>
 		<ul class="nav">
-			<?php if (admin_only()) { ?>
-			<li><a href="./admin.php">Admin</a></li>
-			<?php } ?>
-			<li><a href="./import.php">Import</a></li>
-			<li><a href="./export.php">Export</a></li>
-			<li><a href="./sidebar.php">View as Sidebar</a></li>
-			<li><a href="./settings.php">Settings</a></li>
-			<li><a href="./index.php?logout=1">Logout</a></li>
+<?php if (admin_only()) : ?>
+			<li><a href="<?= $cfg['sub_dir'] ?>/admin.php">Admin</a></li>
+<?php endif ?>
+			<li><a href="<?= $cfg['sub_dir'] ?>/import.php">Import</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/export.php">Export</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/sidebar.php">View as Sidebar</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/settings.php">Settings</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/index.php?logout=1">Logout</a></li>
 		</ul>
 	<!-- Menu ends here. -->
 	</div>
@@ -66,9 +66,9 @@
       </td>
       <td width="<?php echo (($settings['column_width_folder'] == 0) ? "auto" : $settings['column_width_folder'])?>">
         <select name="browser">
-          <option value="IE"<?php if ($default_browser == 'IE') {echo ' selected'; } ?>>Internet Explorer</option>
-          <option value="netscape"<?php if ($default_browser == 'netscape') {echo ' selected'; } ?>>Netscape / Mozilla</option>
-          <option value="opera"<?php if ($default_browser == 'opera') {echo ' selected'; } ?>>Opera .adr</option>
+          <option value="IE"<?php if ($default_browser == 'IE') { echo ' selected'; } ?>>Internet Explorer</option>
+          <option value="netscape"<?php if ($default_browser == 'netscape') { echo ' selected'; } ?>>Netscape / Mozilla</option>
+          <option value="opera"<?php if ($default_browser == 'opera') { echo ' selected'; } ?>>Opera .adr</option>
         </select>
       </td>
     </tr>
@@ -77,14 +77,14 @@
 		<td>Character encoding</td>
 		<td>
 			<select name="charset">
-			<?php
-			$charsets = return_charsets ();
+<?php
+			$charsets = return_charsets();
 			foreach ($charsets as $value) {
 				$selected = '';
-				if ($value == 'UTF-8') {$selected = ' selected';}
+				if ($value == 'UTF-8') { $selected = ' selected'; }
 				echo '<option value="'.$value.'"'.$selected.'>'.$value.'</option>' . "\n";
 			}
-			?>
+?>
 			</select>
 		</td>
 	</tr>
@@ -97,10 +97,10 @@
 	<div style="width:<?php echo (($settings['column_width_folder'] == 0) ? "auto" : $settings['column_width_folder']); ?>; height:350px; overflow:auto;">
 
 <?php
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/folders/folder.php');
-		$tree = new Folder();
-		$tree->make_tree(0);
-		$tree->print_tree();
+	require_once(APPLICATION_PATH . '/folders/folder.php');
+	$tree = new Folder();
+	$tree->make_tree(0);
+	$tree->print_tree();
 ?>
 
 	</div>
@@ -110,8 +110,8 @@
     <tr>
       <td>
         <input type="hidden" name="folder" value="<?php echo $folderid; ?>">
-        <input type="submit" value="Export">
-        <input type="button" value=" Cancel " onClick="self.location.href='./index.php'">
+        <input type="submit" value=" Export ">
+        <input type="button" value=" Cancel " onclick="self.location.href='<?= $cfg['sub_dir'] ?>/index.php'">
       </td>
       <td>
       </td>
@@ -126,30 +126,30 @@
 </div>
 
 <?php
-		print_footer ();
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+		print_footer();
+		require_once(APPLICATION_PATH . '/footer.php');
 	}
 	else {
-		# These files are being included, because we do not want to include
-		# header.php since there is no reason for the http header to display.
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/lib/webstart.php');
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/lib/mysql.php');
+	  // These files are being included, because we do not want to include
+	  // header.php since there is no reason for the http header to display.
+		//require_once(APPLICATION_PATH . '/lib/webstart.php');
+		require_once(APPLICATION_PATH . '/config/config.php');
+		require_once(APPLICATION_PATH . '/lib/mysql.php');
 		$mysql = new Mysql();
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/lib/auth.php');
+		require_once(APPLICATION_PATH . '/lib/auth.php');
 		$auth = new Auth();
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/lib/lib.php');
+		require_once(APPLICATION_PATH . '/lib/lib.php');
 		logged_in_only();
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/lib/login.php');
+		require_once(APPLICATION_PATH . '/lib/login.php');
 
-		$browser = set_post_browser ();
+		$browser = set_post_browser();
 		if ($browser == 'opera') {
 			$filename = 'opera6.adr';
 		}
-		else if ($browser == 'IE') {
+		elseif ($browser == 'IE') {
 			$filename = 'bookmark.htm';
 		}
-		else if ($browser == 'netscape') {
+		elseif ($browser == 'netscape') {
 			$filename = 'bookmarks.html';
 		}
 		else {
@@ -169,10 +169,10 @@
 			echo '<h1>Bookmarks</h1>' . PHP_EOL;
 			echo '<dl><p>' . PHP_EOL;
 			$export = new Export();
-			$export->make_tree ($folderid);
+			$export->make_tree($folderid);
 			echo '</dl><p>' . PHP_EOL;
 		}
-		else if ($browser == 'opera') {
+		elseif ($browser == 'opera') {
 			echo 'Opera Hotlist version 2.0' . PHP_EOL;
 			echo 'Options: encoding = utf8, version=3' . PHP_EOL . PHP_EOL;
 			$export = new Export();
@@ -185,7 +185,7 @@
 		function export() {
 			global $settings, $browser;
 		  // Collect the folder data.
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/folders/folder.php');
+			require_once(APPLICATION_PATH . '/folders/folder.php');
 			$this->tree = new Folder();
 			$this->tree->folders[0] = ['id' => 0, 'childof' => null, 'name' => $settings['root_folder_name']];
 
@@ -197,17 +197,17 @@
 			$this->charset = set_post_charset();
 
 		  // Collect the bookmark data.
-			$query = sprintf ("
+			$query = sprintf("
 				SELECT `title`, `url`, `description`, `childof`, `id`
 				FROM `obm_bookmarks`
 				WHERE user = '%s'
 				AND deleted != '1'",
-					$mysql->escape ($username)
+					$mysql->escape($username)
 			);
 
-			if ($mysql->query ($query)) {
-				while ($row = mysqli_fetch_assoc ($mysql->result)) {
-					if (!isset ($this->bookmarks[$row['childof']])) {
+			if ($mysql->query($query)) {
+				while ($row = mysqli_fetch_assoc($mysql->result)) {
+					if (empty($this->bookmarks[$row['childof']])) {
 						$this->bookmarks[$row['childof']] = [];
 					}
 					array_push($this->bookmarks[$row['childof']], $row);
@@ -222,13 +222,13 @@
 			if (isset($this->tree->children[$id])) {
 				$this->counter++;
 				foreach ($this->tree->children[$id] as $value) {
-					$this->print_folder ($value);
-					$this->make_tree ($value);
-					$this->print_folder_close ();
+					$this->print_folder($value);
+					$this->make_tree($value);
+					$this->print_folder_close();
 				}
 				$this->counter--;
 			}
-			$this->print_bookmarks ($id);
+			$this->print_bookmarks($id);
 		}
 
 
@@ -239,11 +239,11 @@
 				echo $spacer . '<dt><h3>' . $foldername . '</h3>'. PHP_EOL;
 				echo $spacer . '<dl><p>'. PHP_EOL;
 			}
-			else if ($this->browser == 'IE') {
+			elseif ($this->browser == 'IE') {
 				echo $spacer . '<dt><h3 FOLDED ADD_DATE="">' . $foldername . '</h3>'. PHP_EOL;
 				echo $spacer . '<dl><p>'. PHP_EOL;
 			}
-			else if ($this->browser == "opera") {
+			elseif ($this->browser == 'opera') {
 				echo PHP_EOL .'#FOLDER'. PHP_EOL;
 				echo "\t".'NAME=' . $foldername . PHP_EOL;
 			}
@@ -254,14 +254,14 @@
 			if ($this->browser == 'netscape' || $this->browser == 'IE') {
 				echo $spacer . '</dl><p>'. PHP_EOL;
 			}
-			else if ($this->browser == "opera") {
+			elseif ($this->browser == "opera") {
 				echo "\n-\n";
 			}
 		}
 
 		function print_bookmarks($folderid) {
 			$spacer = str_repeat('    ', $this->counter);
-			if (isset ($this->bookmarks[$folderid])) {
+			if (isset($this->bookmarks[$folderid])) {
 				foreach ($this->bookmarks[$folderid] as $value) {
 					$url   = html_entity_decode($value['url'],   ENT_QUOTES, $this->charset);
 					$title = html_entity_decode($value['title'], ENT_QUOTES, $this->charset);
@@ -278,17 +278,17 @@
 							echo $spacer . '    <dd>' . $description . PHP_EOL;
 						}
 					}
-					else if ($this->browser == 'IE') {
+					elseif ($this->browser == 'IE') {
 						echo $spacer . '    <dt><a href="' . $url . '" ADD_DATE="" LAST_VISIT="" LAST_MODIFIED="">' . $title . '</a>'. PHP_EOL;
-						# Unfortunately description for bookmarks in MS Internet Explorer is not supported.
-						# Thats why we just ignore the output of the description here.
+						// Unfortunately, description for bookmarks in MS Internet Explorer is not supported.
+						// Thats why we just ignore the output of the description here.
 					}
-					else if ($this->browser == 'opera') {
+					elseif ($this->browser == 'opera') {
 						echo PHP_EOL .'#URL'. PHP_EOL;
 						echo "\t".'NAME=' . $title . PHP_EOL;
 						echo "\t".'URL=' . $url . PHP_EOL;
 						if ($description != '') {
-							# Opera cannot handle the \r\n character, so we fix this.
+						  // Opera cannot handle the \r\n character, so we fix this.
 							$description = str_replace ("\r\n", ' ', $description);
 							echo "\t".'DESCRIPTION=' . $description . PHP_EOL;
 						}

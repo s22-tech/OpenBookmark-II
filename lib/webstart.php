@@ -24,7 +24,7 @@
 		];
 		foreach ($_REQUEST as $name => $value) {
 			if (in_array($name, $prohibited)) {
-				header( "HTTP/1.x 500 Internal Server Error" );
+				header('HTTP/1.x 500 Internal Server Error');
 				echo 'register_globals security paranoia: trying to overwrite superglobals... aborting.';
 				die( -1 );
 			}

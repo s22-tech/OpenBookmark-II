@@ -1,5 +1,5 @@
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
 	logged_in_only();
 ?>
 
@@ -8,7 +8,7 @@
 	<div style="width:100%; height:330px; overflow:auto;">
 
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/folders/folder.php');
+	require_once(APPLICATION_PATH . '/folders/folder.php');
 	$tree = new Folder();
 	$tree->make_tree(0);
 	$tree->print_tree();
@@ -22,5 +22,5 @@
 	<input type="button" value=" New Folder " onclick="self.location.href='javascript:foldernew(<?php echo $folderid; ?>)'">
 
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 ?>

@@ -1,5 +1,10 @@
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+
+	ini_set('display_errors', 1);
+	ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
+	ini_set('error_append_string', '</pre>');
+	
+	require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
 	logged_in_only();
 
 	$delete        = set_post_string_var('delete');
@@ -218,12 +223,12 @@
 						<table>
 							<tr>
 								<td>This Version:</td>
-								<td><?php echo get_version(); ?></td>
+								<td><?php echo get_local_version(); ?></td>
 							</tr>
 
 							<tr>
-								<td><a href="https://github.com/s22-tech?tab=repositories" target="_new"> Latest version: </a></td>
-								<td><a href="https://github.com/s22-tech?tab=repositories" target="_new"><?php check_for_new_version(); ?></a></td>
+								<td><a href="https://github.com/s22-tech/OpenBookmark-II" target="_new"> Latest version: </a></td>
+								<td><a href="https://github.com/s22-tech/OpenBookmark-II" target="_new"><?php check_for_new_version(); ?></a></td>
 							</tr>
 						</table>
 
@@ -232,5 +237,5 @@
 
 <?php
 	print_footer();
-	require_once ($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once (APPLICATION_PATH . '/footer.php');
 ?>

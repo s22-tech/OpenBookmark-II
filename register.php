@@ -1,5 +1,5 @@
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+	require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
 
 	$secret       = 'dDWUc72sCcs20cXskcw';
 	$reg_register = set_post_bool_var('reg_register', false);
@@ -9,13 +9,13 @@
 
 	if ($reg_register) {
 		if ($reg_username != '') {
-						if (check_username ($reg_username)) {
-							echo '<div style="color:red;">$username is an already registered user. Choose another one.</div>'. PHP_EOL;
-							$username = false;
-						}
-						else {
-							$username = $reg_username;
-						}
+			if (check_username ($reg_username)) {
+				echo '<div style="color:red;">$username is an already registered user. Choose another one.</div>'. PHP_EOL;
+				$username = false;
+			}
+			else {
+				$username = $reg_username;
+			}
 		}
 		else {
 			echo '<div style="color:red;">Please enter a Username.</div>'. PHP_EOL;
@@ -39,7 +39,10 @@
 
 		if ($reg_email != '') {
 			if (preg_match ('/^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i', $reg_email)) {
-				$query = "SELECT COUNT(*) AS result FROM `obm_users` WHERE `email`='$reg_email'";
+				$query = "
+					SELECT COUNT(*) AS result FROM `obm_users` 
+					WHERE `email` = '$reg_email'
+				";
 				if ($mysql->query ($query)) {
 					if (mysql_result ($result, 0) > 0) {
 						echo '<div style="color:red;">A User Account with this email address aready exists.</div>'. PHP_EOL;
@@ -69,13 +72,13 @@
 			$query = "INSERT INTO `obm_users` (`username`, `password`, `email`, `active`)
 						 VALUES ('$username', md5('$password'), '$email', '0')";
 
-			if (mysql_query ("$query")) {
-				# dieser key wird als username und secret md5 hash an den
-				# user geschickt und für die verifikation der registrierung gebraucht.
+			if (mysql_query($query)) {
+				# This key is sent to the user as username and secret md5 hash,
+				# and is used for the verification of the registration.
 				$key = md5($username . $secret);
 
-				$headers['From'] = 'noreply@yourdomain.com';
-				$subject  = 'Your registration at yourdomain.com';
+				$headers['From'] = 'noreply@'.$cfg['domain'];
+				$subject  = 'Your registration at '. $cfg['domain'];
 				$message  = "Hi $username,\r\n\r\n";
 				$message .= "This email confirms the creation of your OpenBookmark user account. ";
 				$message .= "Your username is '$username'. For security reasons your password is not ";
@@ -83,12 +86,12 @@
 				$message .= "http://www.yourdomain.com/register.php?confirm=$key\r\n\r\n";
 				$message .= "In case of complications regarding this user account registration, ";
 				$message .= "please contact support@yourdomain.com\r\n\r\n";
-				$message .= "With kind regards, your yourdomain.com Team";
+				$message .= "With kind regards, your OpenBookmark Team";
 
 				mail($email, $subject, $message, $headers);
 
-				echo "  You have been successfully registered.
-					Read your email and click the link to activate your account.";
+				echo '  You have been successfully registered.
+					Read your email and click the link to activate your account.';
 			}
 			else {
 				echo mysql_error();
@@ -99,15 +102,17 @@
 		}
 	}
 	elseif ($confirm != '' && strlen ($confirm) === 32) {
-		$query = "SELECT `username` FROM `obm_users` WHERE MD5(CONCAT(username,'$secret'))='$confirm' AND active='0'";
-		$result = mysql_query ("$query");
+		$query = "
+			SELECT `username` FROM `obm_users` 
+			WHERE MD5(CONCAT(`username`, '$secret')) = '$confirm' AND active='0'";
+		$result = mysql_query($query);
 		if (mysqli_num_rows ($result) == 1) {
-			# the registration confirmation was successufull,
-			# thus we can enable the useraccount in the database.
+			# The registration confirmation was successful,
+			# thus we can enable the user account in the database.
 			$username = mysql_result ($result, 0);
-			$query = "UPDATE `obm_users` SET active='1' WHERE username='$username' AND active='0'";
-			if (mysql_query ($query)) {
-				echo "You are now registered. Happy bookmarking!";
+			$query = "UPDATE `obm_users` SET `active` = '1' WHERE `username` = '$username' AND `active` = '0'";
+			if (mysql_query($query)) {
+				echo 'You are now registered. Happy bookmarking!';
 			}
 		}
 		else {
@@ -122,7 +127,7 @@
 	function display_register_form() {
 ?>
 
-<form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>" name="loginform">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" name="loginform">
 <table border="0">
 	<tr>
 		<td>Username:</td>
@@ -151,14 +156,9 @@
 	}
 
 	function display_register_additional_text () {
-?>
-
-	<p>Please provide the information bellow to register.</p>
-
-	<p>If you are already a registered user, <a class="orange" href="./index.php">you can log in here.</a></p>
-
-<?php
+		echo '<p>Please provide the information below to register.</p>' . PHP_EOL;
+		echo '<p>If you are already a registered user, <a class="orange" href="./index.php">you can log in here.</a></p>' . PHP_EOL;
 	}
 
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 ?>

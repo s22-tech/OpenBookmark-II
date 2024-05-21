@@ -1,8 +1,13 @@
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] .'/header.min.php');
+
+	ini_set('display_errors', 1);
+	ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
+	ini_set('error_append_string', '</pre>');
+	
+	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
 	logged_in_only();
 
-// debug_logger(name:'SERVER[QUERY_STRING]', variable:$_SERVER['QUERY_STRING'], 'array', file:__FILE__, function:__FUNCTION__);
+debug_logger(name:'SERVER[QUERY_STRING]', variable:$_SERVER['QUERY_STRING'], file:__FILE__, function:__FUNCTION__);
 
 	$qs = ltrim($_SERVER['QUERY_STRING'], '?');
 	parse_str($qs, $qs_arr);
@@ -35,9 +40,9 @@
 // debug_logger(name:'bmlist', variable:$bmlist, 'array', file:__FILE__, function:__FUNCTION__);
 
 	foreach ($icons_to_delete as $favicon) {
-		if (is_file($_SERVER['DOCUMENT_ROOT'] .'/icons/'. $favicon)) {
+		if (is_file(APPLICATION_PATH .'/icons/'. $favicon)) {
 			if (!str_contains($favicon, 'bookmark')) {
-				unlink($_SERVER['DOCUMENT_ROOT'] .'/icons/'. $favicon);
+				unlink(APPLICATION_PATH .'/icons/'. $favicon);
 			}
 		}
 		else {

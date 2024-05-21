@@ -1,5 +1,10 @@
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+
+	ini_set('display_errors', 1);
+	ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
+	ini_set('error_append_string', '</pre>');
+	
+	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
 	logged_in_only();
 
 	echo <<<CSS
@@ -47,7 +52,7 @@
 				$mysql->escape($username)
 		);
 		if ($mysql->query($query)) {
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/bookmarks/bookmarks.php');
+			require_once(APPLICATION_PATH . '/bookmarks/bookmarks.php');
 			$query_string = 'bmlist=' . implode(',', $bmlist);
 ?>
 
@@ -82,13 +87,13 @@
 	</div>
 	
 	<div style="float:right">
-	<a href="/bookmarks/delete_bookmark.inc.php?<?php echo $query_string . $bm_string; ?>" class="button"> Delete Me </a>
+	<a href="<?= $cfg['sub_dir'] ?>/bookmarks/delete_bookmark.inc.php?<?= $query_string . $bm_string; ?>" class="button"> Delete Me </a>
 	</div>
 	<br>
 	<br>
 <?php
 
-// debug_logger($bookmarks, 'bookmarks-2', 'array', __FILE__, __FUNCTION__);
+debug_logger($bookmarks, 'bookmarks-2', 'array', __FILE__, __FUNCTION__);
 
 		}
 		else {
@@ -96,5 +101,5 @@
 		}
 	}
 
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 ?>

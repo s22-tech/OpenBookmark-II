@@ -2,6 +2,7 @@ https://github.com/s22-tech/OpenBookmark-II
 
 ------
 
+
 New Installation:
 
 Basically the installation of OpenBookmark is not a big deal. There is an install script that guides you through the install steps.  Just make sure you know your servers database credentials.

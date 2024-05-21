@@ -1,11 +1,11 @@
 <?php
 
-	require_once($_SERVER['DOCUMENT_ROOT'] .'/async_header.php');
+	require_once(APPLICATION_PATH .'/async_header.php');
 	logged_in_only();
 
 	$order = set_get_order();
 
-	require_once($_SERVER['DOCUMENT_ROOT'] .'/bookmarks/bookmarks.php');
+	require_once(APPLICATION_PATH .'/bookmarks/bookmarks.php');
 	
 	$query = sprintf("
 		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(`date`) AS timestamp, `id`, `favicon`, `public`

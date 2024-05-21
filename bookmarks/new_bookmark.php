@@ -3,7 +3,7 @@
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
 
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
 	global $conn;
 
 	$get_title = set_title();
@@ -17,7 +17,7 @@
 	$post_childof		= set_post_childof();
 	$post_public		= set_post_bool_var('public', false);
 
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/folders/folder.php');
+	require_once(APPLICATION_PATH . '/folders/folder.php');
 	$tree = new Folder();
 	$query_string = '?expand=' . implode(',', $tree->get_path_to_root($post_childof)) . '&amp;folderid=' . $post_childof;
 
@@ -108,7 +108,7 @@ debug_logger(variable:$post_url, name:'post_url', file:__FILE__, function:__FUNC
 // since the favicon is not as important.
 ///////////////////////////
 		if ($settings['show_bookmark_icon']) {
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/favicon.php');
+			require_once(APPLICATION_PATH . '/favicon.php');
 			$favicon = new Favicon($post_url);
 debug_logger(variable:print_r($favicon, true), name:'favicon-object', file:__FILE__, function:__FUNCTION__);
 
@@ -148,5 +148,5 @@ debug_logger(variable:debug_backtrace(), name:'debug_backtrace()', file:__FILE__
 			echo '<script> self.close(); </script>';
 		}
 	}
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 ?>

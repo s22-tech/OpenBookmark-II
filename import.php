@@ -1,5 +1,5 @@
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+	require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
 	logged_in_only();
 ?>
 
@@ -11,20 +11,20 @@
 	<div id="menu">
 		<h2 class="nav">Bookmarks</h2>
 		<ul class="nav">
-		  <li><a href="./index.php">My Bookmarks</a></li>
-		  <li><a href="./shared.php">Shared Bookmarks</a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/index.php">My Bookmarks</a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/shared.php">Shared Bookmarks</a></li>
 		</ul>
 
 		<h2 class="nav">Tools</h2>
 		<ul class="nav">
 			<?php if (admin_only()) { ?>
-			<li><a href="./admin.php">Admin</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/admin.php">Admin</a></li>
 			<?php } ?>
-			<li><a href="./import.php">Import</a></li>
-			<li><a href="./export.php">Export</a></li>
-			<li><a href="./sidebar.php">View as Sidebar</a></li>
-			<li><a href="./settings.php">Settings</a></li>
-			<li><a href="./index.php?logout=1">Logout</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/import.php">Import</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/export.php">Export</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/sidebar.php">View as Sidebar</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/settings.php">Settings</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/index.php?logout=1">Logout</a></li>
 		</ul>
 	<!-- Menu ends here. -->
 	</div>
@@ -35,8 +35,8 @@
 
 <?php
 
-	if (!isset ($_FILES['importfile']['tmp_name']) || $_FILES['importfile']['tmp_name'] === null) {
-		# Get the browser type for default setting below if possible.
+	if (empty ($_FILES['importfile']['tmp_name']) || $_FILES['importfile']['tmp_name'] === null) {
+	  // Get the browser type for default setting below if possible.
 		if ( preg_match ('/opera/i', $_SERVER['HTTP_USER_AGENT'])) {
 			$default_browser = 'opera';
 		}
@@ -53,15 +53,15 @@
 				</td>
 				<td>
 				  <select name="browser">
-					 <option value="netscape"<?php if ($default_browser=="netscape"){echo " selected";} ?>>Netscape / Mozilla / IE</option>
-					 <option value="opera"<?php if ($default_browser=="opera"){echo " selected";} ?>>Opera .adr</option>
+					 <option value="netscape"<?php if ($default_browser == 'netscape') { echo ' selected'; } ?>>Netscape / Mozilla / IE</option>
+					 <option value="opera"<?php if ($default_browser == 'opera') { echo ' selected'; } ?>>Opera .adr</option>
 				  </select>
 				</td>
 			 </tr>
 
 			 <tr>
 				<td>
-				  select File:
+				  Select File:
 				</td>
 				<td>
 				  <input type="file" name="importfile">
@@ -102,7 +102,7 @@
 			 <div style="width:<?php echo (($settings['column_width_folder'] === 0) ? "auto" : $settings['column_width_folder']); ?>; height:350px; overflow:auto;">
 
 			<?php
-				require_once($_SERVER['DOCUMENT_ROOT'] . '/folders/folder.php');
+				require_once(APPLICATION_PATH . '/folders/folder.php');
 				$tree = new Folder();
 				$tree->make_tree(0);
 				$tree->print_tree();
@@ -116,8 +116,8 @@
 				<td>
 					<p><input type="button" value=" New Folder " onclick="self.location.href='javascript:foldernew(<?php echo $folderid; ?>)'"></p>
 				  <input type="hidden" name="parentfolder" value="<?php echo $folderid; ?>">
-				  <input type="submit" value="Import">
-				  <input type="button" value=" Cancel " onclick="self.location.href='./index.php'">
+				  <input type="submit" value=" Import ">
+				  <input type="button" value=" Cancel " onclick="self.location.href='<?= $cfg['sub_dir'] ?>/index.php'">
 				</td>
 				<td>
 				</td>
@@ -129,7 +129,7 @@
 		<?php
 	}
 	else {
-		if (!isset($_POST['browser']) || $_POST['browser'] === '') {
+		if (empty($_POST['browser']) || $_POST['browser'] === '') {
 			message('No browser selected');
 		}
 
@@ -142,8 +142,8 @@
 		elseif ($_POST['browser'] === "netscape") {
 			$import->import_netscape();
 		}
-		echo "$import->count_folders folders and $import->count_bookmarks bookmarks imported.<br>\n";
-		echo '<a href="./index.php">My Bookmarks</a>';
+		echo "{$import->count_folders} folders and {$import->count_bookmarks} bookmarks imported.<br>" . PHP_EOL;
+		echo '<a href="'. $cfg['sub_dir'] .'/index.php">My Bookmarks</a>';
 	}
 
 ?>
@@ -186,19 +186,19 @@
 			while (!feof($this->fp)) {
 				$line = trim (fgets($this->fp, 4096));
 
-				# A folder has been found.
+			  // A folder has been found.
 				if ($line === '#FOLDER') {
 					$item = 'Folder';
 				}
-				# A bookmark has been found.
+			  // A bookmark has been found.
 				elseif ($line === '#URL') {
 					$item = 'Bookmark';
 				}
-				# If a line starts with NAME= ...
+			  // If a line starts with NAME= ...
 				elseif (substr ($line, 0, strlen('NAME=')) === 'NAME=') {
 					$line = substr ($line, strlen ('NAME='));
-					# ... depending on the value of "$item" we assign the name to
-					# either folder or bookmark.
+				  // ... depending on the value of "$item" we assign the name to
+				  // either folder or bookmark.
 					if ($item === 'Folder') {
 						$this->name_folder = input_validation($line, $this->charset);
 					}
@@ -206,14 +206,14 @@
 						$this->name_bookmark = input_validation($line, $this->charset);
 					}
 				}
-				# Only bookmarks can have a description or/and an url.
+			  // Only bookmarks can have a description or/and an url.
 				elseif (substr ($line, 0, strlen ('DESCRIPTION=')) === 'DESCRIPTION=') {
 					$this->description = substr(input_validation($line, $this->charset), strlen('DESCRIPTION='));
 				}
 				elseif (substr ($line, 0, strlen ('URL=')) === 'URL=') {
 					$this->url = substr(input_validation ($line, $this->charset), strlen('URL='));
 				}
-				# Process the corresponding item, if there is an empty line found.
+			  // Process the corresponding item, if there is an empty line found.
 				elseif ($line === '') {
 					if (isset ($item) && $item === 'Folder') {
 						$this->folder_new();
@@ -224,7 +224,7 @@
 						unset($item);
 					}
 				}
-				# This indicates that the folder is being closed.
+			  // This indicates that the folder is being closed.
 				elseif ($line === '-') {
 					$this->folder_close();
 				}
@@ -237,20 +237,20 @@
 				# Netscape seems to store html encoded values.
 				$line = html_entity_decode($line, ENT_QUOTES, $this->charset);
 
-				# A folder has been found.
+			  // A folder has been found.
 				if (preg_match ("/<DT><H3/", $line)) {
 					$this->name_folder = input_validation(preg_replace ("/^( *<DT><[^>]*>)([^<]*)(.*)/", '\\2', $line), $this->charset);
 					$this->folder_new ();
 				}
-				# A bookmark has been found.
+			  // A bookmark has been found.
 				elseif (preg_match('/<DT><A/', $line)){
 					$this->name_bookmark = input_validation(preg_replace ("/^( *<DT><[^>]*>)([^<]*)(.*)/", '\\2', $line), $this->charset);
 					$this->url = input_validation(preg_replace ("/([^H]*HREF=\")([^\"]*)(\".*)/", '\\2', $line), $this->charset);
 					$this->bookmark_new();
 					$insert_id = mysql_insert_id();
 				}
-				# This is a description. It is only being saved
-				# if a bookmark has been saved previously.
+			  // This is a description. It is only being saved
+			  // if a bookmark has been saved previously.
 				elseif (preg_match("/<DD>*/", $line)) {
 					if (isset ($insert_id)) {
 						$this->description = input_validation (preg_replace ("/^( *<DD>)(.*)/", '\\2', $line), $this->charset);
@@ -264,7 +264,7 @@
 						unset($insert_id);
 					}
 				}
-				# This indicates, that the folder is being closed.
+			  // This indicates, that the folder is being closed.
 				elseif ($line === '</dl><p>') {
 					$this->folder_close ();
 				}
@@ -272,7 +272,7 @@
 		}
 
 		function folder_new() {
-			if (!isset($this->name_folder)) {
+			if (empty($this->name_folder)) {
 				$this->name_folder === '';
 			}
 			$query = sprintf("INSERT INTO `obm_folders` (childof, name, user, public) VALUES ('%d', '%s', '%s', '%d')",
@@ -293,24 +293,25 @@
 		}
 
 		function bookmark_new() {
-			if (!isset($this->name_bookmark)) {
+			if (empty($this->name_bookmark)) {
 				$this->name_bookmark = '';
 			}
-			if (!isset($this->url)) {
+			if (empty($this->url)) {
 				$this->url = '';
 			}
-			if (!isset($this->description)) {
+			if (empty($this->description)) {
 				$this->description = '';
 			}
-			$query = sprintf ("INSERT INTO `obm_bookmarks` (`user`, `title`, `url`, `description`, `childof`, `public`)
-									 VALUES ('%s', '%s', '%s', '%s', '%d', '%d')",
-										$this->mysql->escape($this->username),
-										$this->mysql->escape($this->name_bookmark),
-										$this->mysql->escape($this->url),
-										$this->mysql->escape($this->description),
-										$this->mysql->escape($this->current_folder),
-										$this->mysql->escape($this->public)
-									);
+			$query = sprintf ("
+				INSERT INTO `obm_bookmarks` (`user`, `title`, `url`, `description`, `childof`, `public`)
+				VALUES ('%s', '%s', '%s', '%s', '%d', '%d')",
+					$this->mysql->escape($this->username),
+					$this->mysql->escape($this->name_bookmark),
+					$this->mysql->escape($this->url),
+					$this->mysql->escape($this->description),
+					$this->mysql->escape($this->current_folder),
+					$this->mysql->escape($this->public)
+			);
 
 			if ($this->mysql->query($query)) {
 				unset($this->name_bookmark, $this->url, $this->description);
@@ -327,15 +328,15 @@
 				$this->current_folder = $this->parent_folder;
 			}
 			else {
-				# Remove the last folder from the folder history.
+			  // Remove the last folder from the folder history.
 				unset($this->folder_depth[count($this->folder_depth) - 1]);
 				$this->folder_depth = array_values($this->folder_depth);
-				# Set the last folder to the current folder.
+			  // Set the last folder to the current folder.
 				$this->current_folder = $this->folder_depth[count($this->folder_depth) - 1];
 			}
 		}
 	}
 
 	print_footer();
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 ?>

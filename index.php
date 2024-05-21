@@ -1,11 +1,15 @@
 <?php
 
+// echo $_SERVER['DOCUMENT_ROOT'] .'/'. basename(__DIR__) . '<br>';
+
 	ini_set('display_errors', 1);
 	ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
 	ini_set('error_append_string', '</pre>');
-	
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+
+	require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
 	logged_in_only();
+	
+	if (isset($_GET['logout']) && $_GET['logout'] == 1) $auth->logout();
 
 	$search = set_get_string_var('search');
 	if ($search != '') {
@@ -90,8 +94,8 @@
 		});
 		-->
 	</script>
-	<link rel="stylesheet" type="text/css" href="/includes/css/mobile.css" />
-	<?php echo ($settings['theme'] != '') ? '<link rel="stylesheet" type="text/css" href="/includes/css/mobile'.$settings['theme'].'.css" />' : ''; ?>
+	<link rel="stylesheet" type="text/css" href="/<?= basename(__DIR__); ?>/includes/css/mobile.css" />
+	<?php echo ($settings['theme'] != '') ? '<link rel="stylesheet" type="text/css" href="/<?= basename(__DIR__); ?>/includes/css/mobile'.$settings['theme'].'.css" />' : ''; ?>
 
 <?php endif; ?>
 
@@ -125,24 +129,24 @@
 		<div class="navblock">
 		<h2 class="nav mnu" target="mnu_bookmarks">Bookmarks</h2>
 		<ul class="nav" id="mnu_bookmarks">
-		  <?php if ($search_mode) { ?>
-			 <li><a href="/index.php"><?php echo $settings['root_folder_name']; ?></a></li>
-		  <?php } ?>
-		  <li><a href="javascript:bookmarknew('<?php echo $folderid; ?>')">New Bookmark</a></li>
-		  <li><a href="javascript:bookmarkedit(checkselected())">Edit Bookmarks</a></li>
-		  <li><a href="javascript:bookmarkmove(checkselected())">Move Bookmarks</a></li>
-		  <li><a href="javascript:bookmarkdelete(checkselected())">Delete Bookmarks</a></li>
-		  <li><a href="/shared.php">Shared Bookmarks</a></li>
+<?php if ($search_mode) : ?>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/index.php"><?php echo $settings['root_folder_name']; ?></a></li>
+<?php endif ?>
+		  <li><a href="javascript:bookmarknew('<?= $cfg['sub_dir'] ?>', '<?= $folderid; ?>')">New Bookmark</a></li>
+		  <li><a href="javascript:bookmarkedit('<?= $cfg['sub_dir'] ?>', checkselected())">Edit Bookmarks</a></li>
+		  <li><a href="javascript:bookmarkmove('<?= $cfg['sub_dir'] ?>', checkselected())">Move Bookmarks</a></li>
+		  <li><a href="javascript:bookmarkdelete('<?= $cfg['sub_dir'] ?>', checkselected())">Delete Bookmarks</a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/shared.php">Shared Bookmarks</a></li>
 		</ul>
 		</div>
 
 		<div class="navblock">
 		<h2 class="nav mnu" target="mnu_folders">Folders</h2>
 		<ul class="nav" id="mnu_folders">
-			<li><a href="javascript:foldernew('<?php echo $folderid; ?>')">New Folder</a></li>
-			<li><a href="javascript:folderedit('<?php echo $folderid; ?>')">Edit Folder</a></li>
-			<li><a href="javascript:foldermove('<?php echo $folderid; ?>')">Move Folder</a></li>
-			<li><a href="javascript:folderdelete('<?php echo $folderid; ?>')">Delete Folder</a></li>
+			<li><a href="javascript:foldernew('<?= $cfg['sub_dir'] ?>', '<?= $folderid; ?>')">New Folder</a></li>
+			<li><a href="javascript:folderedit('<?= $cfg['sub_dir'] ?>', '<?php echo $folderid; ?>')">Edit Folder</a></li>
+			<li><a href="javascript:foldermove('<?= $cfg['sub_dir'] ?>', '<?php echo $folderid; ?>')">Move Folder</a></li>
+			<li><a href="javascript:folderdelete('<?= $cfg['sub_dir'] ?>', '<?php echo $folderid; ?>')">Delete Folder</a></li>
 			<li><a href="/index.php?expand=&amp;folderid=0">Collapse All</a></li>
 		</ul>
 		</div>
@@ -150,15 +154,15 @@
 		<div class="navblock">
 		<h2 class="nav mnu" target="mnu_tools">Tools</h2>
 		<ul class="nav" id="mnu_tools">
-			<?php if (admin_only()) { ?>
-			<li><a href="/admin.php">Admin</a></li>
-			<?php } ?>
-			<li><a href="/import.php">Import</a></li>
-			<li><a href="/export.php">Export</a></li>
-			<li><a href="/index.php?search=[dupe_check_bookmarks]">Find Duplicates</a></li>
-			<li><a href="/sidebar.php">View as Sidebar</a></li>
-			<li><a href="/settings.php">Settings</a></li>
-			<li><a href="/index.php?logout=1">Logout</a></li>
+<?php if (admin_only()) : ?>
+			<li><a href="<?= $cfg['sub_dir'] ?>/admin.php">Admin</a></li>
+<?php endif ?>
+			<li><a href="<?= $cfg['sub_dir'] ?>/import.php">Import</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/export.php">Export</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/index.php?search=[dupe_check_bookmarks]">Find Duplicates</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/sidebar.php">View as Sidebar</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/settings.php">Settings</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/index.php?logout=1">Logout</a></li>
 		</ul>
 		</div>
 	<!-- Menu ends here. -->
@@ -172,13 +176,13 @@
 			<div style="height: <?php echo ($settings['table_height'] == 0) ? "auto" : $settings['table_height']; ?>; overflow:auto;">
 
 				<div class="bookmark">
-					<a class="f" href="/index.php"><img src="/images/folder_open.gif" alt=""> My Bookmarks</a>
+					<a class="f" href="/index.php"><img src="<?= $cfg['sub_dir'] ?>/images/folder_open.gif" alt=""> My Bookmarks</a>
 				</div>
 
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] .'/lib/boolean_search.php');
+	require_once(APPLICATION_PATH . '/lib/boolean_search.php');
 /*
-	$query from BooleanSearch.php is not being used here.  Why???
+	$query from boolean_search.php is not being used here.  Why???
 */
 
 	$searchfields = ['url', 'title', 'description'];
@@ -201,9 +205,9 @@
 		while ($row = mysqli_fetch_assoc($mysql->result)) {
 			array_push($bookmarks, $row);
 		}
-	
+
 		if (count($bookmarks) > 0) {
-			require_once($_SERVER['DOCUMENT_ROOT'] .'/bookmarks/bookmarks.php');
+			require_once(APPLICATION_PATH . '/bookmarks/bookmarks.php');
 			list_bookmarks(
 				bookmarks:$bookmarks,
 				show_checkbox:true,
@@ -230,14 +234,14 @@
 
 			</div>
 
-<?php else: ?>
+<?php else : ?>
 
 	<!-- Folders start here. -->
 	<h2 id="folders-head" class="mobile nav mnu" target="folders"> Folders </h2>
 	<div id="folders" class="folders mnu<?php echo (is_mobile_browser() ? ' mobile' : ''); ?>" style="width: <?php echo ($settings['column_width_folder'] == 0) ? 'auto' : $settings['column_width_folder']; ?>; height: <?php echo ($settings['table_height'] == 0) ? 'auto' : $settings['table_height']; ?>;">
 
 <?php
-		require_once($_SERVER['DOCUMENT_ROOT'] .'/folders/folder.php');
+		require_once(APPLICATION_PATH . '/folders/folder.php');
 		$tree = new Folder($username);
 		$tree->make_tree(0);
 		$tree->print_tree();
@@ -255,13 +259,13 @@
 	<div class="bookmarks" style="height: <?php echo ($settings['table_height'] == 0) ? 'auto' : $settings['table_height']; ?>;">
 
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] .'/bookmarks/bookmarks.php');
-	$query = sprintf ("
+	require_once(APPLICATION_PATH . '/bookmarks/bookmarks.php');
+	$query = sprintf("
 		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(date) AS timestamp, `id`, `favicon`, `public`
 		FROM `obm_bookmarks`
-		WHERE `user`='%s'
-		AND `childof`='%d'
-		AND `deleted`!='1'
+		WHERE `user` = '%s'
+		AND `childof` = '%d'
+		AND `deleted` != '1'
 		ORDER BY $order[1]",
 			$mysql->escape($username),
 			$mysql->escape($folderid));
@@ -289,26 +293,13 @@
 		message($mysql->error);
 	}
 
-// 	if (empty($folderid)) {
-// 		echo "<script> alert('Hello'); </script>";
-// 		echo '<script> window.location.reload(); </script>';
-// 	}
-
-// 	echo '$_GET: ';
-// 	echo '<pre>'; print_r($_GET); echo '</pre>';
-// 	echo '$_SESSION: ';
-// 	echo '<pre>'; print_r($_SESSION); echo '</pre>';
-// 	echo '$folderid is not being set when clicking on the folders.  Why??? <br>
-// 	Clicking a folder twice doesn\'t change anything, but <br>
-// 	if I reload the page using Cmd-R, it works. <br>
-// 	';
 ?>
 	<!--javascript:(function(){bmadd=window.open('https://domain.com/bookmarks/new_bookmark.php?title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'bmadd','toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes,width=500,height=500,left=50,top=50');setTimeout(function(){bmadd.focus();});})(); -->
 
 	<!-- Bookmarks ends here. -->
 	</div>
 
-<?php endif; ?>
+<?php endif ?>
 
 
 	<!-- Main content ends here. -->
@@ -318,14 +309,10 @@
 </div>
 
 <?php
-// echo '<pre>';
-// print_r($settings);
-// echo '</pre>';
-
 	print_footer();
-	require_once($_SERVER['DOCUMENT_ROOT'] .'/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 
 	__halt_compiler();
 
-	#1] This prevented GET variables from being accessible, e.g. $folderid
+	#1] This prevented GET variables from being accessible, e.g. $folderid.  Why???
 ?>

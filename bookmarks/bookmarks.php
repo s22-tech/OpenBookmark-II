@@ -107,7 +107,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 
 	if ($show_folder) {
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/folders/folder.php');
+		require_once(APPLICATION_PATH . '/folders/folder.php');
 		$tree = new Folder();
 	}
 
@@ -187,7 +187,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 // echo '<pre>'; print_r($value); echo '</pre>';  //:debug
 		if ($show_icon) {
 			if ($value['favicon']) {  /*  && is_file($value['favicon']) */
-				echo '<img src="/icons/'. $value['favicon'] .'" width="'. $cfg['icon_w'] .'" height="'. $cfg['icon_h'] .'" alt="">'. PHP_EOL;
+				echo '<img src="'. $cfg['sub_dir'] .'/icons/'. $value['favicon'] .'" width="'. $cfg['icon_w'] .'" height="'. $cfg['icon_h'] .'" alt="">'. PHP_EOL;
 			}
 			else {
 				echo $bookmark_image . PHP_EOL;

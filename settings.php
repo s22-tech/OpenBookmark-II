@@ -1,10 +1,12 @@
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+	require_once(realpath(dirname(__FILE__)) . '/header.php');
 	logged_in_only();
+	
+	$settings = $_SESSION['settings'];
 
 	$message = '';
 
-	if (isset ($_POST['settings_apply'])) {
+	if (isset($_POST['settings_apply'])) {
 		$settings = [
 			'root_folder_name'          => set_post_foldername('settings_root_folder_name'),
 			'column_width_folder'       => check_num_var('settings_column_width_folder'),
@@ -28,7 +30,7 @@
 			'theme'                     => set_post_string_var('settings_theme', ''),
 		];
 
-		$query = sprintf ("
+		$query = sprintf("
 			UPDATE `obm_users` 
 			SET
 				`root_folder_name`          = '%s',
@@ -49,8 +51,8 @@
 				`fast_symbol`               = '%d',
 				`simple_tree_mode`          = '%d',
 				`show_public`               = '%d',
-				`theme`                     = '%s',
-				`private_mode`              = '%d'
+				`private_mode`              = '%d',
+				`theme`                     = '%s'
 			WHERE `username` = '%s'",
 
 			$mysql->escape($settings['root_folder_name']),
@@ -84,7 +86,7 @@
 		}
 	}
 
-  # I really don't feel like putting these very specific functions into lib.php...
+  // I really don't feel like putting these very specific functions into lib.php...
 	function check_num_var($varname) {
 		if (!is_numeric ($_POST[$varname])) {
 			return 280;
@@ -125,8 +127,8 @@
 	<div id="menu">
 		<h2 class="nav">Bookmarks</h2>
 		<ul class="nav">
-		  <li><a href="./index.php">My Bookmarks</a></li>
-		  <li><a href="./shared.php">Shared Bookmarks</a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/index.php">My Bookmarks</a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/shared.php">Shared Bookmarks</a></li>
 		</ul>
 
 		<h2 class="nav">Tools</h2>
@@ -134,11 +136,11 @@
 			<?php if (admin_only ()) { ?>
 			<li><a href="./admin.php">Admin</a></li>
 			<?php } ?>
-			<li><a href="./import.php">Import</a></li>
-			<li><a href="./export.php">Export</a></li>
-			<li><a href="./sidebar.php">View as Sidebar</a></li>
-			<li><a href="./settings.php">Settings</a></li>
-			<li><a href="./index.php?logout=1">Logout</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/import.php">Import</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/export.php">Export</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/sidebar.php">View as Sidebar</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/settings.php">Settings</a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/index.php?logout=1">Logout</a></li>
 		</ul>
 	<!-- Menu ends here. -->
 	</div>
@@ -334,22 +336,19 @@
 
 			?>
 			<p>
-				You can add a button to your browsers "Link Bar" or "Hotlist" so that any homepage
-				can be bookmarked with one click. Title and URL of the current homepage are being preset.
-				Basically you can make OpenBookmark behave in two different ways showing its
-				dialog. Either a new window pops up or it shows it in the same window.
+				You can add a button to your browsers "Link Bar" or "Hotlist" so that any homepage can be bookmarked with one click. Title and URL of the current homepage are being preset.  Basically you can make OpenBookmark behave in two different ways showing it's dialog. Either a new window pops up or it shows it in the same window.
 			</p>
 			<p>
 				To show the OpenBookmark dialog in a new window, drag this link to the Link Bar.<br>
 
 				<a href="javascript:(function(){bmadd=window.open('<?php echo $js_url; ?>/bookmarks/new_bookmark.php?title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'bmadd','toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes,width=500,height=600,left=50,top=50');setTimeout(function(){bmadd.focus();});})();" title="bookmark">
-				<img src="./images/bookmark.gif" alt="bookmark" title="bookmark">
+				<img src="<?= $cfg['sub_dir'] ?>/images/bookmark.gif" alt="bookmark" title="bookmark">
 				</a><br>
 			</p>
 			<p>
 				To open the OpenBookmark dialog in the same window, drag this link to the Link Bar.<br>
 				<a href="javascript:location.href='<?php echo $js_url; ?>/bookmarks/add_bookmark.php?title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href)" title="bookmark">
-				<img src="./images/bookmark.gif" alt="bookmark" title="bookmark">
+				<img src="<?= $cfg['sub_dir'] ?>/images/bookmark.gif" alt="bookmark" title="bookmark">
 				</a><br>
 			</p>
 			<p>
@@ -377,8 +376,7 @@
 					}
 					//-->
 				</script>
-				If you are using <a href="https://www.mozilla.com/firefox/">Firefox</a> as a web browser, you can
-				use the link below to add a bookmark which opens OpenBookmark as a sidebar.<br>
+				If you are using <a href="https://www.mozilla.com/firefox/">Firefox</a> as a web browser, you can use the link below to add a bookmark which opens OpenBookmark as a sidebar.<br>
 				<b><a href="javascript:addSidebar()">Add to Sidebar</a></b>
 			</p>
 
@@ -394,5 +392,5 @@
 
 <?php
 	print_footer();
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 ?>

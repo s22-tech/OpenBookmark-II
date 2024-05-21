@@ -8,7 +8,8 @@ class mysql {
 	
 
 	public function __construct() {
-		include($_SERVER['DOCUMENT_ROOT'].'/config/config.php');
+		global $cfg;
+		require_once(APPLICATION_PATH . '/config/config.php');
 		
 		$this->conn = mysqli_connect($cfg['hostspec'], $cfg['db_user'], $cfg['db_pass'], $cfg['database']);
 
@@ -18,10 +19,10 @@ class mysql {
 		
 	// Check if server is alive.
 		if (mysqli_ping($this->conn)) {
-			//printf ("Our connection is ok!\n");
+			//printf("Our connection is ok!\n");
 		}
 		else {
-			printf ("Error: %s\n", mysqli_error($this->conn));
+			printf("Error: %s\n", mysqli_error($this->conn));
 		}
 
 		if (!$this->conn) {

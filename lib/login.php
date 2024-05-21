@@ -10,23 +10,24 @@
 		if (isset($_POST['username']) && $_POST['username'] != '' && ! $_SESSION['logged_in']) {
 			$auth->login();
 		}
-		if (isset($_GET['login']) && $_GET['login'] && ! $_SESSION['logged_in']) {
+		if (isset($_GET['login']) && ! $_SESSION['logged_in']) {
 			$display_login_form = true;
 		}
-		if (isset($_GET['logout']) && $_GET['logout'] && $_SESSION['logged_in']) {
+		if (isset($_GET['logout']) && $_SESSION['logged_in']) {
 			$auth->logout();
 		}
-		if (isset($_SESSION['username']) && ! check_username($_SESSION['username'])) {  # XXX hope that's OK.
+		if (isset($_SESSION['username']) && !check_username($_SESSION['username'])) {  # XXX hope that's OK.
 			$auth->logout();
 		}
 
-		if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-			if (isset($_SESSION['username']) && $_SESSION['username'] != '') {
+		if (!empty($_SESSION['logged_in'])) {
+			if (!empty($_SESSION['username']) && $_SESSION['username'] != '') {
 				$username = $_SESSION['username'];
 				$query = sprintf("
 					SELECT * FROM `obm_users` 
 					WHERE `username` = '%s'",
-						$mysql->escape($username));
+						$mysql->escape($username)
+				);
 
 			  // Now get the settings.
 				if ($mysql->query($query)) {
@@ -59,7 +60,6 @@
 
 	$_SESSION['settings'] = $settings;
 
-
 	function default_settings() {
 		$settings = [
 			'root_folder_name' => '',
@@ -79,6 +79,7 @@
 			'fast_folder_plus' => true,
 			'fast_symbol' => true,
 			'simple_tree_mode' => false,
+			'private_mode' => true,
 			'theme' => ''
 			];
 		return $settings;

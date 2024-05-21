@@ -1,16 +1,15 @@
 <?php
-// define ('ABSOLUTE_PATH', dirname(__FILE__) . '/');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/lib/webstart.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
+// require_once(APPLICATION_PATH . '/lib/webstart.php');
+require_once(realpath(dirname(__FILE__, 1)) . '/config/config.php');
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/lib/mysql.php');
+require_once(APPLICATION_PATH . '/lib/mysql.php');
 $mysql = new Mysql();
 
-require_once($_SERVER['DOCUMENT_ROOT'] .'/lib/auth.php');
+require_once(APPLICATION_PATH .'/lib/auth.php');
 $auth = new Auth();
 
-require_once($_SERVER['DOCUMENT_ROOT'] .'/lib/lib.php');
-require_once($_SERVER['DOCUMENT_ROOT'] .'/lib/login.php');
+require_once(APPLICATION_PATH .'/lib/lib.php');
+require_once(APPLICATION_PATH .'/lib/login.php');
 
 class sidebar 
 {
@@ -22,7 +21,7 @@ class sidebar
 		global $username, $mysql;
 
 	  // Collect the folder data.
-		require_once($_SERVER['DOCUMENT_ROOT'] .'/folders/folder.php');
+		require_once(APPLICATION_PATH .'/folders/folder.php');
 		$this->tree = new Folder();
 		$this->tree->folders[0] = ['id' => 0, 'childof' => null, 'name' => $GLOBALS['settings']['root_folder_name']];
 
@@ -63,7 +62,8 @@ class sidebar
 	}
 
 	function print_folder($folderid) {
-		echo str_repeat('    ', $this->counter) . '<li class="closed"><img src="./includes/jquery/images/folder.gif" alt=""> ' . $this->tree->folders[$folderid]['name'] . "\n";
+		global $cfg;
+		echo str_repeat('    ', $this->counter) . '<li class="closed"><img src="'. $cfg['sub_dir'] .'/includes/jquery/images/folder.gif" alt=""> ' . $this->tree->folders[$folderid]['name'] . "\n";
 		if (isset($this->tree->children[$folderid]) || isset($this->bookmarks[$folderid])) {
 			echo str_repeat('    ', $this->counter + 1) . '<ul>'. PHP_EOL;
 		}
@@ -77,6 +77,7 @@ class sidebar
 	}
 
 	function print_bookmarks($folderid) {
+		global $cfg;
 		$spacer = str_repeat('    ', $this->counter);
 		if (isset($this->bookmarks[$folderid])) {
 			foreach ($this->bookmarks[$folderid] as $value) {
@@ -84,7 +85,7 @@ class sidebar
 					$icon = '<img src="' . $value['favicon'] . '" width="16" height="16" border="0" alt="">';
 				}
 				else {
-					$icon = '<img src="./includes/jquery/images/file.gif" alt="">';
+					$icon = '<img src="'. $cfg['sub_dir'] .'?>/includes/jquery/images/file.gif" alt="">';
 				}
 				echo $spacer .'    <li><a href="'. $value['url'] .'" target="_blank">'. $icon .' '. $value['title'] ."</a></li>\n";
 			}
@@ -101,10 +102,10 @@ class sidebar
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title> OpenBookmark </title>
-	<link rel="stylesheet" type="text/css" href="./includes/css/style.css">
+	<link rel="stylesheet" type="text/css" href="<?= $cfg['sub_dir'] ?>/includes/css/style.css">
 
-	<script src="./includes/jquery/jquery.js"></script>
-	<script src="./includes/jquery/jquery.treeview.js"></script>
+	<script src="<?= $cfg['sub_dir'] ?>/includes/jquery/jquery.js"></script>
+	<script src="<?= $cfg['sub_dir'] ?>/includes/jquery/jquery.treeview.js"></script>
 	<script>
 	$(document).ready(function() {
 			 $("#browser").Treeview();
@@ -141,15 +142,15 @@ class sidebar
 		.dir ul { display: none; }
 		.treeview.dir ul { display: block; }
 
-		.treeview li { background: url(./includes/jquery/images/tv-item.gif) 0 0 no-repeat; }
-		.treeview .collapsable { background-image: url(./includes/jquery/images/tv-collapsable.gif); }
-		.treeview .expandable { background-image: url(./includes/jquery/images/tv-expandable.gif); }
-		.treeview .last { background-image: url(./includes/jquery/images/tv-item-last.gif); }
-		.treeview .lastCollapsable { background-image: url(./includes/jquery/images/tv-collapsable-last.gif); }
-		.treeview .lastExpandable { background-image: url(./includes/jquery/images/tv-expandable-last.gif); }
+		.treeview li { background: url(<?= $cfg['sub_dir'] ?>/includes/jquery/images/tv-item.gif) 0 0 no-repeat; }
+		.treeview .collapsable { background-image: url(<?= $cfg['sub_dir'] ?>/includes/jquery/images/tv-collapsable.gif); }
+		.treeview .expandable { background-image: url(<?= $cfg['sub_dir'] ?>/includes/jquery/images/tv-expandable.gif); }
+		.treeview .last { background-image: url(<?= $cfg['sub_dir'] ?>/includes/jquery/images/tv-item-last.gif); }
+		.treeview .lastCollapsable { background-image: url(<?= $cfg['sub_dir'] ?>/includes/jquery/images/tv-collapsable-last.gif); }
+		.treeview .lastExpandable { background-image: url(<?= $cfg['sub_dir'] ?>/includes/jquery/images/tv-expandable-last.gif); }
 
         </style>
-		<?php echo ($settings['theme'] != '') ? '<link rel="stylesheet" type="text/css" href="./includes/css/style'. $settings['theme'] .'.css" />' : ''; ?>
+		<?php echo ($settings['theme'] != '') ? '<link rel="stylesheet" type="text/css" href="'. $cfg['sub_dir'] .'/includes/css/style'. $settings['theme'] .'.css" />' : ''; ?>
 </head>
 <body id="sidebarBody">
 
@@ -165,5 +166,5 @@ class sidebar
 	$sidebar->make_tree(0);
 	echo '</ul>'. PHP_EOL;
 
-	require_once($_SERVER['DOCUMENT_ROOT'] .'/footer.php');
+	require_once(APPLICATION_PATH .'/footer.php');
 ?>

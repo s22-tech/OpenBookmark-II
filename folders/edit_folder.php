@@ -1,5 +1,5 @@
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
 	logged_in_only();
 
 	$foldername = set_post_foldername();
@@ -59,7 +59,7 @@
 
 		if ($mysql->query($query)) {
 			if ($inherit) {
-				require_once($_SERVER['DOCUMENT_ROOT'] . '/folders/folder.php');
+				require_once(APPLICATION_PATH . '/folders/folder.php');
 				$tree = new Folder();
 				$tree->get_children($folderid);
 				if (count($tree->get_children) > 0) {
@@ -119,5 +119,5 @@
 		}
 	}
 
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 ?>

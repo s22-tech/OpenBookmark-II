@@ -1,5 +1,5 @@
 <?php
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php');
+	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
 	logged_in_only();
 
 	$bmlist           = set_get_num_list('bmlist');
@@ -24,7 +24,7 @@
 				$mysql->escape($username)
 			);
 			if ($mysql->query($query)) {
-				require_once($_SERVER['DOCUMENT_ROOT'] . '/bookmarks/bookmarks.php');
+				require_once(APPLICATION_PATH . '/bookmarks/bookmarks.php');
 				$query_string = '?bmlist=' . implode('_"', $bmlist);
 ?>
 
@@ -113,7 +113,7 @@
 			else {
 				$row = mysqli_fetch_object($mysql->result);
 				
-				require_once($_SERVER['DOCUMENT_ROOT'] . '/folders/folder.php');
+				require_once(APPLICATION_PATH . '/folders/folder.php');
 				$tree = new Folder();
 				$query_string = '?expand=' . implode(',', $tree->get_path_to_root($row->childof)) . '&amp;folderid=' . $row->childof;
 				$path = $tree->print_path($row->childof);
@@ -133,7 +133,7 @@
 					else {
 						$used_url = $row->url;
 					}
-					require_once($_SERVER['DOCUMENT_ROOT'] . '/favicon.php');
+					require_once(APPLICATION_PATH . '/favicon.php');
 					$favicon = new Favicon($used_url);
 					$new_fav = $favicon->favicon;
 debug_logger(name:'favicon->favicon >>', variable:$new_fav, file:__FILE__, function:__FUNCTION__);
@@ -151,7 +151,7 @@ debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__
 							message($mysql->error);
 						}
 						if (!empty($row->favicon)) {  /* && is_file($row->favicon) */
-							@unlink($_SERVER['DOCUMENT_ROOT'] .'/icons/'. $row->favicon);
+							@unlink(APPLICATION_PATH .'/icons/'. $row->favicon);
 						}
 						$icon = '<img src="/icons/'. $new_fav .'" width="'.$cfg['icon_w'].'" height="'.$cfg['icon_h'].'" alt="">';
 					}
@@ -233,5 +233,5 @@ debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__
 		}
 	}
 
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 ?>
