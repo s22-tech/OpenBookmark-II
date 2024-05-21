@@ -1,8 +1,4 @@
 <?php
-
-	ini_set('display_errors', 1);
-	ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
-	ini_set('error_append_string', '</pre>');
 	
 	require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
 	logged_in_only();
@@ -27,20 +23,20 @@
 	<div id="menu">
 		<h2 class="nav"> Bookmarks </h2>
 		<ul class="nav">
-		  <li><a href="./index.php"> My Bookmarks </a></li>
-		  <li><a href="./shared.php"> Shared Bookmarks </a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/index.php"> My Bookmarks </a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/shared.php"> Shared Bookmarks </a></li>
 		</ul>
 
 		<h2 class="nav">Tools</h2>
 		<ul class="nav">
 			<?php if (admin_only()) { ?>
-			<li><a href="./admin.php"> Admin </a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/admin.php"> Admin </a></li>
 			<?php } ?>
-			<li><a href="./import.php"> Import </a></li>
-			<li><a href="./export.php"> Export </a></li>
-			<li><a href="./sidebar.php"> View as Sidebar </a></li>
-			<li><a href="./settings.php"> Settings </a></li>
-			<li><a href="./index.php?logout=1"> Logout </a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/import.php"> Import </a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/export.php"> Export </a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/sidebar.php"> View as Sidebar </a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/settings.php"> Settings </a></li>
+			<li><a href="<?= $cfg['sub_dir'] ?>/index.php?logout=1"> Logout </a></li>
 		</ul>
 	<!-- Menu ends here. -->
 	</div>
@@ -57,7 +53,7 @@
 		if ($new_username == '' || $new_password == '') {
 			$message1 = 'Username and Password fields must not be empty.';
 		}
-		else if (check_username($new_username)) {
+		elseif (check_username($new_username)) {
 			$message1 = 'User already exists.';
 		}
 		else {
@@ -75,10 +71,10 @@
 			else {
 				message($mysql->error);
 			}
-			unset ($new_password, $_POST['new_password']);
+			unset($new_password, $_POST['new_password']);
 		}
 	}
-	?>
+?>
 
 				<div style="border: 1px solid #bbb; margin: 10px; padding: 10px;">
 					<h2 class="caption">Create User</h2>
@@ -124,96 +120,96 @@
 				<div style="border: 1px solid #bbb; margin: 10px; padding: 10px;">
 					<h2 class="caption">Delete User</h2>
 
-					<?php
-					if ($delete == 'Delete') {
-						if (check_username ($existing_user)) {
-							if ($noconfirm) {
-								$query = sprintf("
-									DELETE FROM `obm_users` 
-									WHERE md5(username)=md5('%s')",
-										$mysql->escape($existing_user)
-								);
-								if ($mysql->query($query)) {
-									$message2 = 'User $existing_user deleted.<br>';
-								}
-								else {
-									message($mysql->error);
-								}
+<?php
+	if ($delete == 'Delete') {
+		if (check_username($existing_user)) {
+			if ($noconfirm) {
+				$query = sprintf("
+					DELETE FROM `obm_users` 
+					WHERE md5(`username`) = md5('%s')",
+						$mysql->escape($existing_user)
+				);
+				if ($mysql->query($query)) {
+					$message2 = "User $existing_user deleted.<br>" . PHP_EOL;
+				}
+				else {
+					message($mysql->error);
+				}
 
-								$query = sprintf("
-									DELETE FROM `obm_bookmarks` 
-									WHERE md5(user)=md5('%s')",
-										$mysql->escape($existing_user)
-								);
-								if (!$mysql->query($query)) {
-									message($mysql->error);
-								}
+				$query = sprintf("
+					DELETE FROM `obm_bookmarks` 
+					WHERE md5(`user`) = md5('%s')",
+						$mysql->escape($existing_user)
+				);
+				if (!$mysql->query($query)) {
+					message($mysql->error);
+				}
 
-								$query = sprintf("
-									DELETE FROM `obm_folders` 
-									WHERE md5(user)=md5('%s')",
-										$mysql->escape($existing_user)
-								);
-								if (!$mysql->query($query)) {
-									message($mysql->error);
-								}
-								list_users();
-							}
-							else {
-								?>
+				$query = sprintf("
+					DELETE FROM `obm_folders` 
+					WHERE md5(`user`) = md5('%s')",
+						$mysql->escape($existing_user)
+				);
+				if (!$mysql->query($query)) {
+					message($mysql->error);
+				}
+				list_users();
+			}
+			else {
+?>
 
-								<p>Are you sure you want to delete the user <?php echo $existing_user; ?> and all their Bookmarks and Folders?</p>
+								<p>Are you sure you want to delete the user "<?php echo $existing_user; ?>" and all their Bookmarks and Folders?</p>
 								<form action="<?php echo $_SERVER['SCRIPT_NAME'] . "?noconfirm=1"; ?>" method="post" name="userdelete">
 								<input type="hidden" name="existing_user" value="<?php echo $existing_user; ?>">
-								<input type="submit" name="delete" value="Delete">
-								<input type="button" value=" Cancel " onClick="self.location.href='./admin.php'">
+								<input type="submit" name="delete" value=" Delete ">
+								<input type="button" value=" Cancel " onClick="self.location.href='<?= $cfg['sub_dir'] ?>/admin.php'">
 								</form>
 
-								<?php
-							}
-						}
-						else {
-							$message2 = 'User does not exist.';
-							list_users();
-						}
-					}
-					else {
-						list_users();
-					}
+<?php
+				}
+			}
+			else {
+				$message2 = 'User does not exist.';
+				list_users();
+			}
+		}
+		else {
+			list_users();
+		}
 
-				function list_users () {
-					global $mysql, $message2;
-					?>
+	function list_users() {
+		global $mysql, $message2;
+?>
 
 					<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="post">
 						<div style="height:200px; width:300px; overflow:auto;">
-							<?php
-							$query = "SELECT `username`, `admin` FROM `obm_users` ORDER BY `username`";
+<?php
+		$query = "SELECT `username`, `admin` FROM `obm_users` ORDER BY `username`";
 
-							if ($mysql->query($query)) {
-								while ($row = mysqli_fetch_object($mysql->result)) {
-									echo '<input type="radio" name="existing_user" value="'.$row->username.'">';
-									if ($row->admin) {
-										echo ' <b>' . $row->username . "</b><br>\n";
-									}
-									else {
-										echo ' ' . $row->username . "<br>\n";
-									}
-								}
-							}
-							else {
-								message($mysql->error);
-							}
-							?>
+		if ($mysql->query($query)) {
+			while ($row = mysqli_fetch_object($mysql->result)) {
+				echo '<input type="radio" name="existing_user" value="'.$row->username.'">';
+				if ($row->admin) {
+					echo ' <b>' . $row->username . "</b><br>\n";
+				}
+				else {
+					echo ' ' . $row->username . "<br>\n";
+				}
+			}
+		}
+		else {
+			message($mysql->error);
+		}
+?>
 						</div>
-						<input type="submit" name="delete" value="Delete">
+						<input type="submit" name="delete" value=" Delete ">
 						<?php echo $message2; ?>
 
 					</form>
 
-				<?php
-				}
-				?>
+<?php
+	}
+?>
 
 				</div>
 
@@ -237,5 +233,5 @@
 
 <?php
 	print_footer();
-	require_once (APPLICATION_PATH . '/footer.php');
+	require_once(APPLICATION_PATH . '/footer.php');
 ?>

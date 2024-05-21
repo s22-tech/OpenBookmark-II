@@ -22,6 +22,7 @@
   ////////////////////////
 
 	$cfg['domain'] = 's22.us';
+	$cfg['debug'] = true;  // Turns debug logging on or off.
 
 	$cfg['error_log'] = APPLICATION_PATH . '/logs/php_error_log_obm';
 	$cfg['debug_log'] = APPLICATION_PATH . '/logs/obm_d-bug.log';
@@ -82,11 +83,18 @@
 	if (sub_dir_bool_check()) {
 		$cfg['sub_dir'] = '/'. basename(APPLICATION_PATH);
 	}
+	
+	if ($cfg['debug']) {
+		ini_set('display_errors', 1);
+		ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
+		ini_set('error_append_string', '</pre>');
+	}
 
 
 	function sub_dir_bool_check() {
 		$root = $_SERVER['DOCUMENT_ROOT'];
-		$file_path = dirname($_SERVER['SCRIPT_FILENAME']);  // Gives path of "calling" file.
+		$file_path = dirname(__FILE__, 2);  // Gives path of config.php
+// echo 'file_path: '. $file_path . '<br>';
 
 		if ($root == $file_path) {
 			return false;  // Installed in the root.

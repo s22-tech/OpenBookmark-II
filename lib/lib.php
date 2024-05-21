@@ -7,19 +7,19 @@ function is_mobile_browser() {
 
 	// Detect mobile.
 	$device = false;
-	if ( stristr($_SERVER['HTTP_USER_AGENT'],'ipad') ) {
+	if (stristr($_SERVER['HTTP_USER_AGENT'], 'ipad') ) {
 		$device = true;
 	}
-	elseif ( stristr($_SERVER['HTTP_USER_AGENT'],'ipod') || strstr($_SERVER['HTTP_USER_AGENT'],'ipod') ) {
+	elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'ipod') || strstr($_SERVER['HTTP_USER_AGENT'], 'ipod') ) {
 		$device = true;
 	}
-	elseif ( stristr($_SERVER['HTTP_USER_AGENT'],'iphone') || strstr($_SERVER['HTTP_USER_AGENT'],'iphone') ) {
+	elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'iphone') || strstr($_SERVER['HTTP_USER_AGENT'], 'iphone') ) {
 		$device = true;
 	}
-	elseif ( stristr($_SERVER['HTTP_USER_AGENT'],'blackberry') ) {
+	elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'blackberry') ) {
 		$device = true;
 	}
-	elseif ( stristr($_SERVER['HTTP_USER_AGENT'],'android') ) {
+	elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'android') ) {
 		$device = true;
 	}
 	return $device;
@@ -572,16 +572,18 @@ function get_current_url($url) {
 }
 
 
-function debug_logger($variable, $name, $file, $function, $newline=true, $time='') {
+function debug_logger($name, $variable, $file, $function, $newline=true, $time='') {
 	global $cfg;
-	if (is_array($variable)) {
-		$variable = print_r($variable, true);
+	if ($cfg(debug)) {
+		if (is_array($variable)) {
+			$variable = print_r($variable, true);
+		}
+		if (!empty($time)) {
+			$time = (new DateTime('now', new DateTimeZone($cfg['timezone'])))->format('Y-m-d H:i:s') . ' ';
+		}
+		$eol = $newline ? PHP_EOL : '';
+		error_log('• '. $time. basename($file) .'::'.$function.'()->$'. $name .': '. $variable . $eol . PHP_EOL, 3, $cfg['debug_log']);
 	}
-	if (!empty($time)) {
-		$time = (new DateTime('now', new DateTimeZone($cfg['timezone'])))->format('Y-m-d H:i:s') . ' ';
-	}
-	$eol = $newline ? PHP_EOL : '';
-	error_log('• '. $time. basename($file) .'::'.$function.'()->$'. $name .': '. $variable . $eol . PHP_EOL, 3, $cfg['debug_log']);
 }
 
 

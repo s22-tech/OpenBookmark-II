@@ -93,7 +93,7 @@
 	<br>
 <?php
 
-debug_logger($bookmarks, 'bookmarks-2', 'array', __FILE__, __FUNCTION__);
+// debug_logger(name: 'bookmarks-2', variable: $bookmarks, file: __FILE__, function: __FUNCTION__);
 
 		}
 		else {
