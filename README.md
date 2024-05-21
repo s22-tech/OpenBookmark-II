@@ -7,7 +7,5 @@ The look of this script hasn't changed from the original, since CSS is not my st
 ## Installation
 To install, simply copy the files to your server and adjust the values in `/config/config.php` to match your database and server.
 
-**N.B.**  This version must be installed at the top level of your domain or a sub-domain.  It will not work if installed in a sub-directory.  I'm working on a fix.
-
 ### Disclaimer
-This script was uploaded to share it with others who miss the functionality of the original OpenBookmarks.  Unfortunately, I don't have the time to make it into a one-size-fits-all solution.  If you have ideas of new features to add, feel free to let me know.  However, if I don't feel they'd be a good fit, I probably won't add it myself.  But pull requests are always welcome.  The more people helping with this script, the better.
+This script was uploaded to share it with others who miss the functionality of the original OpenBookmarks.  Sadly, I don't have the time to make it into a one-size-fits-all solution.  If you have ideas of new features to add, feel free to let me know.  However, if I don't feel they'd be a good fit, I probably won't add it myself.  But pull requests are always welcome.  The more people helping with this script, the better.
