@@ -4,6 +4,11 @@ OBM II is a rewrite of Brendan LaMarche's fantastic OpenBookmark script, to brin
 ## To Do
 The look of this script hasn't changed from the original, since CSS is not my strong suit.  If someone would like to help update the look and feel of this script, please send a pull request.
 
+## Requirements
+PHP 8.0 or higher
+convert (linux cli tool)
+identify (linux cli tool)
+
 ## Installation
 To install, simply copy the files to your server and adjust the values in `/config/config.php` to match your database and server.
 
