@@ -1,6 +1,6 @@
 <?php
 
-	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
+	require_once(realpath(dirname(__FILE__, 2)) . '/header.min.php');
 	logged_in_only();
 
 	if (!empty($username) && $username !== 'demo') {
@@ -36,9 +36,9 @@ debug_logger(name:'icons_to_delete', variable:$icons_to_delete, file:__FILE__, f
 
 		foreach ($icons_to_delete as $favicon) {
 			if (! str_contains($favicon, 'bookmark.gif')) {
-				if (is_file(APPLICATION_PATH .'/icons/'. $favicon)) {
+				if (is_file(BASE_DIR .'/icons/'. $favicon)) {
 					if (!str_contains($favicon, 'bookmark')) {
-						unlink(APPLICATION_PATH .'/icons/'. $favicon);
+						unlink(BASE_DIR .'/icons/'. $favicon);
 					}
 				}
 				else {

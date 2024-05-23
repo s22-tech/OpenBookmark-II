@@ -59,7 +59,7 @@
 
 		if ($mysql->query($query)) {
 			if ($inherit) {
-				require_once(APPLICATION_PATH . '/folders/folder.php');
+				require_once(BASE_DIR . '/folders/folder.php');
 				$tree = new Folder();
 				$tree->get_children($folderid);
 				if (count($tree->get_children) > 0) {
@@ -119,5 +119,5 @@
 		}
 	}
 
-	require_once(APPLICATION_PATH . '/footer.php');
+	require_once(BASE_DIR . '/footer.php');
 ?>

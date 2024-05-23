@@ -10,21 +10,21 @@
 		 ob_start('ob_gzhandler');
 	}
 	*/
-// 	require_once(APPLICATION_PATH .'/lib/webstart.php');
+// 	require_once(BASE_DIR .'/lib/webstart.php');
 	if (!is_file(realpath(dirname(__FILE__, 1)) . '/config/config.php')) {
 		die ('You need to <a href="/install.php">install</a> OpenBookmark II.');
 	}
 	else {
 		require_once(realpath(dirname(__FILE__, 1)) . '/config/config.php');
 	}
-	require_once(APPLICATION_PATH .'/lib/mysql.php');
+	require_once(BASE_DIR .'/lib/mysql.php');
 	$mysql = new mysql;
 
-	require_once(APPLICATION_PATH .'/lib/auth.php');
+	require_once(BASE_DIR .'/lib/auth.php');
 	$auth = new Auth;
 
-	require_once(APPLICATION_PATH .'/lib/lib.php');
-	require_once(APPLICATION_PATH .'/lib/login.php');
+	require_once(BASE_DIR .'/lib/lib.php');
+	require_once(BASE_DIR .'/lib/login.php');
 	
 	$settings['private_mode'] = set_post_bool_var('settings_private_mode', false);
 ?>
@@ -54,13 +54,13 @@
 
 <?php
 
-	//if (is_file (APPLICATION_PATH . "install.php")) {
+	//if (is_file (BASE_DIR . "install.php")) {
 		//message ('Remove "install.php" before using OpenBookmark.');
 	//}
 
 	if ($display_login_form) {
 		$auth->display_login_form ();
-		require_once(APPLICATION_PATH .'/footer.php');
+		require_once(BASE_DIR .'/footer.php');
 	}
 
 ?>

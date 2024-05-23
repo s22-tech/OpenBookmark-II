@@ -1,8 +1,5 @@
 <?php
 
-	ini_set('display_errors', 1);
-	ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
-	ini_set('error_append_string', '</pre>');
 	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
 	logged_in_only();
 
@@ -15,7 +12,7 @@
 		}
 		elseif (!$settings['confirm_delete'] || $noconfirm) {
 		  // Lets do the deletion if the confirm variable is set to FALSE or after confirmation.
-			require_once(APPLICATION_PATH . '/folders/folder.php');
+			require_once(BASE_DIR . '/folders/folder.php');
 			$tree = new Folder();
 			$tree->get_children($folderid);
 
@@ -130,5 +127,5 @@
 		echo '<input type="button" value=" Cancel " onclick="self.close()">';
 	}
 
-	require_once(APPLICATION_PATH . '/footer.php');
+	require_once(BASE_DIR . '/footer.php');
 ?>

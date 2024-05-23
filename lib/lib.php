@@ -33,7 +33,7 @@ function message($message) {
 	if (isset($message)) {
 		echo '<p>' . $message . '</p>';
 	}
-	require_once(APPLICATION_PATH . '/footer.php');
+	require_once(BASE_DIR . '/footer.php');
 }
 
 
@@ -45,7 +45,7 @@ function logged_in_only() {
 	if (empty($_SESSION['logged_in']) || ! $_SESSION['logged_in']) {
 		global $auth;
 		$auth->display_login_form();
-		require_once(APPLICATION_PATH . '/footer.php');
+		require_once(BASE_DIR . '/footer.php');
 	}
 }
 
@@ -496,7 +496,7 @@ function set_num_array($array){
 
 
 function get_local_version() {
-	return file_get_contents(APPLICATION_PATH . '/VERSION');
+	return file_get_contents(BASE_DIR . '/VERSION');
 }
 
 function check_for_new_version() {

@@ -160,5 +160,5 @@
 		echo '<p>If you are already a registered user, <a class="orange" href="./index.php">you can log in here.</a></p>' . PHP_EOL;
 	}
 
-	require_once(APPLICATION_PATH . '/footer.php');
+	require_once(BASE_DIR . '/footer.php');
 ?>

@@ -8,7 +8,7 @@ if (basename ($_SERVER['SCRIPT_NAME']) == basename (__FILE__)) {
 }
 
 require_once(realpath(dirname(__FILE__, 1)) . '/config/config.php');
-include_once(APPLICATION_PATH . '/vendor/simplehtmldom/HtmlWeb.php');
+include_once(BASE_DIR . '/vendor/simplehtmldom/HtmlWeb.php');
 use simplehtmldom\HtmlWeb;
 
 class Favicon
@@ -33,14 +33,14 @@ debug_logger(name:'URL', variable:$url, newline:false, file:__FILE__, function:_
 				if ($this->favicon_url = $this->get_favicon_url()) {
 					$this->download_favicon_image();
 					$this->icon_name = $this->rename_favicon($url . '/'. $this->temp_icon_name);
-					$favicon_url_path = APPLICATION_PATH . '/icons/'. $this->icon_name;
+					$favicon_url_path = BASE_DIR . '/icons/'. $this->icon_name;
 
 debug_logger(name:'this->temp_icon_name', variable:$this->temp_icon_name, newline:false, file:__FILE__, function:__FUNCTION__);
 debug_logger(name:'this->favicon_url',    variable:$this->favicon_url, newline:false, file:__FILE__, function:__FUNCTION__);
 debug_logger(name:'this->icon_name',      variable:$this->icon_name,   newline:false, file:__FILE__, function:__FUNCTION__);
 debug_logger(name:'favicon_url_path',     variable:$favicon_url_path, file:__FILE__, function:__FUNCTION__);
 
-					$tmp_file = APPLICATION_PATH . '/tmp/'. $this->temp_icon_name;
+					$tmp_file = BASE_DIR . '/tmp/'. $this->temp_icon_name;
 					[$fav_ext, $ident] = $this->identify_fav($tmp_file);
 debug_logger(name:'tmp_file', variable:$tmp_file, newline:false, file:__FILE__, function:__FUNCTION__);
 debug_logger(name:'fav_ext',  variable:$fav_ext,  newline:false, file:__FILE__, function:__FUNCTION__);
@@ -86,7 +86,7 @@ debug_logger(name:'fav_ext',      variable:$fav_ext, file:__FILE__, function:__F
 		$new_name = $this->rename_favicon($this->url);
 debug_logger(name:'new_name', variable:$new_name, newline:false, file:__FILE__, function:__FUNCTION__);
 
-		$save_path_name = APPLICATION_PATH . '/icons/'. $new_name;
+		$save_path_name = BASE_DIR . '/icons/'. $new_name;
 debug_logger(name:'save_path_name', variable:$save_path_name, newline:false, file:__FILE__, function:__FUNCTION__);
 
 // 		if (strtolower($fav_ext) === 'svg') {
@@ -137,7 +137,7 @@ debug_logger(name:'rename-move', variable:$rename, file:__FILE__, function:__FUN
 		curl_close($ch);
 
 		if (admin_only()) {
-			$bytes = file_put_contents(APPLICATION_PATH . '/tmp/'. $this->temp_icon_name, $response);
+			$bytes = file_put_contents(BASE_DIR . '/tmp/'. $this->temp_icon_name, $response);
 		}
 
 		return true;
