@@ -107,7 +107,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 
 	if ($show_folder) {
-		require_once(BASE_PATH . '/folders/folder.php');
+		require_once(DOC_ROOT . '/folders/folder.php');
 		$tree = new Folder();
 	}
 

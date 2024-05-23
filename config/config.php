@@ -4,7 +4,7 @@
 		die ('No direct access allowed.');
 	}
 
-	define('BASE_PATH', realpath(dirname(__FILE__, 2)));  // Includes the sub-directory.
+	define('DOC_ROOT', realpath(dirname(__FILE__, 2)));  // Includes the sub-directory.
 
   ////////////////////////
   // Load Config File ////
@@ -24,8 +24,8 @@
 	$cfg['domain'] = 's22.us';
 	$cfg['debug'] = true;  // Turns debug logging on or off.
 
-	$cfg['error_log'] = BASE_PATH . '/logs/php_error_log_obm';
-	$cfg['debug_log'] = BASE_PATH . '/logs/obm_d-bug.log';
+	$cfg['error_log'] = DOC_ROOT . '/logs/php_error_log_obm';
+	$cfg['debug_log'] = DOC_ROOT . '/logs/obm_d-bug.log';
 
 	$cfg['locale'] = 'en-US';
 	$cfg['user_agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/124.0.2478.109';
@@ -66,23 +66,23 @@
 	$cfg['timeout']   = 5;
 	[$cfg['icon_w'], $cfg['icon_h']] = explode('x', $cfg['icon_size']);
 
-	$folder_closed        = '<img src="./images/folder.gif" alt="">';
-	$folder_opened        = '<img src="./images/folder_open.gif" alt="">';
-	$folder_closed_public = '<img src="./images/folder_red.gif" alt="">';
-	$folder_opened_public = '<img src="./images/folder_open_red.gif" alt="">';
-
-	$plus           = '<img src="./images/plus.gif" alt=""> ';
-	$minus          = '<img src="./images/minus.gif" alt=""> ';
-	$neutral        = '<img src="./images/spacer.gif" width="13" height="1" alt=""> ';
-	$edit_image     = '<img src="./images/edit.gif" title="%s" alt="">';
-	$move_image     = '<img src="./images/move.gif" title="%s" alt="">';
-	$delete_image   = '<img src="./images/delete.gif" title="%s" alt="">';
-	$bookmark_image = '<img src="./images/bookmark.gif" alt="">';
-
 	$cfg['sub_dir'] = '';
 	if (sub_dir_bool_check()) {
-		$cfg['sub_dir'] = '/'. basename(BASE_PATH);
+		$cfg['sub_dir'] = '/'. basename(DOC_ROOT);
 	}
+
+	$folder_closed        = '<img src="'. $cfg['sub_dir'] .'/images/folder.gif" alt="">';
+	$folder_opened        = '<img src="'. $cfg['sub_dir'] .'/images/folder_open.gif" alt="">';
+	$folder_closed_public = '<img src="'. $cfg['sub_dir'] .'/images/folder_red.gif" alt="">';
+	$folder_opened_public = '<img src="'. $cfg['sub_dir'] .'/images/folder_open_red.gif" alt="">';
+
+	$plus           = '<img src="'. $cfg['sub_dir'] .'/images/plus.gif" alt=""> ';
+	$minus          = '<img src="'. $cfg['sub_dir'] .'/images/minus.gif" alt=""> ';
+	$neutral        = '<img src="'. $cfg['sub_dir'] .'/images/spacer.gif" width="13" height="1" alt=""> ';
+	$edit_image     = '<img src="'. $cfg['sub_dir'] .'/images/edit.gif" title="%s" alt="">';
+	$move_image     = '<img src="'. $cfg['sub_dir'] .'/images/move.gif" title="%s" alt="">';
+	$delete_image   = '<img src="'. $cfg['sub_dir'] .'/images/delete.gif" title="%s" alt="">';
+	$bookmark_image = '<img src="'. $cfg['sub_dir'] .'/images/bookmark.gif" alt="">';
 	
 	if ($cfg['debug']) {
 		ini_set('display_errors', 1);

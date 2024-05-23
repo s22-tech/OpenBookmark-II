@@ -62,7 +62,7 @@
 	<div class="folders" style="width: <?php echo (($column_width_folder == 0) ? "auto" : $column_width_folder); ?>; height: <?php echo (($table_height == 0) ? "auto" : $table_height); ?>;">
 
 <?php
-		require_once(BASE_PATH . '/folders/folder.php');
+		require_once(DOC_ROOT . '/folders/folder.php');
 		$tree = new Folder($user);
 		$tree->make_tree(0);
 		$tree->print_tree();
@@ -75,7 +75,7 @@
 	<div class="bookmarks" style="height: <?php echo (($table_height == 0) ? "auto" : $table_height); ?>;">
 
 <?php
-		require_once(BASE_PATH . '/bookmarks/bookmarks.php');
+		require_once(DOC_ROOT . '/bookmarks/bookmarks.php');
 		$query = sprintf("
 			SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(date) AS timestamp, `id`, `favicon`
 			FROM `obm_bookmarks`
@@ -153,5 +153,5 @@
 
 <?php
 	print_footer();
-	require_once (BASE_PATH . '/footer.php');
+	require_once (DOC_ROOT . '/footer.php');
 ?>

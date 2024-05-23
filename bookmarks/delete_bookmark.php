@@ -52,7 +52,7 @@
 				$mysql->escape($username)
 		);
 		if ($mysql->query($query)) {
-			require_once(BASE_PATH . '/bookmarks/bookmarks.php');
+			require_once(DOC_ROOT . '/bookmarks/bookmarks.php');
 			$query_string = 'bmlist=' . implode(',', $bmlist);
 ?>
 
@@ -101,5 +101,5 @@
 		}
 	}
 
-	require_once(BASE_PATH . '/footer.php');
+	require_once(DOC_ROOT . '/footer.php');
 ?>

@@ -1,2 +1,2 @@
 <?php
-	include(BASE_PATH . '/bookmarks/new_bookmark.php');
+	include(DOC_ROOT . '/bookmarks/new_bookmark.php');

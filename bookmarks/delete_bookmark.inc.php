@@ -36,9 +36,9 @@ debug_logger(name:'icons_to_delete', variable:$icons_to_delete, file:__FILE__, f
 
 		foreach ($icons_to_delete as $favicon) {
 			if (! str_contains($favicon, 'bookmark.gif')) {
-				if (is_file(BASE_PATH .'/icons/'. $favicon)) {
+				if (is_file(DOC_ROOT .'/icons/'. $favicon)) {
 					if (!str_contains($favicon, 'bookmark')) {
-						unlink(BASE_PATH .'/icons/'. $favicon);
+						unlink(DOC_ROOT .'/icons/'. $favicon);
 					}
 				}
 				else {

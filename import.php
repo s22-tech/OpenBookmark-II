@@ -102,7 +102,7 @@
 			 <div style="width:<?php echo (($settings['column_width_folder'] === 0) ? "auto" : $settings['column_width_folder']); ?>; height:350px; overflow:auto;">
 
 			<?php
-				require_once(BASE_PATH . '/folders/folder.php');
+				require_once(DOC_ROOT . '/folders/folder.php');
 				$tree = new Folder();
 				$tree->make_tree(0);
 				$tree->print_tree();
@@ -338,5 +338,5 @@
 	}
 
 	print_footer();
-	require_once(BASE_PATH . '/footer.php');
+	require_once(DOC_ROOT . '/footer.php');
 ?>

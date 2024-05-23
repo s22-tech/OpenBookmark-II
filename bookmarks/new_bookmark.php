@@ -17,7 +17,7 @@
 	$post_childof		= set_post_childof();
 	$post_public		= set_post_bool_var('public', false);
 
-	require_once(BASE_PATH . '/folders/folder.php');
+	require_once(DOC_ROOT . '/folders/folder.php');
 	$tree = new Folder();
 	$query_string = '?expand=' . implode(',', $tree->get_path_to_root($post_childof)) . '&amp;folderid=' . $post_childof;
 
@@ -108,7 +108,7 @@ debug_logger(variable:$post_url, name:'post_url', file:__FILE__, function:__FUNC
 // since the favicon is not as important.
 ///////////////////////////
 		if ($settings['show_bookmark_icon']) {
-			require_once(BASE_PATH . '/favicon.php');
+			require_once(DOC_ROOT . '/favicon.php');
 			$favicon = new Favicon($post_url);
 debug_logger(variable:print_r($favicon, true), name:'favicon-object', file:__FILE__, function:__FUNCTION__);
 
@@ -148,5 +148,5 @@ debug_logger(variable:debug_backtrace(), name:'debug_backtrace()', file:__FILE__
 			echo '<script> self.close(); </script>';
 		}
 	}
-	require_once(BASE_PATH . '/footer.php');
+	require_once(DOC_ROOT . '/footer.php');
 ?>

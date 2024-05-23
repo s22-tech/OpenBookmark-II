@@ -97,7 +97,7 @@
 	<div style="width:<?php echo (($settings['column_width_folder'] == 0) ? "auto" : $settings['column_width_folder']); ?>; height:350px; overflow:auto;">
 
 <?php
-	require_once(BASE_PATH . '/folders/folder.php');
+	require_once(DOC_ROOT . '/folders/folder.php');
 	$tree = new Folder();
 	$tree->make_tree(0);
 	$tree->print_tree();
@@ -127,20 +127,20 @@
 
 <?php
 		print_footer();
-		require_once(BASE_PATH . '/footer.php');
+		require_once(DOC_ROOT . '/footer.php');
 	}
 	else {
 	  // These files are being included, because we do not want to include
 	  // header.php since there is no reason for the http header to display.
-		//require_once(BASE_PATH . '/lib/webstart.php');
-		require_once(BASE_PATH . '/config/config.php');
-		require_once(BASE_PATH . '/lib/mysql.php');
+		//require_once(DOC_ROOT . '/lib/webstart.php');
+		require_once(DOC_ROOT . '/config/config.php');
+		require_once(DOC_ROOT . '/lib/mysql.php');
 		$mysql = new Mysql();
-		require_once(BASE_PATH . '/lib/auth.php');
+		require_once(DOC_ROOT . '/lib/auth.php');
 		$auth = new Auth();
-		require_once(BASE_PATH . '/lib/lib.php');
+		require_once(DOC_ROOT . '/lib/lib.php');
 		logged_in_only();
-		require_once(BASE_PATH . '/lib/login.php');
+		require_once(DOC_ROOT . '/lib/login.php');
 
 		$browser = set_post_browser();
 		if ($browser == 'opera') {
@@ -185,7 +185,7 @@
 		function export() {
 			global $settings, $browser;
 		  // Collect the folder data.
-			require_once(BASE_PATH . '/folders/folder.php');
+			require_once(DOC_ROOT . '/folders/folder.php');
 			$this->tree = new Folder();
 			$this->tree->folders[0] = ['id' => 0, 'childof' => null, 'name' => $settings['root_folder_name']];
 

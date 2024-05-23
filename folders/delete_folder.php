@@ -12,7 +12,7 @@
 		}
 		elseif (!$settings['confirm_delete'] || $noconfirm) {
 		  // Lets do the deletion if the confirm variable is set to FALSE or after confirmation.
-			require_once(BASE_PATH . '/folders/folder.php');
+			require_once(DOC_ROOT . '/folders/folder.php');
 			$tree = new Folder();
 			$tree->get_children($folderid);
 
@@ -127,5 +127,5 @@
 		echo '<input type="button" value=" Cancel " onclick="self.close()">';
 	}
 
-	require_once(BASE_PATH . '/footer.php');
+	require_once(DOC_ROOT . '/footer.php');
 ?>
