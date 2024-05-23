@@ -1,5 +1,5 @@
 <?php
-	require_once(BASE_DIR . '/header.php');
+	require_once(BASE_PATH . '/header.php');
 	logged_in_only();
 
 	$pw_message = null;
@@ -69,5 +69,5 @@
 </form>
 
 <?php
-	require_once(BASE_DIR . '/footer.php');
+	require_once(BASE_PATH . '/footer.php');
 ?>

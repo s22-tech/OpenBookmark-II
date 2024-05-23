@@ -9,7 +9,7 @@ class mysql {
 
 	public function __construct() {
 		global $cfg;
-		require_once(BASE_DIR . '/config/config.php');
+		require_once(BASE_PATH . '/config/config.php');
 		
 		$this->conn = mysqli_connect($cfg['hostspec'], $cfg['db_user'], $cfg['db_pass'], $cfg['database']);
 

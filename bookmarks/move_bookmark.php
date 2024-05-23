@@ -13,7 +13,7 @@
 				<div style="width:100%; height:330px; overflow:auto;">
 
 				<?php
-					require_once(BASE_DIR . '/folders/folder.php');
+					require_once(BASE_PATH . '/folders/folder.php');
 					$tree = new Folder();
 					$tree->make_tree(0);
 					$tree->print_tree();
@@ -56,5 +56,5 @@ debug_logger(name:'move-bookmarks', variable:$query, file:__FILE__, function:__F
 		}
 	}
 
-	require_once(BASE_DIR . '/footer.php');
+	require_once(BASE_PATH . '/footer.php');
 ?>

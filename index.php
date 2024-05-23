@@ -180,7 +180,7 @@
 				</div>
 
 <?php
-	require_once(BASE_DIR . '/lib/boolean_search.php');
+	require_once(BASE_PATH . '/lib/boolean_search.php');
 /*
 	$query from boolean_search.php is not being used here.  Why???
 */
@@ -207,7 +207,7 @@
 		}
 
 		if (count($bookmarks) > 0) {
-			require_once(BASE_DIR . '/bookmarks/bookmarks.php');
+			require_once(BASE_PATH . '/bookmarks/bookmarks.php');
 			list_bookmarks(
 				bookmarks:$bookmarks,
 				show_checkbox:true,
@@ -241,7 +241,7 @@
 	<div id="folders" class="folders mnu<?php echo (is_mobile_browser() ? ' mobile' : ''); ?>" style="width: <?php echo ($settings['column_width_folder'] == 0) ? 'auto' : $settings['column_width_folder']; ?>; height: <?php echo ($settings['table_height'] == 0) ? 'auto' : $settings['table_height']; ?>;">
 
 <?php
-		require_once(BASE_DIR . '/folders/folder.php');
+		require_once(BASE_PATH . '/folders/folder.php');
 		$tree = new Folder($username);
 		$tree->make_tree(0);
 		$tree->print_tree();
@@ -259,7 +259,7 @@
 	<div class="bookmarks" style="height: <?php echo ($settings['table_height'] == 0) ? 'auto' : $settings['table_height']; ?>;">
 
 <?php
-	require_once(BASE_DIR . '/bookmarks/bookmarks.php');
+	require_once(BASE_PATH . '/bookmarks/bookmarks.php');
 	$query = sprintf("
 		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(date) AS timestamp, `id`, `favicon`, `public`
 		FROM `obm_bookmarks`
@@ -310,7 +310,7 @@
 
 <?php
 	print_footer();
-	require_once(BASE_DIR . '/footer.php');
+	require_once(BASE_PATH . '/footer.php');
 
 	__halt_compiler();
 

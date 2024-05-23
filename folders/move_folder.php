@@ -1,7 +1,7 @@
 <?php
 	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
 	logged_in_only();
-	require_once(BASE_DIR . '/folders/folder.php');
+	require_once(BASE_PATH . '/folders/folder.php');
 
 	$sourcefolder = set_post_sourcefolder();
 	$tree = new Folder();
@@ -61,5 +61,5 @@
 			message ($mysql->error);
 		}
 	}
-	require_once(BASE_DIR . '/footer.php');
+	require_once(BASE_PATH . '/footer.php');
 ?>

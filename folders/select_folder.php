@@ -8,7 +8,7 @@
 	<div style="width:100%; height:330px; overflow:auto;">
 
 <?php
-	require_once(BASE_DIR . '/folders/folder.php');
+	require_once(BASE_PATH . '/folders/folder.php');
 	$tree = new Folder();
 	$tree->make_tree(0);
 	$tree->print_tree();
@@ -22,5 +22,5 @@
 	<input type="button" value=" New Folder " onclick="self.location.href='javascript:foldernew(<?php echo $folderid; ?>)'">
 
 <?php
-	require_once(BASE_DIR . '/footer.php');
+	require_once(BASE_PATH . '/footer.php');
 ?>

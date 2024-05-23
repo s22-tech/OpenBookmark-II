@@ -233,5 +233,5 @@
 
 <?php
 	print_footer();
-	require_once(BASE_DIR . '/footer.php');
+	require_once(BASE_PATH . '/footer.php');
 ?>

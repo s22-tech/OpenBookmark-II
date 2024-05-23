@@ -4,7 +4,7 @@
 		die ('No direct access allowed.');
 	}
 
-	define('BASE_DIR', realpath(dirname(__FILE__, 2)));  // Includes the sub-directory.
+	define('BASE_PATH', realpath(dirname(__FILE__, 2)));  // Includes the sub-directory.
 
   ////////////////////////
   // Load Config File ////
@@ -24,8 +24,8 @@
 	$cfg['domain'] = 's22.us';
 	$cfg['debug'] = true;  // Turns debug logging on or off.
 
-	$cfg['error_log'] = BASE_DIR . '/logs/php_error_log_obm';
-	$cfg['debug_log'] = BASE_DIR . '/logs/obm_d-bug.log';
+	$cfg['error_log'] = BASE_PATH . '/logs/php_error_log_obm';
+	$cfg['debug_log'] = BASE_PATH . '/logs/obm_d-bug.log';
 
 	$cfg['locale'] = 'en-US';
 	$cfg['user_agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/124.0.2478.109';
@@ -81,7 +81,7 @@
 
 	$cfg['sub_dir'] = '';
 	if (sub_dir_bool_check()) {
-		$cfg['sub_dir'] = '/'. basename(BASE_DIR);
+		$cfg['sub_dir'] = '/'. basename(BASE_PATH);
 	}
 	
 	if ($cfg['debug']) {
