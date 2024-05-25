@@ -4,7 +4,7 @@
 		die ('No direct access allowed.');
 	}
 
-	define('DOC_ROOT', realpath(dirname(__FILE__, 2)));  // Includes the sub-directory.
+	define('DOC_ROOT', dirname(__FILE__, 2));  // Includes the sub-directory.
 
   ////////////////////////
   // Load Config File ////
@@ -23,6 +23,11 @@
 
 	$cfg['domain'] = 's22.us';
 	$cfg['debug'] = true;  // Turns debug logging on or off.
+
+	$cfg['sub_dir'] = '';
+	if (sub_dir_bool_check()) {
+		$cfg['sub_dir'] = '/'. basename(DOC_ROOT);
+	}
 
 	$cfg['error_log'] = DOC_ROOT . '/logs/php_error_log_obm';
 	$cfg['debug_log'] = DOC_ROOT . '/logs/obm_d-bug.log';
@@ -65,11 +70,6 @@
 	$cfg['identify']  = '/usr/bin/identify';
 	$cfg['timeout']   = 5;
 	[$cfg['icon_w'], $cfg['icon_h']] = explode('x', $cfg['icon_size']);
-
-	$cfg['sub_dir'] = '';
-	if (sub_dir_bool_check()) {
-		$cfg['sub_dir'] = '/'. basename(DOC_ROOT);
-	}
 
 	$folder_closed        = '<img src="'. $cfg['sub_dir'] .'/images/folder.gif" alt="">';
 	$folder_opened        = '<img src="'. $cfg['sub_dir'] .'/images/folder_open.gif" alt="">';

@@ -58,7 +58,7 @@
 		<p>Description
 		<br>
 		<textarea name="description" cols="50" rows="8"><?php echo $post_description; ?></textarea></p>
-		<p><input type="button" value="Select folder" onclick="window.childof=document.forms['bmnew'].childof; window.path=document.forms['bmnew'].path; selectfolder('<?php echo $query_string; ?>')">
+		<p><input type="button" value="Select folder" onclick="window.childof=document.forms['bmnew'].childof; window.path=document.forms['bmnew'].path; selectfolder('<?php echo $cfg['sub_dir']; ?>', '<?php echo $query_string; ?>')">
 		<br>
 		<input type="text" name="path" value="<?php echo $path; ?>" size="50" readonly>
 		<input type="text" name="childof" value="<?php echo $folderid; ?>" size="4" class="invisible" readonly></p>

@@ -193,7 +193,7 @@ debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__
 	<input type=text name="url" size="50" value="<?php echo $row->url; ?>">
 	<p>Description<br>
 	<textarea name="description" cols="50" rows="8"><?php echo $row->description; ?></textarea></p>
-	<p><input type="button" value="Select folder" onclick="window.childof=document.forms['bmedit'].childof; window.path=document.forms['bmedit'].path; selectfolder('<?php echo $query_string; ?>')"><br>
+	<p><input type="button" value="Select folder" onclick="window.childof=document.forms['bmedit'].childof; window.path=document.forms['bmedit'].path; selectfolder('<?php echo $cfg['sub_dir']; ?>', '<?php echo $query_string; ?>')"><br>
 	<input type="text" name="path" value="<?php echo $path; ?>" size="50" readonly>
 	<input type="text" name="childof" value="<?php echo $row->childof; ?>" size="4" class="invisible" readonly></p>
 	<p>Tags<br>
