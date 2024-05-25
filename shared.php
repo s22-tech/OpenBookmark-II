@@ -1,5 +1,6 @@
 <?php
-	require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
+
+	require_once(__DIR__ . '/header.php');
 
 	if ($_SESSION['logged_in']) {
 		$user = set_get_string_var('user', $username);
@@ -34,9 +35,9 @@
 		<h2 class="nav">Tools</h2>
 		<ul class="nav">
 <?php if (isset ($_SESSION['logged_in']) && $_SESSION['logged_in']) : ?>
-<?php if (admin_only()) : ?>
+	<?php if (admin_only()) : ?>
 			<li><a href="<?= $cfg['sub_dir'] ?>/admin.php">Admin</a></li>
-<?php endif; ?>
+	<?php endif ?>
 			<li><a href="<?= $cfg['sub_dir'] ?>/import.php">Import</a></li>
 			<li><a href="<?= $cfg['sub_dir'] ?>/export.php">Export</a></li>
 			<li><a href="<?= $cfg['sub_dir'] ?>/sidebar.php">View as Sidebar</a></li>
@@ -44,7 +45,7 @@
 			<li><a href="<?= $cfg['sub_dir'] ?>/index.php?logout=1">Logout</a></li>
 <?php else : ?>
 			<li><a href="<?= $cfg['sub_dir'] ?>/index.php">Login</a></li>
-<?php endif; ?>
+<?php endif ?>
 		</ul>
 	<!-- Menu ends here. -->
 	</div>
@@ -93,19 +94,20 @@
 			while ($row = mysqli_fetch_assoc($mysql->result)) {
 				array_push($bookmarks, $row);
 			}
-			list_bookmarks($bookmarks,
-				false,
-				false,
-				$settings['show_bookmark_icon'],
-				true,
-				$settings['show_bookmark_description'],
-				$settings['show_column_date'],
-				false,
-				false,
-				false,
-				false,
-				true,
-				$user
+			list_bookmarks(
+				bookmarks: $bookmarks,
+				show_checkbox: false,
+				show_folder: false,
+				show_icon: $settings['show_bookmark_icon'],
+				show_link: true,
+				show_desc: $settings['show_bookmark_description'],
+				show_date: $settings['show_column_date'],
+				show_edit: false,
+				show_move: false,
+				show_delete: false,
+				show_share: false,
+				show_header: true,
+				user: $user
 			);
 		}
 		else {

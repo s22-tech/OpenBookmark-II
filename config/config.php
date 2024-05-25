@@ -4,24 +4,22 @@
 		die ('No direct access allowed.');
 	}
 
-	define('DOC_ROOT', dirname(__FILE__, 2));  // Includes the sub-directory.
+	define('DOC_ROOT', dirname(__DIR__, 1));  // Includes any sub-directory.
 
   ////////////////////////
   // Load Config File ////
   ////////////////////////
 	$cfg['user'] = get_current_user();
 	$cfg['home_path'] = exec('echo ~');
-	$cfg['projects_path'] = $cfg['home_path'].'/projects';
-	include_once($cfg['projects_path'].'/scripts/php/library/lib_functions_dtp.inc.php');
-	$cfg['db_user']  = functions_dtp::global__get_variable('sql_username_html');
-	$cfg['db_pass']  = functions_dtp::global__get_variable('sql_password_html');
-	$cfg['database'] = $cfg['user'].'_s22_obm';
+	$cfg['db_user']  = '';
+	$cfg['db_pass']  = '';
+	$cfg['database'] = '';
 	$cfg['hostspec'] = 'localhost';
-	$cfg['timezone'] = 'America/Los_Angeles';
+	$cfg['timezone'] = '';
 	date_default_timezone_set($cfg['timezone']);
   ////////////////////////
 
-	$cfg['domain'] = 's22.us';
+	$cfg['domain'] = '';
 	$cfg['debug'] = true;  // Turns debug logging on or off.
 
 	$cfg['sub_dir'] = '';

@@ -1,5 +1,6 @@
 <?php
-	require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
+
+	require_once(__DIR__ . '/header.php');
 
 	$secret       = 'dDWUc72sCcs20cXskcw';
 	$reg_register = set_post_bool_var('reg_register', false);
@@ -22,8 +23,8 @@
 			$username = false;
 		}
 
-		if (isset($_POST['reg_password1']) && $_POST['reg_password1'] != "" &&
-			  isset($_POST['reg_password2']) && $_POST['reg_password2'] != "") {
+		if (isset($_POST['reg_password1']) && $_POST['reg_password1'] != '' &&
+			  isset($_POST['reg_password2']) && $_POST['reg_password2'] != '') {
 			if (md5($_POST['reg_password1']) != md5 ($_POST['reg_password2'])) {
 				echo '<div style="color:red;">Passwords do not match.</div>'. PHP_EOL;
 				$password = false;

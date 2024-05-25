@@ -11,7 +11,7 @@
 	  // plain text when exporting bookmarks, so that browsers
 	  // can handle results better.  header.php is needed only to
 	  // display HTML.
-		require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
+		require_once(__DIR__ . '/header.php');
 		logged_in_only();
 
 		$folderid = set_get_folderid();

@@ -1,5 +1,5 @@
 <?php
-	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
+	require_once(dirname(__DIR__, 1) . '/header.php');
 	logged_in_only();
 
 	$bmlist           = set_get_num_list('bmlist');
@@ -17,7 +17,7 @@
 			$qbmlist = implode(',', $bmlist);
 			$query = sprintf("
 				SELECT `title`, `id`, `public`, `favicon` 
-				FROM `bookmark` 
+				FROM `obm_bookmarks` 
 				WHERE `id` IN (%s) AND `user`='%s' 
 				ORDER BY `title`",
 				$mysql->escape($qbmlist),
@@ -36,18 +36,19 @@
 				while ($row = mysqli_fetch_assoc($mysql->result)) {
 					array_push($bookmarks, $row);
 				}
-				list_bookmarks($bookmarks,
-					false,
-					false,
-					$settings['show_bookmark_icon'],
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					true,
-					false
+				list_bookmarks(
+					bookmarks: $bookmarks,
+					show_checkbox: false,
+					show_folder: false,
+					show_icon: $settings['show_bookmark_icon'],
+					show_link: false,
+					show_desc: false,
+					show_date: false,
+					show_edit: false,
+					show_move: false,
+					show_delete: false,
+					show_share: true,
+					show_header: false
 				);
 			?>
 
@@ -96,7 +97,8 @@
 		message('No Bookmark to edit.');
 	}
 	elseif ($post_title == '' || $post_url == '' || $refresh_icon) {
-		$query = sprintf("
+	  // Edit a single bookmark.
+		$select_query = sprintf("
 			SELECT `title`, `url`, `description`, `childof`, `id`, `favicon`, `public`
 			FROM `obm_bookmarks`
 			WHERE `id` = '%d'
@@ -106,12 +108,13 @@
 				$mysql->escape($username)
 		);
 		$icon = $new_fav = '';
-		if ($mysql->query($query)) {
+		if ($mysql->query($select_query)) {
 			if (mysqli_num_rows($mysql->result) != 1) {
 				message('No Bookmark to edit');
 			}
 			else {
 				$row = mysqli_fetch_object($mysql->result);
+				$saved_favicon = $row->favicon ?? '';
 				
 				require_once(DOC_ROOT . '/folders/folder.php');
 				$tree = new Folder();
@@ -150,8 +153,9 @@ debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__
 						if (!$mysql->query($update_query)) {
 							message($mysql->error);
 						}
-						if (!empty($row->favicon)) {  /* && is_file($row->favicon) */
-							@unlink(DOC_ROOT .'/icons/'. $row->favicon);
+						if (!empty($saved_favicon) && $saved_favicon !== $new_fav) {  /* && is_file($row->favicon) */
+						  // Only delete the existing icon if a new one's been saved.
+							@unlink(DOC_ROOT .'/icons/'. $saved_favicon);
 						}
 						$icon = '<img src="/icons/'. $new_fav .'" width="'.$cfg['icon_w'].'" height="'.$cfg['icon_h'].'" alt="">';
 					}

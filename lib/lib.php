@@ -459,7 +459,7 @@ function set_post_bool_var($varname, $default = true) {
 }
 
 
-function set_get_num_list($varname) {
+function set_get_num_list($varname) : array {
 	if (empty($_GET[$varname]) || $_GET[$varname] == '') {
 		$return = [];
 	}
@@ -574,7 +574,8 @@ function get_current_url($url) {
 
 function debug_logger($name, $variable, $file, $function, $newline=true, $time='') {
 	global $cfg;
-	if ($cfg(debug)) {
+	[$function] = explode('(', $function);
+	if ($cfg['debug']) {
 		if (is_array($variable)) {
 			$variable = print_r($variable, true);
 		}

@@ -7,7 +7,7 @@ if (basename ($_SERVER['SCRIPT_NAME']) == basename (__FILE__)) {
 	die ('No direct access allowed!');
 }
 
-require_once(realpath(dirname(__FILE__, 1)) . '/config/config.php');
+require_once(__DIR__ . '/header.php');
 include_once(DOC_ROOT . '/vendor/simplehtmldom/HtmlWeb.php');
 use simplehtmldom\HtmlWeb;
 
@@ -26,8 +26,8 @@ class Favicon
 		$this->url = $url;
 
 		if ($settings['show_bookmark_icon']) {
-debug_logger(name:'--------', variable:'-------------------------', file:'-----', function:'-----');
-debug_logger(name:'URL', variable:$url, newline:false, file:__FILE__, function:__FUNCTION__, time:true);
+debug_logger(name: '--------', variable: '-------------------------', file: '--------', function: '--------');
+debug_logger(name: 'URL', variable: $url, newline: false, file: __FILE__, function: __FUNCTION__, time: true);
 
 			if ($this->parsed_url = $this->return_parse_url($url)) {
 				if ($this->favicon_url = $this->get_favicon_url()) {
@@ -44,7 +44,7 @@ debug_logger(name:'favicon_url_path',     variable:$favicon_url_path, file:__FIL
 					[$fav_ext, $ident] = $this->identify_fav($tmp_file);
 debug_logger(name:'tmp_file', variable:$tmp_file, newline:false, file:__FILE__, function:__FUNCTION__);
 debug_logger(name:'fav_ext',  variable:$fav_ext,  newline:false, file:__FILE__, function:__FUNCTION__);
-debug_logger(name:'ident',    variable:$ident, file:__FILE__, function:__FUNCTION__);
+debug_logger(name:'ident-status', variable:$ident, file:__FILE__, function:__FUNCTION__);
 
 					if ($cfg['convert_favicons']) {
 						$this->favicon = $this->convert_favicon($tmp_file, $fav_ext, $ident);
@@ -76,45 +76,45 @@ debug_logger(name:'no conversion favicon', variable:$this->favicon, file:__FILE_
   ###
 	function convert_favicon($tmp_file, $fav_ext, $ident) : string {
 		global $cfg;
-		$tmp_ext  = pathinfo($tmp_file, PATHINFO_EXTENSION);
-		$tmp_file = str_replace('.'.$tmp_ext, '.'.$fav_ext, $tmp_file);  // Replace extension with correct one.
+		$tmp_ext = '.'.pathinfo($tmp_file, PATHINFO_EXTENSION);
+		$new_ext = '.png';
+		
+		if (file_exists($tmp_file)) {
+debug_logger(name:'file_exists - YES', variable:$tmp_file, newline:false, file:__FILE__, function:__FUNCTION__);
+		}
 
 debug_logger(name:'ident-status', variable:$ident, newline:false, file:__FILE__, function:__FUNCTION__);
 debug_logger(name:'tmp_file',     variable:$tmp_file, newline:false, file:__FILE__, function:__FUNCTION__);
 debug_logger(name:'fav_ext',      variable:$fav_ext, file:__FILE__, function:__FUNCTION__);
 
 		$new_name = $this->rename_favicon($this->url);
+		$new_name = str_replace($tmp_ext, '', $new_name);
 debug_logger(name:'new_name', variable:$new_name, newline:false, file:__FILE__, function:__FUNCTION__);
 
 		$save_path_name = DOC_ROOT . '/icons/'. $new_name;
 debug_logger(name:'save_path_name', variable:$save_path_name, newline:false, file:__FILE__, function:__FUNCTION__);
 
-// 		if (strtolower($fav_ext) === 'svg') {
-// 			$convert = "{$cfg['convert']} -background none -size {$cfg['icon_size']} $tmp_file $save_path_name";
-// 		}
-// 		else {
-// 			$convert = "{$cfg['convert']} $tmp_file -resize {$cfg['icon_size']}\> -unsharp 0x1 $save_path_name";
-// 		}
-
 		if ($ident && $fav_ext !== 'svg') {
-			$convert = "{$cfg['convert']} $tmp_file -resize {$cfg['icon_size']}\> -unsharp 0x1 $save_path_name";
+			$convert = "{$cfg['convert']} $tmp_file -resize {$cfg['icon_size']}\> -unsharp 0x1 {$save_path_name}{$new_ext}";
 debug_logger(name:'convert-cmd', variable:$convert, newline:false, file:__FILE__, function:__FUNCTION__);
 
-		  // Convert image to .png, and resize to $cfg['icon_size'] if original is larger.
+		  // Convert image to .png, and resize to $cfg['icon_size'] if original is different.
 		  ## https://legacy.imagemagick.org/Usage/resize/
 			system("$convert", $status);
-debug_logger(name:'SUCCESS--conversion status', variable:$status, file:__FILE__, function:__FUNCTION__);
+			debug_logger(name:'SUCCESS--conversion status', variable:$status, file:__FILE__, function:__FUNCTION__);
 			if (file_exists($tmp_file)) {
+				debug_logger(name:'tmp_file_exists - YES', variable:'', newline:false, file:__FILE__, function:__FUNCTION__);
 				unlink($tmp_file);
 			}
 		}
 		else {
+			$rename = rename($tmp_file, $save_path_name . $tmp_ext);  // Move & rename the file.
 debug_logger(name:'MOVED--no conversion', variable:$this->icon_name, newline:false, file:__FILE__, function:__FUNCTION__);
-			$rename = rename($tmp_file, $save_path_name);  // Move the file.
-debug_logger(name:'tmp_file', variable:$tmp_file, newline:false, file:__FILE__, function:__FUNCTION__);
-debug_logger(name:'rename-move', variable:$rename, file:__FILE__, function:__FUNCTION__);
+debug_logger(name:'tmp_file',       variable:$tmp_file, newline:false, file:__FILE__, function:__FUNCTION__);
+debug_logger(name:'save_path_name', variable:$save_path_name . $new_ext, newline:false, file:__FILE__, function:__FUNCTION__);
+debug_logger(name:'rename-move',    variable:$rename, file:__FILE__, function:__FUNCTION__);
 		}
-		return basename($save_path_name);
+		return basename($save_path_name) . $new_ext;
 	}
 
 
@@ -124,20 +124,35 @@ debug_logger(name:'rename-move', variable:$rename, file:__FILE__, function:__FUN
   ///////////////////////////////
 	function download_favicon_image() {
 		global $cfg;
+		$save_path_name = DOC_ROOT . '/tmp/'. $this->temp_icon_name;
+debug_logger(name: 'temp_icon_name', variable: $save_path_name, newline:false, file: __FILE__, function: __FUNCTION__);
+
+		$open_file_in_binary = fopen($save_path_name, 'wb');
 		$options = [
 			CURLOPT_URL            => $this->favicon_url,
 			CURLOPT_USERAGENT      => $cfg['user_agent'],
 			CURLOPT_RETURNTRANSFER => 1,
 			CURLOPT_CONNECTTIMEOUT => 2,
 			CURLOPT_TIMEOUT        => 10,
+			CURLOPT_FILE           => $open_file_in_binary,
+			CURLOPT_HEADER         => 0,
+		  /* Lets you use this script when there is redirect on the server. */
+			CURLOPT_FOLLOWLOCATION => true,
+		  /* Auto detect encoding for the response | identity deflation and gzip */
+			CURLOPT_ENCODING       => '',
 		];
 		$ch = curl_init();
 		curl_setopt_array($ch, $options);
 		$response = curl_exec($ch);
 		curl_close($ch);
 
+	  // Close the file pointer.
+		fclose($open_file_in_binary);
+
 		if (admin_only()) {
-			$bytes = file_put_contents(DOC_ROOT . '/tmp/'. $this->temp_icon_name, $response);
+// 			$bytes = file_put_contents($save_path_name, $response);
+debug_logger(name: 'response', variable: $response, newline:false, file: __FILE__, function: __FUNCTION__);
+// debug_logger(name: 'bytes saved', variable: $bytes, file: __FILE__, function: __FUNCTION__);
 		}
 
 		return true;
@@ -156,7 +171,7 @@ debug_logger(name:'host_url', variable:$host_url, newline:false, file:__FILE__, 
 		$dom = new HtmlWeb();
 		$html = $dom->load($host_url);
 
-debug_logger(name:'html', variable:$html, newline:false, file:__FILE__, function:__FUNCTION__);
+debug_logger(name:'html', variable:$html, file:__FILE__, function:__FUNCTION__);
 
 		if (empty($html)) {
 			echo '<span style="color:red">&bull; favicon.php &mdash; $html is blank.<br></span>';
@@ -243,9 +258,11 @@ debug_logger(name:'••• e->rel', variable:$e->rel, newline:false, file:__FI
 		$host_name = $parsed['host'];
 		$host_name = str_replace('.', '-', $host_name);
 		$parts = explode('-', $host_name);
+debug_logger(name:'•••parts', variable:print_r($parts, true), file:__FILE__, function:__FUNCTION__);
 		$last = array_pop($parts);
-		$parts = [implode('-', $parts), $last];  // Get domain w/o the extension.
+		$parts = [implode('-', $parts), $last];  // Get domain w/o the domain extension.
 		$host_name = $parts[0];
+debug_logger(name:'•••host_name', variable:$host_name, file:__FILE__, function:__FUNCTION__);
 		$host_name = str_replace('www-', '', $host_name);
 		$ext = pathinfo($this->favicon_url, PATHINFO_EXTENSION);
 		$ext = strlen($ext) < 3 ? 'png' : $ext;
@@ -265,26 +282,28 @@ debug_logger(name:'identify tmp_file', variable:$tmp_file, file:__FILE__, functi
 			$file_ext = strtolower($idents[1]);
 			$file_ext = ($file_ext === 'jpeg') ? 'jpg' : $file_ext;
 		
-			if (count($idents) > 1 && !str_starts_with($idents[0], 'identify')) {
-				$file_to_convert = $idents[0];
-			}
-			else {
+			if (count($idents) > 1 && str_starts_with($idents[0], 'identify')) {
 				$file_to_convert = $tmp_file;
 			}
+			else {
+				$file_to_convert = $idents[0];
+			}
 		
-// 			if ($file_ext !== $tmp_ext) {
+			if ($file_ext !== $tmp_ext) {
 				$info = pathinfo($file_to_convert);
+				debug_logger(name:'identify info',   variable:$info, newline:false, file:__FILE__, function:__FUNCTION__);
+			}
 				return [$file_ext, true];
-// 			}
 		}
 		else {
+debug_logger(name:'identify return',   variable:'', newline:false, file:__FILE__, function:__FUNCTION__);
 			return ['png', false];
 		}
 	}
 	
 	
 	function get_current_url($url) {
-	  // If an old URL gets redirected to a new one.
+	  // If a saved URL changes and gets redirected to a new one...
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -304,3 +323,7 @@ prints out:
 error_log('• '. basename($file) .':'.$function.'()->$'. $name .': '. $variable . PHP_EOL, 3, $cfg['error_log']);
 e.g.:
 • favicon.php:__construct()->$__construct1: https://www.invizbox.com/products/invizbox-2-pro/#select-plan
+
+NOTES:
+• If the site's favicon is an svg image, DO NOT convert it.  It looks terrible as a png.
+• Don't convert icons to jpg.  JPEG doesn't offer transparency, so there might be black banding if the image isn't square.

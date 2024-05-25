@@ -1,6 +1,7 @@
 <?php
+
+require_once(__DIR__ . '/config/config.php');
 // require_once(DOC_ROOT . '/lib/webstart.php');
-require_once(realpath(dirname(__FILE__, 1)) . '/config/config.php');
 
 require_once(DOC_ROOT . '/lib/mysql.php');
 $mysql = new Mysql();

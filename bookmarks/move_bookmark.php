@@ -1,5 +1,5 @@
 <?php
-	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
+	require_once(dirname(__DIR__, 1) . '/header.php');
 	logged_in_only();
 
 	$bmlist = set_post_num_list('bmlist');

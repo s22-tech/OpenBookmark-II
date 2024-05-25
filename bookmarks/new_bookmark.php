@@ -3,7 +3,7 @@
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
 
-	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
+	require_once(dirname(__DIR__, 1) . '/header.php');
 	global $conn;
 
 	$get_title = set_title();

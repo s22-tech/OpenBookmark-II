@@ -11,11 +11,11 @@
 	}
 	*/
 // 	require_once(DOC_ROOT .'/lib/webstart.php');
-	if (!is_file(realpath(dirname(__FILE__, 1)) . '/config/config.php')) {
+	if (!is_file(__DIR__ . '/config/config.php')) {
 		die ('You need to <a href="/install.php">install</a> OpenBookmark II.');
 	}
 	else {
-		require_once(realpath(dirname(__FILE__, 1)) . '/config/config.php');
+		require_once(__DIR__ . '/config/config.php');
 	}
 	require_once(DOC_ROOT .'/lib/mysql.php');
 	$mysql = new mysql;

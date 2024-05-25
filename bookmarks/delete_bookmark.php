@@ -4,7 +4,7 @@
 	ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
 	ini_set('error_append_string', '</pre>');
 	
-	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
+	require_once(dirname(__DIR__, 1) . '/header.php');
 	logged_in_only();
 
 	echo <<<CSS
@@ -64,18 +64,19 @@
 			while ($row = mysqli_fetch_assoc($mysql->result)) {
 				array_push($bookmarks, $row);
 			}
-			list_bookmarks($bookmarks,
-				false,
-				false,
-				$settings['show_bookmark_icon'],
-				false,
-				false,
-				false,
-				false,
-				false,
-				false,
-				false,
-				false
+			list_bookmarks(
+				bookmarks: $bookmarks,
+				show_checkbox: false,
+				show_folder: false,
+				show_icon: $settings['show_bookmark_icon'],
+				show_link: false,
+				show_desc: false,
+				show_date: false,
+				show_edit: false,
+				show_move: false,
+				show_delete: false,
+				show_share: false,
+				show_header: false
 			);
 
 			$bm_string = '';
@@ -85,9 +86,15 @@
 ?>
 
 	</div>
-	
-	<div style="float:right">
-	<a href="<?= $cfg['sub_dir'] ?>/bookmarks/delete_bookmark.inc.php?<?= $query_string . $bm_string; ?>" class="button"> Delete Me </a>
+
+	<div>
+		<div style="float:left">
+		<input type="button" value="Cancel" onclick="window.close()">
+		</div>
+
+		<div style="float:right">
+		<a href="<?= $cfg['sub_dir'] ?>/bookmarks/delete_bookmark.inc.php?<?= $query_string . $bm_string; ?>" class="button"> Delete Me </a>
+		</div>
 	</div>
 	<br>
 	<br>
