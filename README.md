@@ -3,7 +3,7 @@ OBM II is a rewrite of Brendan LaMarche's fantastic OpenBookmark script, to brin
 
 ## Features
 <ul>
-	<li>Handles a wide array of favicon types, including base64!</li>
+	<li>Handles a wide array of favicon types, including SVG and base64!</li>
 	<li>Saves a single favicon per domain/sub-domain to keep file counts at a minimum.</li>
 </ul>
 
