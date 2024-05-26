@@ -1,9 +1,6 @@
 <?php
 
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
-
-	require_once(dirname(__DIR__, 1) . '/header.php');
+	require_once(realpath(dirname(__DIR__, 1) . '/header.php'));
 	global $conn;
 
 	$get_title = set_title();
@@ -17,7 +14,7 @@
 	$post_childof		= set_post_childof();
 	$post_public		= set_post_bool_var('public', false);
 
-	require_once(DOC_ROOT . '/folders/folder.php');
+	require_once(realpath(DOC_ROOT . '/folders/folder.php'));
 	$tree = new Folder();
 	$query_string = '?expand=' . implode(',', $tree->get_path_to_root($post_childof)) . '&amp;folderid=' . $post_childof;
 
@@ -32,7 +29,7 @@
 		if ($post_url != '') {
 			$url = $post_url;
 		}
-		else if ($get_url != '') {
+		elseif ($get_url != '') {
 			$url = $get_url;
 		}
 		else {
@@ -77,15 +74,16 @@
 <?php
 	}
 	else {
-		$query = sprintf ("
-			INSERT INTO `obm_bookmarks` (`user`, `title`, `url`, `description`, `childof`, `public`)
-			VALUES ('%s', '%s', '%s', '%s', '%d', '%d')",
+		$query = sprintf("
+			INSERT INTO `obm_bookmarks` (`user`, `title`, `url`, `description`, `childof`, `public`, `date_created`)
+			VALUES ('%s', '%s', '%s', '%s', '%d', '%d', '%s')",
 				$mysql->escape($username),
 				$mysql->escape($post_title),
 				$mysql->escape($post_url),
 				$mysql->escape($post_description),
 				$mysql->escape($post_childof),
-				$mysql->escape($post_public)
+				$mysql->escape($post_public),
+				date('Y-m-d H:i:s')
 		);
 		if ($mysql->query($query)) {
 			echo 'Bookmark successfully created.<br>' . PHP_EOL;
@@ -108,7 +106,7 @@ debug_logger(variable:$post_url, name:'post_url', file:__FILE__, function:__FUNC
 // since the favicon is not as important.
 ///////////////////////////
 		if ($settings['show_bookmark_icon']) {
-			require_once(DOC_ROOT . '/favicon.php');
+			require_once(realpath(DOC_ROOT . '/favicon.php'));
 			$favicon = new Favicon($post_url);
 debug_logger(variable:print_r($favicon, true), name:'favicon-object', file:__FILE__, function:__FUNCTION__);
 
@@ -148,5 +146,5 @@ debug_logger(variable:debug_backtrace(), name:'debug_backtrace()', file:__FILE__
 			echo '<script> self.close(); </script>';
 		}
 	}
-	require_once(DOC_ROOT . '/footer.php');
+	require_once(realpath(DOC_ROOT . '/footer.php'));
 ?>
