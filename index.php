@@ -1,12 +1,6 @@
 <?php
 
-// echo $_SERVER['DOCUMENT_ROOT'] .'/'. basename(__DIR__) . '<br>';
-
-	ini_set('display_errors', 1);
-	ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
-	ini_set('error_append_string', '</pre>');
-
-	require_once(realpath(dirname(__FILE__, 1)) . '/header.php');
+	require_once(realpath(__DIR__ . '/header.php'));
 	logged_in_only();
 	
 	if (isset($_GET['logout']) && $_GET['logout'] == 1) $auth->logout();
@@ -180,7 +174,7 @@
 				</div>
 
 <?php
-	require_once(DOC_ROOT . '/lib/boolean_search.php');
+	require_once(realpath(DOC_ROOT . '/lib/boolean_search.php'));
 /*
 	$query from boolean_search.php is not being used here.  Why???
 */
@@ -207,20 +201,20 @@
 		}
 
 		if (count($bookmarks) > 0) {
-			require_once(DOC_ROOT . '/bookmarks/bookmarks.php');
+			require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
 			list_bookmarks(
-				bookmarks:$bookmarks,
-				show_checkbox:true,
-				show_folder:true,
-				show_icon:$settings['show_bookmark_icon'],
-				show_link:true,
-				show_desc:$settings['show_bookmark_description'],
-				show_date:$settings['show_column_date'],
-				show_edit:$settings['show_column_edit'],
-				show_move:$settings['show_column_move'],
-				show_delete:$settings['show_column_delete'],
-				show_share:$settings['show_public'],
-				show_header:false
+				bookmarks: $bookmarks,
+				show_checkbox: true,
+				show_folder: true,
+				show_icon: $settings['show_bookmark_icon'],
+				show_link: true,
+				show_desc: $settings['show_bookmark_description'],
+				show_date: $settings['show_column_date'],
+				show_edit: $settings['show_column_edit'],
+				show_move: $settings['show_column_move'],
+				show_delete: $settings['show_column_delete'],
+				show_share: $settings['show_public'],
+				show_header: false
 			);
 		}
 		else {
@@ -241,7 +235,7 @@
 	<div id="folders" class="folders mnu<?php echo (is_mobile_browser() ? ' mobile' : ''); ?>" style="width: <?php echo ($settings['column_width_folder'] == 0) ? 'auto' : $settings['column_width_folder']; ?>; height: <?php echo ($settings['table_height'] == 0) ? 'auto' : $settings['table_height']; ?>;">
 
 <?php
-		require_once(DOC_ROOT . '/folders/folder.php');
+		require_once(realpath(DOC_ROOT . '/folders/folder.php'));
 		$tree = new Folder($username);
 		$tree->make_tree(0);
 		$tree->print_tree();
@@ -259,7 +253,7 @@
 	<div class="bookmarks" style="height: <?php echo ($settings['table_height'] == 0) ? 'auto' : $settings['table_height']; ?>;">
 
 <?php
-	require_once(DOC_ROOT . '/bookmarks/bookmarks.php');
+	require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
 	$query = sprintf("
 		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(date) AS timestamp, `id`, `favicon`, `public`
 		FROM `obm_bookmarks`
@@ -310,7 +304,7 @@
 
 <?php
 	print_footer();
-	require_once(DOC_ROOT . '/footer.php');
+	require_once(realpath(DOC_ROOT . '/footer.php'));
 
 	__halt_compiler();
 

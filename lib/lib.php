@@ -512,11 +512,11 @@ function check_for_new_version() {
 
 
 function print_footer() {
-	echo '<div id="footer">';
+	echo '<div id="footer" style="background-color:#f0f0f0">';
 	object_count();
 	echo '<br>' . PHP_EOL;
 
-	echo 'OBM v' . get_local_version();
+	echo '&nbsp; OBM v' . get_local_version();
 	echo '&nbsp; PHP v'. phpversion();
 	echo '&nbsp; &copy; <a class="footer" href="https://github.com/s22-tech/OpenBookmark-II">s22 Tech</a>';
 	echo "</div>\n";
@@ -536,7 +536,7 @@ function object_count() {
 	if ($mysql->query($query)) {
 		if (mysqli_num_rows($mysql->result) == '1') {
 			$row = mysqli_fetch_object($mysql->result);
-			$return = 'You have '. number_format($row->bookmarks) .' bookmarks in '. number_format($row->folders) .' folders';
+			$return = '&nbsp; You have '. number_format($row->bookmarks) .' bookmarks in '. number_format($row->folders) .' folders &nbsp; &nbsp; &nbsp; &nbsp;';
 		}
 	}
 	else {

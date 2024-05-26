@@ -81,7 +81,7 @@
 			'simple_tree_mode' => false,
 			'private_mode' => true,
 			'theme' => ''
-			];
+		];
 		return $settings;
 	}
 

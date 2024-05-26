@@ -20,7 +20,7 @@
   ////////////////////////
 
 	$cfg['domain'] = '';
-	$cfg['debug'] = true;  // Turns debug logging on or off.
+	$cfg['debug'] = false;  // Turns debug logging on or off.
 
 	$cfg['sub_dir'] = '';
 	if (sub_dir_bool_check()) {
