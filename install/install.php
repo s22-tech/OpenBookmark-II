@@ -1,6 +1,5 @@
 <?php
-	//require_once($_SERVER['DOCUMENT_ROOT'] .'/'. basename(__DIR__) . '/lib/webstart.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] .'/'. basename(__DIR__) . '/lib/lib.php');
+	require_once(realpath(dirname(__DIR__, 1) . '/header.php'));
 ?>
 
 <!DOCTYPE html>
@@ -13,21 +12,21 @@
 
 <?php
 
-	$mysql_hostname = set_post_string_var ('mysql_hostname', 'localhost');
-	$mysql_db_name = set_post_string_var ('mysql_db_name', 'bookmarks');
-	$mysql_db_username = set_post_string_var ('mysql_db_username', 'bookmarkmgr');
-	$mysql_db_password = set_post_string_var ('mysql_db_password');
-	$mysql_db_create = set_post_bool_var ('mysql_db_create', false);
-	$mysql_db_su_username = set_post_string_var ('mysql_db_su_username', 'root');
-	$mysql_db_su_password = set_post_string_var ('mysql_db_su_password');
+	$mysql_hostname = set_post_string_var('mysql_hostname', 'localhost');
+	$mysql_db_name = set_post_string_var('mysql_db_name', 'bookmarks');
+	$mysql_db_username = set_post_string_var('mysql_db_username', 'bookmarkmgr');
+	$mysql_db_password = set_post_string_var('mysql_db_password');
+	$mysql_db_create = set_post_bool_var('mysql_db_create', false);
+	$mysql_db_su_username = set_post_string_var('mysql_db_su_username', 'root');
+	$mysql_db_su_password = set_post_string_var('mysql_db_su_password');
 
-	$cookie_name = set_post_string_var ('cookie_name', 'ob_cookie');
-	$cookie_domain = set_post_string_var ('cookie_domain', '');
-	$cookie_path = set_post_string_var ('cookie_path', '/');
-	$cookie_seed = set_post_string_var ('cookie_seed', random_string ());
-	$cookie_expire = set_post_string_var ('cookie_expire', '31536000');
+	$cookie_name = set_post_string_var('cookie_name', 'ob_cookie');
+	$cookie_domain = set_post_string_var('cookie_domain', $_SERVER['SERVER_NAME']);
+	$cookie_path = set_post_string_var('cookie_path', $cfg['sub_dir'].'/');
+	$cookie_seed = set_post_string_var('cookie_seed', random_string ());
+	$cookie_expire = set_post_string_var('cookie_expire', '31536000');
 
-	$submit = set_post_bool_var ('submit', false);
+	$submit = set_post_bool_var('submit', false);
 
 	$admin_message = '';
 
@@ -202,7 +201,7 @@
 
 	<h3>Database connection:</h3>
 
-	<form method="POST" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
+	<form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
 	<table>
 		<tr>
 			<td>Database hostname:</td>
@@ -235,13 +234,13 @@
 		</tr>
 
 		<tr>
-			<td>using Superuser account:</td>
+			<td>User name:</td>
 			<td><input type="text" name="mysql_db_su_username" value="<?php echo $mysql_db_su_username; ?>"></td>
 			<td></td>
 		</tr>
 
 		<tr>
-			<td>Superuser password:</td>
+			<td>User password:</td>
 			<td><input type="password" name="mysql_db_su_password" value=""></td>
 			<td></td>
 		</tr>
@@ -273,7 +272,7 @@
 		<tr>
 			<td>Cookie seed:</td>
 			<td><input type="text" name="cookie_seed" value="<?php echo $cookie_seed; ?>"></td>
-			<td>Just some random junk.</td>
+			<td>Just a long, random string.</td>
 		</tr>
 
 		<tr>
@@ -298,7 +297,7 @@
 			if (!mysql_connect($mysql_hostname, $mysql_db_su_username, $mysql_db_su_password)) {
 				html_db();
 				print_msg(mysql_error(), 'error');
-				require_once($_SERVER['DOCUMENT_ROOT'] .'/'. basename(__DIR__) . '/footer.php');
+				require_once(realpath(dirname(__DIR__, 1) . '/footer.php'));
 			}
 			else {
 				if (mysql_query("CREATE DATABASE $mysql_db_name")) {
@@ -307,7 +306,7 @@
 				else {
 					html_db();
 					print_msg(mysql_error(), 'error');
-					require_once($_SERVER['DOCUMENT_ROOT'] .'/'. basename(__DIR__) . '/footer.php');
+					require_once(realpath(dirname(__DIR__, 1) . '/footer.php'));
 				}
 
 				if (mysql_query("GRANT ALL PRIVILEGES ON $mysql_db_name.* TO '$mysql_db_username'@'$mysql_hostname' IDENTIFIED BY '$mysql_db_password'")) {
@@ -316,7 +315,7 @@
 				else {
 					html_db();
 					print_msg(mysql_error(), 'error');
-					require_once($_SERVER['DOCUMENT_ROOT'] .'/'. basename(__DIR__) . '/footer.php');
+					require_once(realpath(dirname(__DIR__, 1) . '/footer.php'));
 				}
 			}
 		}
@@ -351,7 +350,7 @@
 					array_push($tables, $row[0]);
 				}
 
-				# The bookmark table.
+			  // The bookmark table.
 				if (!in_array('bookmark', $tables)) {
 					if (create_table_bookmark()) {
 						print_msg('Table bookmark created', 'success');
@@ -363,14 +362,14 @@
 				else {
 					print_msg("Table bookmark exists, checking for version:", 'notice');
 
-					# Check for favicon support.
+				  // Check for favicon support.
 					upgrade_table('obm_bookmarks', 'favicon', "ALTER TABLE `obm_bookmarks` ADD COLUMN favicon varchar(200)");
 
-					# Check for public field in table.
+				  // Check for public field in table.
 					upgrade_table('obm_bookmarks', "public", "ALTER TABLE `obm_bookmarks` ADD COLUMN public ENUM('0','1') DEFAULT 0 NOT NULL");
 				}
 
-				# The folder table.
+			  // The folder table.
 				if (!in_array('folder', $tables)) {
 					if (create_table_folder()) {
 						print_msg('Table folder created', 'success');
@@ -382,13 +381,13 @@
 				else {
 					print_msg("Table folder exists, checking for version:", 'notice');
 
-					# Check for public field in table.
+				  // Check for public field in table.
 					upgrade_table('obm_folders', 'public', "ALTER TABLE `obm_folders` ADD COLUMN public ENUM('0','1') DEFAULT 0 NOT NULL");
 				}
 
 
 
-				# the user table
+			  // The user table.
 				if (!in_array("user", $tables)) {
 					if (create_table_user ()) {
 						print_msg('Table user created', 'success');
@@ -404,16 +403,16 @@
 				else {
 					print_msg('Table user exists, checking for version:', 'notice');
 
-					# Check for date_format field in table.
+				  // Check for date_format field in table.
 					upgrade_table('obm_users', 'date_format', "ALTER TABLE `obm_users` ADD COLUMN date_format SMALLINT(6) NOT NULL DEFAULT '0' AFTER show_column_date");
 
-					# Check for show_public field in table.
+				  // Check for show_public field in table.
 					upgrade_table('obm_users', 'show_public', "ALTER TABLE `obm_users` ADD COLUMN show_public ENUM('0','1') DEFAULT 1 NOT NULL");
 
-					# Check for admin field in table.
+				  // Check for admin field in table.
 					upgrade_table('obm_users', 'admin', "ALTER TABLE `obm_users` ADD COLUMN admin ENUM('0','1') DEFAULT 0 NOT NULL AFTER password");
 
-					# Check for theme field in table.
+				  // Check for theme field in table.
 					upgrade_table('obm_users', 'theme', "ALTER TABLE `obm_users` ADD COLUMN theme varchar(5) DEFAULT '' NOT NULL AFTER password");
 				}
 
@@ -524,5 +523,5 @@
 		html_db();
 	}
 
-	require_once($_SERVER['DOCUMENT_ROOT'] .'/'. basename(__DIR__) . '/footer.php');
+	require_once(realpath(dirname(__DIR__, 1) . '/footer.php'));
 ?>
