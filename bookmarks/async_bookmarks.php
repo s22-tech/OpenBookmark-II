@@ -5,10 +5,10 @@
 
 	$order = set_get_order();
 
-	require_once(DOC_ROOT .'/bookmarks/bookmarks.php');
+	require_once(realpath(DOC_ROOT .'/bookmarks/bookmarks.php'));
 	
 	$query = sprintf("
-		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(`date`) AS timestamp, `id`, `favicon`, `public`
+		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(`date_created`) AS timestamp, `id`, `favicon`, `public`
 		FROM `obm_bookmarks`
 		WHERE `user` = '%s'
 		AND `childof` = '%d'

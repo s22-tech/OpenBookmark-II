@@ -11,8 +11,8 @@
 	}
 	*/
 
-	if (!is_file(__DIR__ . '/config/config.php')) {
-		die ('You need to <a href="/install.php">install</a> OpenBookmark II.');
+	if (!is_file(realpath(__DIR__ . '/config/config.php'))) {
+		die ('You need to <a href="/install/install.php">install</a> OpenBookmark II.');
 	}
 	else {
 		require_once(realpath(__DIR__ . '/config/config.php'));
@@ -55,9 +55,9 @@
 
 <?php
 
-	//if (is_file (DOC_ROOT . "install.php")) {
-		//message ('Remove "install.php" before using OpenBookmark.');
-	//}
+// 	if (is_file(realpath(DOC_ROOT . '/install/install.php'))) {
+// 		message ('Remove "/install/install.php" before using OpenBookmark.');
+// 	}
 
 	if ($display_login_form) {
 		$auth->display_login_form ();

@@ -1,5 +1,5 @@
 <?php
-	require_once(dirname(__DIR__, 1) . '/header.php');
+	require_once(realpath(dirname(__DIR__, 1) . '/header.php'));
 	logged_in_only();
 
 	$bmlist           = set_get_num_list('bmlist');
@@ -24,7 +24,7 @@
 				$mysql->escape($username)
 			);
 			if ($mysql->query($query)) {
-				require_once(DOC_ROOT . '/bookmarks/bookmarks.php');
+				require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
 				$query_string = '?bmlist=' . implode('_"', $bmlist);
 ?>
 
@@ -116,7 +116,7 @@
 				$row = mysqli_fetch_object($mysql->result);
 				$saved_favicon = $row->favicon ?? '';
 				
-				require_once(DOC_ROOT . '/folders/folder.php');
+				require_once(realpath(DOC_ROOT . '/folders/folder.php'));
 				$tree = new Folder();
 				$query_string = '?expand=' . implode(',', $tree->get_path_to_root($row->childof)) . '&amp;folderid=' . $row->childof;
 				$path = $tree->print_path($row->childof);
@@ -136,7 +136,7 @@
 					else {
 						$used_url = $row->url;
 					}
-					require_once(DOC_ROOT . '/favicon.php');
+					require_once(realpath(DOC_ROOT . '/favicon.php'));
 					$favicon = new Favicon($used_url);
 					$new_fav = $favicon->favicon;
 debug_logger(name:'favicon->favicon >>', variable:$new_fav, file:__FILE__, function:__FUNCTION__);
@@ -153,9 +153,12 @@ debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__
 						if (!$mysql->query($update_query)) {
 							message($mysql->error);
 						}
-						if (!empty($saved_favicon) && $saved_favicon !== $new_fav) {  /* && is_file($row->favicon) */
+						if (!empty($saved_favicon) 
+							&& is_file(DOC_ROOT .'/icons/'. $saved_favicon) 
+							&& $saved_favicon !== $new_fav
+						) {
 						  // Only delete the existing icon if a new one's been saved.
-							@unlink(DOC_ROOT .'/icons/'. $saved_favicon);
+							unlink(DOC_ROOT .'/icons/'. $saved_favicon);
 						}
 						$icon = '<img src="/icons/'. $new_fav .'" width="'.$cfg['icon_w'].'" height="'.$cfg['icon_h'].'" alt="">';
 					}
@@ -163,8 +166,8 @@ debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__
 						message('&bull; edit_bookmark.php &mdash; no favicon was retrieved.');
 					}
 				}
-				elseif ($row->favicon) {  /*  && is_file($row->favicon) */
-					$icon = '<img src="/icons/' . $row->favicon . '" width="'. $cfg['icon_w'] .'" height="'. $cfg['icon_h'] .'" alt="">';
+				elseif (!empty($saved_favicon) && is_file(DOC_ROOT .'/icons/'. $saved_favicon) ) {
+					$icon = '<img src="/icons/' . $saved_favicon . '" width="'. $cfg['icon_w'] .'" height="'. $cfg['icon_h'] .'" alt="">';
 				}
 			}
 		}
@@ -180,8 +183,8 @@ debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__
 	
 <br> 
 <?php 
-	if ($row->favicon) {
-		echo "<span style=\"font-size:0.9em\">Saved favicon: $row->favicon</span>";
+	if ($saved_favicon) {
+		echo "<span style=\"font-size:0.9em\">Saved favicon: $saved_favicon</span>";
 	}
 	elseif (strlen($new_fav) > 22) {
 		echo strlen($new_fav) . " <span style=\"font-size:0.9em\">New favicon: '$new_fav'</span>";
@@ -237,5 +240,5 @@ debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__
 		}
 	}
 
-	require_once(DOC_ROOT . '/footer.php');
+	require_once(realpath(DOC_ROOT . '/footer.php'));
 ?>

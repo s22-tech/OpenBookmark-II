@@ -1,16 +1,16 @@
 <?php
 
-require_once(__DIR__ . '/config/config.php');
-// require_once(DOC_ROOT . '/lib/webstart.php');
+require_once(realpath(__DIR__ . '/config/config.php'));
+// require_once(realpath(DOC_ROOT . '/lib/webstart.php'));
 
-require_once(DOC_ROOT . '/lib/mysql.php');
+require_once(realpath(DOC_ROOT . '/lib/mysql.php'));
 $mysql = new Mysql();
 
-require_once(DOC_ROOT .'/lib/auth.php');
+require_once(realpath(DOC_ROOT .'/lib/auth.php'));
 $auth = new Auth();
 
-require_once(DOC_ROOT .'/lib/lib.php');
-require_once(DOC_ROOT .'/lib/login.php');
+require_once(realpath(DOC_ROOT .'/lib/lib.php'));
+require_once(realpath(DOC_ROOT .'/lib/login.php'));
 
 class sidebar 
 {
@@ -22,7 +22,7 @@ class sidebar
 		global $username, $mysql;
 
 	  // Collect the folder data.
-		require_once(DOC_ROOT .'/folders/folder.php');
+		require_once(realpath(DOC_ROOT .'/folders/folder.php'));
 		$this->tree = new Folder();
 		$this->tree->folders[0] = ['id' => 0, 'childof' => null, 'name' => $GLOBALS['settings']['root_folder_name']];
 
@@ -167,5 +167,5 @@ class sidebar
 	$sidebar->make_tree(0);
 	echo '</ul>'. PHP_EOL;
 
-	require_once(DOC_ROOT .'/footer.php');
+	require_once(realpath(DOC_ROOT .'/footer.php'));
 ?>

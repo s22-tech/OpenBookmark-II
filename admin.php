@@ -1,6 +1,6 @@
 <?php
 	
-	require_once(__DIR__ . '/header.php');
+	require_once(realpath(__DIR__ . '/header.php'));
 	logged_in_only();
 
 	$delete        = set_post_string_var('delete');
@@ -233,5 +233,5 @@
 
 <?php
 	print_footer();
-	require_once(DOC_ROOT . '/footer.php');
+	require_once(realpath(DOC_ROOT . '/footer.php'));
 ?>

@@ -11,7 +11,8 @@ CREATE TABLE `obm_bookmarks` (
   `public` enum('0','1') NOT NULL DEFAULT '0',
   `last_visit` datetime DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date_created` datetime DEFAULT NULL,
+  `notes` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `title` (`title`,`url`,`description`)
 ) ENGINE=Aria AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=1;

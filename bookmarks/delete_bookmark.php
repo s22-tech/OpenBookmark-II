@@ -1,10 +1,6 @@
 <?php
 
-	ini_set('display_errors', 1);
-	ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
-	ini_set('error_append_string', '</pre>');
-	
-	require_once(dirname(__DIR__, 1) . '/header.php');
+	require_once(realpath(dirname(__DIR__, 1) . '/header.php'));
 	logged_in_only();
 
 	echo <<<CSS
@@ -37,6 +33,7 @@
 	CSS;
 
 	$bmlist = set_get_num_list('bmlist');
+echo '<pre>'; print_r($bmlist); echo '</pre>';
 
 	if (count($bmlist) == 0) {
 		echo 'No Bookmarks selected.';
@@ -52,7 +49,7 @@
 				$mysql->escape($username)
 		);
 		if ($mysql->query($query)) {
-			require_once(DOC_ROOT . '/bookmarks/bookmarks.php');
+			require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
 			$query_string = 'bmlist=' . implode(',', $bmlist);
 ?>
 
@@ -83,6 +80,7 @@
 			foreach ($bookmarks as $bookmark) {
 				$bm_string .= '&bookmarks[]='.$bookmark['favicon'];
 			}
+echo '$bm_string: '. $bm_string . '<br>';
 ?>
 
 	</div>
@@ -100,13 +98,16 @@
 	<br>
 <?php
 
-// debug_logger(name: 'bookmarks-2', variable: $bookmarks, file: __FILE__, function: __FUNCTION__);
+debug_logger(name: 'bookmarks-2', variable: $bookmarks, file: __FILE__, function: __FUNCTION__);
 
 		}
 		else {
 			message($mysql->error);
 		}
 	}
+// echo 'sub_dir: '. $cfg['sub_dir'] . '<br>';
+// echo $_SERVER['DOCUMENT_ROOT'] . '<br>';
+// echo sub_dir_bool_check() . '<br>';
 
-	require_once(DOC_ROOT . '/footer.php');
+	require_once(realpath(DOC_ROOT . '/footer.php'));
 ?>

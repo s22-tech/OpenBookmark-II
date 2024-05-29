@@ -1,6 +1,6 @@
 <?php
-	ini_set('display_errors', 1);
-	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
+
+	require_once(realpath(dirname(__DIR__, 1) . '/header.php'));
 	logged_in_only();
 
 	$foldername = set_post_foldername();
@@ -32,6 +32,7 @@
 					$mysql->escape($foldername),
 					$mysql->escape($public),
 					$mysql->escape($username));
+
 			if ($mysql->query($query)) {
 				echo 'Folder successfully created.<br>' . PHP_EOL;
 				echo '<script>reloadclose();</script>';
@@ -46,4 +47,4 @@
 		}
 	}
 
-	require_once(DOC_ROOT.'/footer.php');
+	require_once(realpath(DOC_ROOT.'/footer.php'));

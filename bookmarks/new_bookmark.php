@@ -29,7 +29,7 @@
 		if ($post_url != '') {
 			$url = $post_url;
 		}
-		elseif ($get_url != '') {
+		else if ($get_url != '') {
 			$url = $get_url;
 		}
 		else {
@@ -74,16 +74,15 @@
 <?php
 	}
 	else {
-		$query = sprintf("
-			INSERT INTO `obm_bookmarks` (`user`, `title`, `url`, `description`, `childof`, `public`, `date_created`)
-			VALUES ('%s', '%s', '%s', '%s', '%d', '%d', '%s')",
+		$query = sprintf ("
+			INSERT INTO `obm_bookmarks` (`user`, `title`, `url`, `description`, `childof`, `public`)
+			VALUES ('%s', '%s', '%s', '%s', '%d', '%d')",
 				$mysql->escape($username),
 				$mysql->escape($post_title),
 				$mysql->escape($post_url),
 				$mysql->escape($post_description),
 				$mysql->escape($post_childof),
-				$mysql->escape($post_public),
-				date('Y-m-d H:i:s')
+				$mysql->escape($post_public)
 		);
 		if ($mysql->query($query)) {
 			echo 'Bookmark successfully created.<br>' . PHP_EOL;

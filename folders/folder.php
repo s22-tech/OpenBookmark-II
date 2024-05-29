@@ -313,8 +313,7 @@ class Folder
 // echo 'x: '. $this->folders[$id] . '<br>';
 // echo '</pre>';
 
-// 			if (empty($this->folders[$id])) {
-			if (empty($path)) {
+			if (empty($this->folders[$id])) {
 				echo "Folder #{$id} does not have a parent";  //:debug
 				return [];
 			}

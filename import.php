@@ -1,5 +1,5 @@
 <?php
-	require_once(__DIR__ . '/header.php');
+	require_once(realpath(__DIR__ . '/header.php'));
 	logged_in_only();
 ?>
 
@@ -102,7 +102,7 @@
 			 <div style="width:<?php echo (($settings['column_width_folder'] === 0) ? "auto" : $settings['column_width_folder']); ?>; height:350px; overflow:auto;">
 
 			<?php
-				require_once(DOC_ROOT . '/folders/folder.php');
+				require_once(realpath(DOC_ROOT . '/folders/folder.php'));
 				$tree = new Folder();
 				$tree->make_tree(0);
 				$tree->print_tree();
@@ -338,5 +338,5 @@
 	}
 
 	print_footer();
-	require_once(DOC_ROOT . '/footer.php');
+	require_once(realpath(DOC_ROOT . '/footer.php'));
 ?>

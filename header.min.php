@@ -4,8 +4,8 @@
 		ob_start('ob_gzhandler');
 	}
 
-	if (!is_file(__DIR__ . '/config/config.php')) {
-		die ('You need to <a href="/install.php">install</a> OpenBookmark II.');
+	if (!is_file(realpath(__DIR__ . '/config/config.php'))) {
+		die ('You need to <a href="/install/install.php">install</a> OpenBookmark II.');
 	}
 	else {
 		require_once(realpath(__DIR__ . '/config/config.php'));

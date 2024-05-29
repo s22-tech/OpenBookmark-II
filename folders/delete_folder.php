@@ -1,6 +1,6 @@
 <?php
 
-	require_once(realpath(dirname(__FILE__, 2)) . '/header.php');
+	require_once(realpath(dirname(__DIR__, 1) . '/header.php'));
 	logged_in_only();
 
 	$noconfirm = set_get_noconfirm();
@@ -12,7 +12,7 @@
 		}
 		elseif (!$settings['confirm_delete'] || $noconfirm) {
 		  // Lets do the deletion if the confirm variable is set to FALSE or after confirmation.
-			require_once(DOC_ROOT . '/folders/folder.php');
+			require_once(realpath(DOC_ROOT . '/folders/folder.php'));
 			$tree = new Folder();
 			$tree->get_children($folderid);
 
@@ -127,5 +127,5 @@
 		echo '<input type="button" value=" Cancel " onclick="self.close()">';
 	}
 
-	require_once(DOC_ROOT . '/footer.php');
+	require_once(realpath(DOC_ROOT . '/footer.php'));
 ?>

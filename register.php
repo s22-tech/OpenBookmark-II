@@ -1,6 +1,6 @@
 <?php
 
-	require_once(__DIR__ . '/header.php');
+	require_once(realpath(__DIR__ . '/header.php'));
 
 	$secret       = 'dDWUc72sCcs20cXskcw';
 	$reg_register = set_post_bool_var('reg_register', false);
@@ -161,5 +161,5 @@
 		echo '<p>If you are already a registered user, <a class="orange" href="./index.php">you can log in here.</a></p>' . PHP_EOL;
 	}
 
-	require_once(DOC_ROOT . '/footer.php');
+	require_once(realpath(DOC_ROOT . '/footer.php'));
 ?>

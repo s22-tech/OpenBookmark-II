@@ -1,5 +1,7 @@
 <?php
 
+	declare(strict_types = 1);
+
 	require_once(realpath(__DIR__ . '/header.php'));
 	logged_in_only();
 	
@@ -18,7 +20,7 @@
 	$settings = $_SESSION['settings'];
 ?>
 
-<?php if (!$search_mode): ?>
+<?php if (!$search_mode) : ?>
 	<script>
 		<!--
 		var selected_folder_id = 0;
@@ -75,7 +77,7 @@
 		}
 		-->
 	</script>
-<?php endif; ?>
+<?php endif ?>
 
 <?php if (is_mobile_browser() && !$search_mode): ?>
 
@@ -255,7 +257,7 @@
 <?php
 	require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
 	$query = sprintf("
-		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(date) AS timestamp, `id`, `favicon`, `public`
+		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(`date_created`) AS timestamp, `id`, `favicon`, `public`
 		FROM `obm_bookmarks`
 		WHERE `user` = '%s'
 		AND `childof` = '%d'

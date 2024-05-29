@@ -29,28 +29,28 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 	if ($show_header) {
 		if ($order[0] == 'titleasc') {
 			$sort_t = 'titledesc';
-			$img_t = '<img src="./images/ascending.gif" alt="">';
+			$img_t = '<img src="'. $cfg['sub_dir'] .'/images/ascending.gif" alt="">';
 		}
 		elseif ($order[0] == 'titledesc') {
 			$sort_t = 'titleasc';
-			$img_t = '<img src="./images/descending.gif" alt="">';
+			$img_t = '<img src="'. $cfg['sub_dir'] .'/images/descending.gif" alt="">';
 		}
 		else {
 			$sort_t = 'titleasc';
-			$img_t = '<img src="./images/descending.gif" alt="" class="invisible">';
+			$img_t = '<img src="'. $cfg['sub_dir'] .'/images/descending.gif" alt="" class="invisible">';
 		}
 
 		if ($order[0] == 'dateasc') {
 			$sort_d = 'datedesc';
-			$img_d = '<img src="./images/ascending.gif" alt="">';
+			$img_d = '<img src="'. $cfg['sub_dir'] .'/images/ascending.gif" alt="">';
 		}
 		elseif ($order[0] == 'datedesc') {
 			$sort_d = 'dateasc';
-			$img_d = '<img src="./images/descending.gif" alt="">';
+			$img_d = '<img src="'. $cfg['sub_dir'] .'/images/descending.gif" alt="">';
 		}
 		else {
 			$sort_d = 'dateasc';
-			$img_d = '<img src="./images/descending.gif" alt="" class="invisible">';
+			$img_d = '<img src="'. $cfg['sub_dir'] .'/images/descending.gif" alt="" class="invisible">';
 		}
 
 		echo '<div class="bookmarkcaption">' . PHP_EOL;
@@ -81,20 +81,20 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 			echo "\t\t\t" . '</span>' . PHP_EOL;
 
 			if ($show_edit) {
-				echo "\t\t\t" . '<img src="./images/edit.gif"   alt="" class="invisible">' . PHP_EOL;
+				echo "\t\t\t" . '<img src="'. $cfg['sub_dir'] .'/images/edit.gif"   alt="" class="invisible">' . PHP_EOL;
 			}
 			if ($show_move) {
-				echo "\t\t\t" . '<img src="./images/move.gif"   alt="" class="invisible">' . PHP_EOL;
+				echo "\t\t\t" . '<img src="'. $cfg['sub_dir'] .'/images/move.gif"   alt="" class="invisible">' . PHP_EOL;
 			}
 			if ($show_delete) {
-				echo "\t\t\t" . '<img src="./images/delete.gif" alt="" class="invisible">' . PHP_EOL;
+				echo "\t\t\t" . '<img src="'. $cfg['sub_dir'] .'/images/delete.gif" alt="" class="invisible">' . PHP_EOL;
 			}
 			echo "\t\t" . '</div>' . PHP_EOL;
 		}
 		
 		echo "\t\t" . '<div class="link">' . PHP_EOL;
 		if ($show_icon) {
-			echo "\t\t\t" . '<img src="./images/bookmark.gif" alt="" class="invisible">' . PHP_EOL;
+			echo "\t\t\t" . '<img src="'. $cfg['sub_dir'] .'/images/bookmark.gif" alt="" class="invisible">' . PHP_EOL;
 		}
 		$query_data ['order'] = $sort_t;
 		$query_string = assemble_query_string($query_data);
@@ -107,7 +107,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 
 	if ($show_folder) {
-		require_once(DOC_ROOT . '/folders/folder.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/folders/folder.php');
 		$tree = new Folder();
 	}
 
@@ -161,21 +161,21 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 	  // The edit column.
 		if ($show_edit) {
-			echo "\t\t" . '<a href="javascript:bookmarkedit(\'' . $value['id'] . '\')">';
+			echo "\t\t" . "<a href=\"javascript:bookmarkedit('" . $cfg['sub_dir'] ."', '" . $value['id'] . "')\">";
 			echo sprintf($edit_image, 'Edit');
 			echo '</a>' . PHP_EOL;
 		}
 
 	  // The move column.
 		if ($show_move) {
-			echo "\t\t" . '<a class="bookmark-move" href="javascript:bookmarkmove(\'' . $value['id'] . "', '" . 'expand=' . implode(',', $expand) .'&amp;folderid='. $folderid .'\')">';
+			echo "\t\t" . "<a class=\"bookmark-move\" href=\"javascript:bookmarkmove('". $cfg['sub_dir'] ."', '" . $value['id'] . "', '" . 'expand=' . implode(',', $expand) .'&amp;folderid='. $folderid ."')\">";
 			echo sprintf($move_image, 'Move');
 			echo '</a>' . PHP_EOL;
 		}
 
 	  // The delete column.
 		if ($show_delete) {
-			echo "\t\t" . '<a href="javascript:bookmarkdelete(\'' . $value['id'] . '\')">';
+			echo "\t\t" . "<a href=\"javascript:bookmarkdelete('". $cfg['sub_dir'] ."', '" . $value['id'] . "')\">";
 			echo sprintf($delete_image, 'Delete');
 			echo '</a>' . PHP_EOL;
 		}

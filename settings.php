@@ -392,5 +392,5 @@
 
 <?php
 	print_footer();
-	require_once(DOC_ROOT . '/footer.php');
+	require_once(realpath(DOC_ROOT . '/footer.php'));
 ?>
