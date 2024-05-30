@@ -215,13 +215,14 @@ class Favicon
 	}
 
 
-	function get_html_dom($url) {
+	function scrape_html($url) {
 		global $cfg;
 	  // If a saved URL changes and gets redirected to a new one...
 			$options = [
+				CURLOPT_USERAGENT      => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
 				CURLOPT_URL            => $url,
-				CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible;  MSIE 7.01; Windows NT 5.0)',
-				CURLOPT_RETURNTRANSFER => 1,
+				CURLOPT_FAILONERROR    => true,
+				CURLOPT_RETURNTRANSFER => true,
 				CURLOPT_CONNECTTIMEOUT => 2,
 				CURLOPT_TIMEOUT        => 10,
 			  /* Lets you use this script when there is redirect on the server. */
@@ -267,10 +268,6 @@ class Favicon
 		$parsed = parse_url($domain);
 		$host_name = $parsed['host'];
 		$host_name = str_replace('.', '-', $host_name);
-		$parts = explode('-', $host_name);
-		$last = array_pop($parts);
-		$parts = [implode('-', $parts), $last];  // Get domain w/o the domain extension.
-		$host_name = $parts[0];
 		$host_name = str_replace('www-', '', $host_name);
 		$ext = pathinfo($this->favicon_url, PATHINFO_EXTENSION);
 		$ext = strlen($ext) < 3 ? 'png' : $ext;
