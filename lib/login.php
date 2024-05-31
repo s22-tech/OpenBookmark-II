@@ -59,6 +59,7 @@
 	}
 
 	$_SESSION['settings'] = $settings;
+// echo '<pre>'; print_r($_SESSION['settings']); echo '</pre>';
 
 	function default_settings() {
 		$settings = [

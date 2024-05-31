@@ -22,5 +22,5 @@
 	<input type="button" value=" New Folder " onclick="self.location.href='javascript:foldernew(<?php echo $folderid; ?>)'">
 
 <?php
-	require_once(realpath(DOC_ROOT . '/footer.php'));
+	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 ?>

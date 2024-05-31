@@ -1,12 +1,13 @@
 <?php
-	require_once(realpath(__DIR__ . '/header.php'));
+
+	require_once(realpath(__DIR__ . '/includes/app_header.inc.php'));
 
 	if (extension_loaded('zlib')) {
 		ob_end_clean();
 		ob_start('ob_gzhandler');
 	}
 
-	require_once(realpath(DOC_ROOT . '/lib/webstart.php'));
+// 	require_once(realpath(DOC_ROOT . '/lib/webstart.php'));
 	if (! is_file(realpath(DOC_ROOT . '/config/config.php'))) {
 		die ('You have to <a href="/install/install.php">install</a> OpenBookmark.');
 	}

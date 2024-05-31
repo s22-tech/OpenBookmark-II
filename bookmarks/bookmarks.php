@@ -77,7 +77,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 			echo "\t\t" . '<div class="bmright">' . PHP_EOL;
 			echo "\t\t\t" . '<span class="date">' . PHP_EOL;
-			echo "\t\t\t\t" . '<a href="' . $scriptname . '?' . $query_string . '" class="f blink"> Date ' . $img_d . '</a>' . PHP_EOL;
+			echo "\t\t\t\t" . '<a href="' . $scriptname . '?' . $query_string . '" class="f blink"> Last Visit ' . $img_d . '</a>' . PHP_EOL;
 			echo "\t\t\t" . '</span>' . PHP_EOL;
 
 			if ($show_edit) {
@@ -113,7 +113,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 	echo '<form name="bookmarks" action="" class="nav">' . PHP_EOL;
 
-// debug_logger(variable:$bookmarks, name:'BOOKMARKS--$bookmarks', file:__FILE__, function:__FUNCTION__);
+// debug_logger(name:'BOOKMARKS', variable: $bookmarks, file: __FILE__, function: __FUNCTION__);
 
 	foreach ($bookmarks as $value) {
 		echo '<div class="bookmark">' . PHP_EOL;
@@ -153,9 +153,15 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 			echo "\t\t" . '<span class="' . $share . '">' . $share . '</span>' . PHP_EOL;
 		}
 
-		if ($show_date) {
+		if ($show_date && isset($value['timestamp']) || isset($value['creation'])) {
+			if (!empty($value['timestamp'])) {
+				$date_used = $value['timestamp'];
+			}
+			else {
+				$date_used = $value['creation'];
+			}
 			echo "\t\t" . '<span class="date">';
-			echo date($cfg['date_formats'][$settings['date_format']], $value['timestamp']);
+			echo date($cfg['date_formats'][$settings['date_format']], $date_used);
 			echo "\t</span>" . PHP_EOL;
 		}
 
@@ -168,7 +174,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 	  // The move column.
 		if ($show_move) {
-			echo "\t\t" . "<a class=\"bookmark-move\" href=\"javascript:bookmarkmove('". $cfg['sub_dir'] ."', '" . $value['id'] . "', '" . 'expand=' . implode(',', $expand) .'&amp;folderid='. $folderid ."')\">";
+			echo "\t\t" . '<a class="bookmark-move" href="javascript:bookmarkmove(\''. $cfg['sub_dir'] ."', '" . $value['id'] . "', '" . 'expand=' . implode(',', $expand) .'&amp;folderid='. $folderid ."')\">";
 			echo sprintf($move_image, 'Move');
 			echo '</a>' . PHP_EOL;
 		}
@@ -204,7 +210,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 // *** Trigger this link with JavaScript to set the `last_visit` field in the bookmark table.
 		if ($show_link) {
-			$link = '<a class="bookmark_href" href="'. $value['url'] .'" title="'. $value['url'] .'"'. $target .'>'. $value['title'] .'</a>';
+			$link = '<a class="bookmark_href" href="/bookmarks/trigger_db_call.php?id='. $value['id'] .'&url='. $value['url'] .'"'. $target .'>'. $value['title'] .'</a>';
 		}
 		else {
 			$link = $value['title'];

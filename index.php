@@ -1,6 +1,6 @@
 <?php
 
-	declare(strict_types = 1);
+	declare(strict_types = 1);  // When used, must be the first line called in a script.
 
 	require_once(realpath(__DIR__ . '/header.php'));
 	logged_in_only();
@@ -44,16 +44,16 @@
 
 			$('.flink').click(function() {
 				var url = $(this).attr('href');
-				var folderurl   = url.replace('index.php', 'folders/async_folders.php');
-				var bookmarkurl = url.replace('index.php', 'bookmarks/async_bookmarks.php');
+				var folderurl   = url.replace('index.php', 'folders/async_folders.inc.php');
+				var bookmarkurl = url.replace('index.php', 'bookmarks/async_bookmarks.inc.php');
 
 				//if ($('#folders').hasClass('mobile'))
 				//	$('#folders').toggle('blind',{},300);
 
 				selected_folder_id = $(this).attr('folderid');
 
-// 				$('.folders').addClass('loading-anim');
-// 				$('.bookmarks').addClass('loading-anim');
+				$('.folders').addClass('loading-anim');    // Continuously redraws loading.gif  Why???
+				$('.bookmarks').addClass('loading-anim');  //  ""     ""
 
 				$('.folders').load(folderurl, setupFolderIntercepts);
 				$('.bookmarks').load(bookmarkurl, setupBookmarkIntercepts);
@@ -67,9 +67,9 @@
 
 			$('.blink').click(function() {
 				var url = $(this).attr('href');
-				var bookmarkurl = url.replace('index.php', 'bookmarks/async_bookmarks.php');
+				var bookmarkurl = url.replace('index.php', 'bookmarks/async_bookmarks.inc.php');
 
-				$('.bookmarks').addClass('loading-anim');
+// 				$('.bookmarks').addClass('loading-anim');  // Continuously redraws loading.gif  Why???
 				$('.bookmarks').load(bookmarkurl, setupBookmarkIntercepts);
 
 				return false;
@@ -185,7 +185,7 @@
 
 	if ($search == '[dupe_check_bookmarks]') {
 		$query = "
-			SELECT a.title, a.url, a.description, UNIX_TIMESTAMP(a.date) AS timestamp, a.childof, a.id, 
+			SELECT a.title, a.url, a.description, UNIX_TIMESTAMP(a.date_created) AS timestamp, a.childof, a.id, 
 			a.favicon, a.public, f.name, f.id AS fid, f.public AS fpublic
 			FROM `obm_bookmarks` AS a
 			INNER JOIN `obm_bookmarks` AS b ON a.url = b.url and a.id <> b.id
@@ -257,7 +257,7 @@
 <?php
 	require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
 	$query = sprintf("
-		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(`date_created`) AS timestamp, `id`, `favicon`, `public`
+		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(`last_visit`) AS timestamp, UNIX_TIMESTAMP(`date_created`) AS creation, `id`, `favicon`, `public`
 		FROM `obm_bookmarks`
 		WHERE `user` = '%s'
 		AND `childof` = '%d'
@@ -308,7 +308,6 @@
 	print_footer();
 	require_once(realpath(DOC_ROOT . '/footer.php'));
 
-	__halt_compiler();
 
 	#1] This prevented GET variables from being accessible, e.g. $folderid.  Why???
 ?>

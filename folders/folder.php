@@ -164,7 +164,7 @@ class Folder
 	}
 
   // Draws the tree.
-	function print_tree($scriptname='') {
+	function print_tree($scriptname='', $bmlist='') {
 		global $settings, $folder_opened, $folder_closed, $folder_opened_public, $folder_closed_public, $plus, $minus, $neutral;
 
 		if ($scriptname == '') $scriptname = $_SERVER['SCRIPT_NAME'];  // e.g. index.php
@@ -270,8 +270,10 @@ class Folder
 			}
 
 		  // This prints the folder name with it's appropriate HTML link...
+			$bm_list = '';
+			if (!empty($bmlist)) $bm_list = '&bmlist='. $bmlist;
 			echo '<a folderid="'.$value['id'].'" class="f flink" href="' . $scriptname . '?expand=' . implode(',', $expand_f);
-			echo '&folderid=' . $value['id'] . $user_var . $anchor . '" name="' . $value['id'] . '">' . $folder_image . ' ' . $folder_name . '</a>';
+			echo $bm_list . '&folderid=' . $value['id'] . $user_var . $anchor . '" name="' . $value['id'] . '">' . $folder_image . ' ' . $folder_name . '</a>';
 			echo '</div>' . PHP_EOL;
 		}
 	}

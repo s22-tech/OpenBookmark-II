@@ -11,12 +11,12 @@
 			message ('No folder selected.');
 		}
 		elseif (!$settings['confirm_delete'] || $noconfirm) {
-		  // Lets do the deletion if the confirm variable is set to FALSE or after confirmation.
+		  // Lets do the deletion if the confirm variable is set to FALSE, or after confirmation.
 			require_once(realpath(DOC_ROOT . '/folders/folder.php'));
 			$tree = new Folder();
 			$tree->get_children($folderid);
 
-		  // We need $parent_folders for JavaScript code below.
+		  // We need $parent_folders for the JavaScript code below.
 			$parent_folders = $tree->get_path_to_root($folderid);
 			if (count($parent_folders) > 1) {
 				$parent_folder = $parent_folders[1];
@@ -27,36 +27,39 @@
 
 			array_push($tree->get_children, $folderid);
 			$folders = implode(',', $tree->get_children);
-		  // First delete all subfolders.
-			$query = sprintf("
+			
+		  // First, delete all subfolders.
+			$delete_subfolders_query = sprintf("
 				DELETE FROM `obm_folders` 
 				WHERE `childof` IN (%s) AND `user` = '%s'",
 					$mysql->escape($folders),
 					$mysql->escape($username)
 			);
-			if (!$mysql->query($query)) {
+			if (!$mysql->query($delete_subfolders_query)) {
 				message($mysql->error);
 			}
 
+/* ** Add code to delete favicons, as well. ** */
+
 		  // Of course, we want to delete all bookmarks as well.
-			$query = sprintf("
+			$delete_bm_query = sprintf("
 				DELETE FROM `obm_bookmarks` 
 				WHERE `childof` IN (%s) AND `user` = '%s'",
 					$mysql->escape($folders),
 					$mysql->escape($username)
 			);
-			if (!$mysql->query($query)) {
+			if (!$mysql->query($delete_bm_query)) {
 				message($mysql->error);
 			}
 
 		  // Now delete the folder itself.
-			$query = sprintf("
+			$delete_folder_query = sprintf("
 				DELETE FROM `obm_folders` 
-				WHERE `id`=%d AND `user` = '%s'",
+				WHERE `id` = %d AND `user` = '%s'",
 					$mysql->escape($folderid),
 					$mysql->escape($username)
 			);
-			if (!$mysql->query($query)) {
+			if (!$mysql->query($delete_folder_query)) {
 				message($mysql->error);
 			}
 ?>
@@ -92,17 +95,17 @@
 		else {
 		  // If there was no confirmation, as to _really_ delete the whole stuff,
 		  // print the verification form.
-			$query = sprintf ("
+			$query = sprintf("
 				SELECT `name`, `public` 
 				FROM `obm_folders` 
-				WHERE `id` = '%d' AND `user`='%s' AND `deleted` != '1'",
+				WHERE `id` = '%d' AND `user` = '%s' AND `deleted` != '1'",
 					$mysql->escape($folderid),
 					$mysql->escape($username)
 			);
 
 			if ($mysql->query($query)) {
 				if (mysqli_num_rows($mysql->result) == 0) {
-					message('Folder does not exist');
+					message("Folder '$folderid' does not exist");
 				}
 				$row = mysqli_fetch_object($mysql->result);
 ?>
@@ -127,5 +130,5 @@
 		echo '<input type="button" value=" Cancel " onclick="self.close()">';
 	}
 
-	require_once(realpath(DOC_ROOT . '/footer.php'));
+	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 ?>

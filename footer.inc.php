@@ -7,7 +7,7 @@
 // echo 'dirname(__FILE__, 2): '. dirname(__FILE__, 2) . '<br>';
 echo '<br>';
 
-	if (admin_only()) {
+	if (admin_only() && settings['debug_mode']) {
 		if (sub_dir_bool_check()) {
 			echo '&bull; OBM is installed in a subdirectory:' . '<br>';
 			echo '&nbsp; sub_dir: '. $cfg['sub_dir'] . '<br>';

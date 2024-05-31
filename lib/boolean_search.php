@@ -247,7 +247,7 @@ function assemble_query($criteria, $searchfields) {
 			SELECT b.title,
 				b.url,
 				b.description,
-				UNIX_TIMESTAMP(b.date) AS timestamp,
+				UNIX_TIMESTAMP(b.date_created) AS timestamp,
 				b.childof,
 				b.id,
 				b.favicon,

@@ -4,9 +4,8 @@ if (basename ($_SERVER['SCRIPT_NAME']) == basename (__FILE__)) {
 	die ('No direct access allowed!');
 }
 
-require_once(realpath(__DIR__ . '/header.php'));
+require_once(realpath(__DIR__ . '/includes/app_header.inc.php'));
 include_once(realpath(DOC_ROOT . '/vendor/simplehtmldom/HtmlWeb.php'));
-// include_once(realpath(DOC_ROOT . '/vendor/autoload.php'));
 use simplehtmldom\HtmlWeb;
 
 class Favicon

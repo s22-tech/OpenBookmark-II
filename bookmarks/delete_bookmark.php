@@ -33,7 +33,7 @@
 	CSS;
 
 	$bmlist = set_get_num_list('bmlist');
-echo '<pre>'; print_r($bmlist); echo '</pre>';
+// echo '<pre>'; print_r($bmlist); echo '</pre>';
 
 	if (count($bmlist) == 0) {
 		echo 'No Bookmarks selected.';
@@ -80,7 +80,7 @@ echo '<pre>'; print_r($bmlist); echo '</pre>';
 			foreach ($bookmarks as $bookmark) {
 				$bm_string .= '&bookmarks[]='.$bookmark['favicon'];
 			}
-echo '$bm_string: '. $bm_string . '<br>';
+// echo '$bm_string: '. $bm_string . '<br>';
 ?>
 
 	</div>
@@ -105,9 +105,6 @@ debug_logger(name: 'bookmarks-2', variable: $bookmarks, file: __FILE__, function
 			message($mysql->error);
 		}
 	}
-// echo 'sub_dir: '. $cfg['sub_dir'] . '<br>';
-// echo $_SERVER['DOCUMENT_ROOT'] . '<br>';
-// echo sub_dir_bool_check() . '<br>';
 
 	require_once(realpath(DOC_ROOT . '/footer.php'));
 ?>

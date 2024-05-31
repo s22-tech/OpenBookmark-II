@@ -6,7 +6,7 @@
 
 	$post_title       = set_post_title();
 	$post_url         = set_post_url();
-	$post_description	= set_post_description();
+	$post_description = set_post_description();
 	$refresh_icon     = set_post_bool_var('favicon', false);
 	$post_childof     = set_post_childof();
 	$post_public      = set_post_bool_var('public', false);
@@ -25,7 +25,7 @@
 			);
 			if ($mysql->query($query)) {
 				require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
-				$query_string = '?bmlist=' . implode('_"', $bmlist);
+				$query_string = '?bmlist=' . implode('_', $bmlist);
 ?>
 
 	<h2 class="title">Change public state:</h2>
@@ -136,16 +136,19 @@
 					else {
 						$used_url = $row->url;
 					}
-					require_once(realpath(DOC_ROOT . '/favicon.php'));
+					require_once(realpath(DOC_ROOT . '/favicon.inc.php'));
 					$favicon = new Favicon($used_url);
 					$new_fav = $favicon->favicon;
 debug_logger(name:'favicon->favicon >>', variable:$new_fav, file:__FILE__, function:__FUNCTION__);
 					if ($new_fav) {
 						$update_query = sprintf("
 							UPDATE `obm_bookmarks` 
-							SET `favicon` = '%s' 
+							SET 
+								`favicon` = '%s',
+								`notes`   = '%s'
 							WHERE `user` = '%s' AND `id` = '%d'",
 								$mysql->escape($new_fav),
+								$mysql->escape($favicon->notes),
 								$mysql->escape($username),
 								$mysql->escape($bmlist[0])
 						);

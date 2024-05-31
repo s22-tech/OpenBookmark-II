@@ -1,6 +1,6 @@
 <?php
 
-	require_once(realpath(dirname(__DIR__, 1) . '/async_header.php'));
+	require_once(realpath(dirname(__DIR__, 1) . '/async_header.inc.php'));
 	logged_in_only();
 
 	require_once(realpath(DOC_ROOT .'/folders/folder.php'));

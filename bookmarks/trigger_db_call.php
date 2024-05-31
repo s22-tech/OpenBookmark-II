@@ -6,9 +6,6 @@
 
 	$id  = $_GET['id'];
 	$url = $_GET['url'];
-	
-// 	echo $id . '<br>';
-// 	echo $url . '<br>';
 
 	set_last_visit($id);
 

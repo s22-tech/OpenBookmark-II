@@ -1,6 +1,6 @@
 <?php
 
-	require_once(dirname(__DIR__, 1) . '/async_header.php');
+	require_once(dirname(__DIR__, 1) . '/async_header.inc.php');
 	logged_in_only();
 
 	$order = set_get_order();

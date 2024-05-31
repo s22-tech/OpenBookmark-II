@@ -20,7 +20,6 @@
   ////////////////////////
 
 	$cfg['domain'] = '';
-	$cfg['debug'] = false;  // Turns debug logging on or off.
 
 	$cfg['sub_dir'] = '';
 	if (sub_dir_bool_check()) {
@@ -36,7 +35,7 @@
 	$cfg['cookie'] = [
 		'name'   => 'ob_cookie',
 		'domain' => '',
-		'path'   => '/',
+		'path'   => $cfg['sub_dir'] . '/',
 		'seed'   => '4Xp2yHprO6oTy5',
 		'expire' => time() + 31_536_000,
 	];
@@ -81,8 +80,10 @@
 	$move_image     = '<img src="'. $cfg['sub_dir'] .'/images/move.gif" title="%s" alt="">';
 	$delete_image   = '<img src="'. $cfg['sub_dir'] .'/images/delete.gif" title="%s" alt="">';
 	$bookmark_image = '<img src="'. $cfg['sub_dir'] .'/images/bookmark.gif" alt="">';
+
+	$settings['debug_mode'] = $_SESSION['debug_mode'] ?? 0;
 	
-	if ($cfg['debug']) {
+	if ($settings['debug_mode']) {
 		ini_set('display_errors', 1);
 		ini_set('error_prepend_string', '<pre style="white-space: pre-wrap;">');
 		ini_set('error_append_string', '</pre>');
@@ -91,7 +92,7 @@
 
 	function sub_dir_bool_check() {
 		$root = $_SERVER['DOCUMENT_ROOT'];
-		$file_path = dirname(__FILE__, 2);  // Gives path of config.php
+		$file_path = dirname(__DIR__, 1);  // Gives path of config.php
 // echo 'file_path: '. $file_path . '<br>';
 
 		if ($root == $file_path) {

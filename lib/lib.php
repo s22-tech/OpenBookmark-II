@@ -470,7 +470,7 @@ function set_get_num_list($varname) : array {
 }
 
 
-function set_post_num_list($varname) {
+function set_post_num_list($varname) : array {
 	if (empty($_POST[$varname]) || $_POST[$varname] == '') {
 		$return = [];
 	}
@@ -531,7 +531,8 @@ function object_count() {
 		(SELECT COUNT(*) FROM `obm_bookmarks` WHERE `user` = '%s') AS bookmarks,
 		(SELECT COUNT(*) FROM `obm_folders`   WHERE `user` = '%s') AS folders",
 			$mysql->escape($username),
-			$mysql->escape($username));
+			$mysql->escape($username)
+	);
 
 	if ($mysql->query($query)) {
 		if (mysqli_num_rows($mysql->result) == '1') {
@@ -573,9 +574,9 @@ function get_current_url($url) {
 
 
 function debug_logger($name, $variable, $file, $function, $newline=true, $time='') {
-	global $cfg;
+	global $cfg, $settings;
 	[$function] = explode('(', $function);
-	if ($cfg['debug']) {
+	if ($settings['debug_mode']) {
 		if (is_array($variable)) {
 			$variable = print_r($variable, true);
 		}
@@ -585,6 +586,23 @@ function debug_logger($name, $variable, $file, $function, $newline=true, $time='
 		$eol = $newline ? PHP_EOL : '';
 		error_log('• '. $time. basename($file) .'::'.$function.'()->$'. $name .': '. $variable . $eol . PHP_EOL, 3, $cfg['debug_log']);
 	}
+}
+
+
+function print_r_pre($object) {
+	echo '<pre>';
+	print_r($object);
+	echo  '</pre>';
+// 	if (is_array($object)) {
+// 		echo '<pre>';
+// 		print_r($object);
+// 		echo  '</pre>';
+// 	}
+// 	else {
+// 		echo '<pre>';
+//       var_dump($object);
+// 		echo  '</pre>';
+//     }
 }
 
 
