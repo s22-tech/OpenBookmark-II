@@ -98,7 +98,6 @@
 	<br>
 <?php
 
-debug_logger(name: 'bookmarks-2', variable: $bookmarks, file: __FILE__, function: __FUNCTION__);
 
 		}
 		else {
@@ -106,5 +105,5 @@ debug_logger(name: 'bookmarks-2', variable: $bookmarks, file: __FILE__, function
 		}
 	}
 
-	require_once(realpath(DOC_ROOT . '/footer.php'));
+	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 ?>

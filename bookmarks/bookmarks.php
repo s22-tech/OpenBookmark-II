@@ -113,7 +113,6 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 	echo '<form name="bookmarks" action="" class="nav">' . PHP_EOL;
 
-// debug_logger(name:'BOOKMARKS', variable: $bookmarks, file: __FILE__, function: __FUNCTION__);
 
 	foreach ($bookmarks as $value) {
 		echo '<div class="bookmark">' . PHP_EOL;
@@ -233,3 +232,4 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 	}
 	echo '</form>' . PHP_EOL;
 }
+

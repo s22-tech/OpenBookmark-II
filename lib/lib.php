@@ -33,7 +33,7 @@ function message($message) {
 	if (isset($message)) {
 		echo '<p>' . $message . '</p>';
 	}
-	require_once(realpath(DOC_ROOT . '/footer.php'));
+	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 }
 
 
@@ -45,7 +45,7 @@ function logged_in_only() {
 	if (empty($_SESSION['logged_in']) || ! $_SESSION['logged_in']) {
 		global $auth;
 		$auth->display_login_form();
-		require_once(realpath(DOC_ROOT . '/footer.php'));
+		require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 	}
 }
 

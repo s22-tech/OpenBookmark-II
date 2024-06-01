@@ -98,7 +98,6 @@
 		}
 		unset($_SESSION['title'], $_SESSION['url']);
 
-debug_logger(variable:$post_url, name:'post_url', file:__FILE__, function:__FUNCTION__);
 
 ///////////////////////////
 // SAVE Favicon
@@ -109,7 +108,6 @@ debug_logger(variable:$post_url, name:'post_url', file:__FILE__, function:__FUNC
 		if ($settings['show_bookmark_icon']) {
 			require_once(realpath(DOC_ROOT . '/favicon.inc.php'));
 			$favicon = new Favicon($post_url);
-debug_logger(variable:print_r($favicon, true), name:'favicon-object', file:__FILE__, function:__FUNCTION__);
 
 			if (!empty($favicon->favicon)) {
 				$update_query = sprintf("
@@ -121,7 +119,6 @@ debug_logger(variable:print_r($favicon, true), name:'favicon-object', file:__FIL
 						$mysql->escape($username),
 						$mysql->escape($bm_id)
 				);
-debug_logger(variable:$update_query, name:'update-query', file:__FILE__, function:__FUNCTION__);
 				if (!$mysql->query($update_query)) {
 					message($mysql->error);
 				}
@@ -129,8 +126,6 @@ debug_logger(variable:$update_query, name:'update-query', file:__FILE__, functio
 			}
 			else {
 				$icon = $bookmark_image;
-debug_logger(variable:$icon, name:'favicon->favicon was NOT set', file:__FILE__, function:__FUNCTION__);
-debug_logger(variable:debug_backtrace(), name:'debug_backtrace()', file:__FILE__, function:__FUNCTION__);
 			}
 		}
 

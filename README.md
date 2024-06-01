@@ -12,13 +12,15 @@ OBM II is a rewrite of Brendan LaMarche's fantastic OpenBookmark script, to brin
 	<li>Update CSS</li>
 	<li>Add mobile view</li>
 </ul>
-The look of this script hasn't changed from the original, since CSS is not my strong suit.  If someone would like to help update the look and feel of this script, please send a pull request.
+This script works great on the desktop but it's useless on a phone.  Since CSS is not my strongsuit, if anyone would like to contribute a mobile view, that would be fantastic.  If you decide to submit a pull request, please keep in mind that I'm trying to keep this script as lightweight as possible, so adding jQuery and Bootstrap bundles is out of the question.  Also, this script must remain self contained, so no links to 3rd-party scripts.
 
 ## Requirements
 <ul>
 	<li>PHP 8.0 or higher</li>
+	<li>Imagick</li>
 	<li>convert (linux cli tool)</li>
 	<li>identify (linux cli tool)</li>
+	<li>php-curl extension</li>
 </ul>
 
 ## Screenshots

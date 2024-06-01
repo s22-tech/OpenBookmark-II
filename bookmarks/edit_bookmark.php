@@ -139,7 +139,6 @@
 					require_once(realpath(DOC_ROOT . '/favicon.inc.php'));
 					$favicon = new Favicon($used_url);
 					$new_fav = $favicon->favicon;
-debug_logger(name:'favicon->favicon >>', variable:$new_fav, file:__FILE__, function:__FUNCTION__);
 					if ($new_fav) {
 						$update_query = sprintf("
 							UPDATE `obm_bookmarks` 
@@ -152,7 +151,6 @@ debug_logger(name:'favicon->favicon >>', variable:$new_fav, file:__FILE__, funct
 								$mysql->escape($username),
 								$mysql->escape($bmlist[0])
 						);
-debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__FUNCTION__);
 						if (!$mysql->query($update_query)) {
 							message($mysql->error);
 						}
@@ -245,3 +243,4 @@ debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__
 
 	require_once(realpath(DOC_ROOT . '/footer.php'));
 ?>
+
