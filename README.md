@@ -7,6 +7,11 @@ OBM II is a rewrite of Brendan LaMarche's fantastic OpenBookmark script, to brin
 	<li>Saves a single favicon per domain/sub-domain to keep file counts at a minimum.</li>
 </ul>
 
+## Bookmarklet
+Copy this code to your bookmarks bar for easy bookmarking of interesting sites.  Adjust for your domain.
+
+```javascript:(function(){bmadd=window.open('https://your.domain.com/bookmarks/new_bookmark.php?title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'bmadd','toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes,width=500,height=500,left=50,top=50');setTimeout(function(){bmadd.focus();});})();```
+
 ## To Do
 <ul>
 	<li>Update CSS</li>
