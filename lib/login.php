@@ -59,7 +59,6 @@
 	}
 
 	$_SESSION['settings'] = $settings;
-// echo '<pre>'; print_r($_SESSION['settings']); echo '</pre>';
 
 	function default_settings() {
 		$settings = [
@@ -104,4 +103,5 @@
   // Set some often used vars.
 	$folderid = set_get_folderid();
 	$expand   = set_get_expand();
+
 

@@ -41,7 +41,8 @@
 		if ($reg_email != '') {
 			if (preg_match ('/^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i', $reg_email)) {
 				$query = "
-					SELECT COUNT(*) AS result FROM `obm_users` 
+					SELECT COUNT(*) AS result 
+					FROM `obm_users` 
 					WHERE `email` = '$reg_email'
 				";
 				if ($mysql->query ($query)) {
@@ -161,5 +162,5 @@
 		echo '<p>If you are already a registered user, <a class="orange" href="./index.php">you can log in here.</a></p>' . PHP_EOL;
 	}
 
-	require_once(realpath(DOC_ROOT . '/footer.php'));
+	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 ?>

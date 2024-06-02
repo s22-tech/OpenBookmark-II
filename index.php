@@ -32,7 +32,6 @@
 				$('#' + $(this).attr('target')).toggle('blind', options, 300);
 			});
 
-// 			setupFolderIntercepts();  // #1
 			setupBookmarkIntercepts();
 
 			$('#gsearchtext').focus();
@@ -69,7 +68,6 @@
 				var url = $(this).attr('href');
 				var bookmarkurl = url.replace('index.php', 'bookmarks/async_bookmarks.inc.php');
 
-// 				$('.bookmarks').addClass('loading-anim');  // Continuously redraws loading.gif  Why???
 				$('.bookmarks').load(bookmarkurl, setupBookmarkIntercepts);
 
 				return false;
@@ -306,7 +304,7 @@
 
 <?php
 	print_footer();
-	require_once(realpath(DOC_ROOT . '/footer.php'));
+	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 
 
 	#1] This prevented GET variables from being accessible, e.g. $folderid.  Why???

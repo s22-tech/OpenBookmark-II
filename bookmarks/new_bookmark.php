@@ -8,7 +8,6 @@
 
 	logged_in_only();
 
-// 	$post_title       = set_post_title($persistent = true);  // Is this function call proper PHP?
 	$post_title       = set_post_title();
 	$post_url         = set_post_url();
 	$post_description = set_post_description();
@@ -91,7 +90,6 @@
 			$bm_id = mysqli_insert_id($mysql->conn);  // Returns the value generated for an AUTO_INCREMENT column by the last query.
 			// https://www.php.net/manual/en/mysqli.insert-id.php
 			// Using $mysql->insert_id produces "Undefined property: mysql::$insert_id".
-// 			$bm_id = $pdo->lastInsertId();  // PDO equivalent -- https://www.php.net/pdo.lastinsertid
 		}
 		else {
 			message($mysql->error);
@@ -100,10 +98,6 @@
 
 
 ///////////////////////////
-// SAVE Favicon
-// Saving the favicon in a separate second step is done because
-// we want to make sure the bookmark is saved in any case,
-// since the favicon is not as important.
 ///////////////////////////
 		if ($settings['show_bookmark_icon']) {
 			require_once(realpath(DOC_ROOT . '/favicon.inc.php'));
@@ -142,5 +136,5 @@
 			echo '<script> self.close(); </script>';
 		}
 	}
-	require_once(realpath(DOC_ROOT . '/footer.php'));
+	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 ?>

@@ -148,7 +148,6 @@ class Favicon
 		}
 
 		if (admin_only()) {
-// 			$bytes = file_put_contents($save_path_name, $response);
 		}
 
 		return true;
@@ -321,3 +320,4 @@ class Favicon
 	}
 
 }
+

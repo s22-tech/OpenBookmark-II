@@ -1,7 +1,6 @@
 <?php
 
 require_once(realpath(__DIR__ . '/config/config.php'));
-// require_once(realpath(DOC_ROOT . '/lib/webstart.php'));
 
 require_once(realpath(DOC_ROOT . '/lib/mysql.php'));
 $mysql = new Mysql();
@@ -167,5 +166,6 @@ class sidebar
 	$sidebar->make_tree(0);
 	echo '</ul>'. PHP_EOL;
 
-	require_once(realpath(DOC_ROOT .'/footer.php'));
+	require_once(realpath(DOC_ROOT .'/footer.inc.php'));
 ?>
+

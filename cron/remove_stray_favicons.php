@@ -9,7 +9,6 @@
 	$param = $argv[1] ?? PHP_SAPI ?? '';
 
 //////////////////////////////////
-// Retrieve favicon names from db.
 //////////////////////////////////
 	$query = "
 		SELECT * FROM `obm_bookmarks`
@@ -23,12 +22,10 @@
 				$favicons_sql[$row['id']] = $row['favicon'];
 			}
 		}
-// 		print_r($favicons_sql);  //:debug
 	}
 	
 
 //////////////////////////////////
-// Delete favicons from the server.
 //////////////////////////////////
 	$favicons = [];
 	$icons_path = realpath(DOC_ROOT . '/icons/');
@@ -41,7 +38,6 @@
 
 
 //////////////////////////////////
-// Print results.
 //////////////////////////////////
 	if ($param !== 'cron') {
 		$deleted_icons = implode(PHP_EOL, $favicons);
@@ -49,5 +45,3 @@
 		echo $deleted_icons . PHP_EOL;
 	}
 
-__halt_compiler();
-This script will delete all unsused favicons on the server as often as it's run either manually or scheduled via cron.  Helps to keep the icon footprint as small as possible.

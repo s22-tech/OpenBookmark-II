@@ -78,7 +78,7 @@
 <?php
 		require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
 		$query = sprintf("
-			SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(date) AS timestamp, `id`, `favicon`
+			SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(`date_created`) AS timestamp, `id`, `favicon`
 			FROM `obm_bookmarks`
 			WHERE `user` = '%s'
 			AND `childof` = '%d'
@@ -155,5 +155,5 @@
 
 <?php
 	print_footer();
-	require_once(realpath(DOC_ROOT . '/footer.php'));
+	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 ?>

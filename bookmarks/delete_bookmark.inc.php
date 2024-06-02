@@ -39,10 +39,6 @@
 						$mysql->escape($favicon)
 				);
 				if ($mysql->query($count_query)) {
-// 					$row = mysqli_fetch_assoc($mysql->result);
-// 					print_r_pre($row);
-// 					echo 'icon_cnt: '. number_format($row['icon_cnt']) . '<br>';
-// 					echo 'favicon: '. $favicon . '<br>';
 					
 					if (mysql_result($mysql->result, 0) > 1) {
 					  // Skip deletion if more than one bookmark uses the same favicon.
@@ -64,5 +60,6 @@
 		echo 'Demo users cannot delete bookmarks.<br><br>' . PHP_EOL;
 		echo '<input type="button" value=" Cancel " onclick="self.close()">';
 	}
+
 
 

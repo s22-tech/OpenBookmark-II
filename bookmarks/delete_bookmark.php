@@ -33,7 +33,6 @@
 	CSS;
 
 	$bmlist = set_get_num_list('bmlist');
-// echo '<pre>'; print_r($bmlist); echo '</pre>';
 
 	if (count($bmlist) == 0) {
 		echo 'No Bookmarks selected.';
@@ -80,7 +79,6 @@
 			foreach ($bookmarks as $bookmark) {
 				$bm_string .= '&bookmarks[]='.$bookmark['favicon'];
 			}
-// echo '$bm_string: '. $bm_string . '<br>';
 ?>
 
 	</div>
@@ -107,3 +105,4 @@
 
 	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 ?>
+

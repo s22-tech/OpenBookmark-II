@@ -1,10 +1,5 @@
 
 <?php
-// echo '__DIR__: '. __DIR__ . '<br>';
-// echo 'dirname(__DIR__, 1): '. dirname(__DIR__, 1) . '<br>';
-// echo 'dirname(__DIR__, 2): '. dirname(__DIR__, 2) . '<br>';
-// echo 'dirname(__FILE__, 1): '. dirname(__FILE__, 1) . '<br>';
-// echo 'dirname(__FILE__, 2): '. dirname(__FILE__, 2) . '<br>';
 echo '<br>';
 
 	if (admin_only() && settings['debug_mode']) {
@@ -25,3 +20,4 @@ echo '<br>';
 <?php
 	exit ();
 ?>
+

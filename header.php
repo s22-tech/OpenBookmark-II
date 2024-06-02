@@ -27,13 +27,10 @@
 
 <?php
 
-// 	if (is_file(realpath(DOC_ROOT . '/install/install.php'))) {
-// 		message ('Remove "/install/install.php" before using OpenBookmark.');
-// 	}
 
 	if ($display_login_form) {
 		$auth->display_login_form ();
-		require_once(realpath(DOC_ROOT .'/footer.php'));
+		require_once(realpath(DOC_ROOT .'/footer.inc.php'));
 	}
 
 ?>

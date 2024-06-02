@@ -93,7 +93,6 @@
 	function sub_dir_bool_check() {
 		$root = $_SERVER['DOCUMENT_ROOT'];
 		$file_path = dirname(__DIR__, 1);  // Gives path of config.php
-// echo 'file_path: '. $file_path . '<br>';
 
 		if ($root == $file_path) {
 			return false;  // Installed in the root.
@@ -107,3 +106,4 @@
 /*
 javascript:(function(){bmadd=window.open('https://obm.domain.com/bookmarks/new_bookmark.php?title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'bmadd','toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes,width=500,height=500,left=50,top=50');setTimeout(function(){bmadd.focus();});})();
 */
+

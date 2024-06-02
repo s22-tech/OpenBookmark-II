@@ -338,5 +338,5 @@
 	}
 
 	print_footer();
-	require_once(realpath(DOC_ROOT . '/footer.php'));
+	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 ?>

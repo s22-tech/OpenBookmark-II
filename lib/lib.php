@@ -565,8 +565,6 @@ function get_current_url($url) {
 	$code = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 	curl_close($ch);
 	
-// 		echo '<pre>'; print_r($parts); echo '</pre>';
-// 		$scheme = parse_url($code, PHP_URL_SCHEME);
 	$host   = parse_url($code, PHP_URL_HOST);
 
 	return $host;
@@ -593,16 +591,6 @@ function print_r_pre($object) {
 	echo '<pre>';
 	print_r($object);
 	echo  '</pre>';
-// 	if (is_array($object)) {
-// 		echo '<pre>';
-// 		print_r($object);
-// 		echo  '</pre>';
-// 	}
-// 	else {
-// 		echo '<pre>';
-//       var_dump($object);
-// 		echo  '</pre>';
-//     }
 }
 
 
@@ -613,3 +601,4 @@ if (!function_exists('mysql_result')) {
 		return $row[$field];
 	}
 }
+

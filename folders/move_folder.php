@@ -7,7 +7,6 @@
 	$tree = new Folder();
 	$parents = $tree->get_path_to_root($folderid);
 	
-// echo '$folderid: '. $folderid . '<br>';  //:debug
 
 	if ($sourcefolder == '') {
 ?>

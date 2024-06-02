@@ -28,9 +28,6 @@ class mysql {
 		if (!$this->conn) {
 			$this->error = mysqli_error($this->conn);
 		}
-// 		if (! mysqli_select_db($this->con, $cfg['dsn']['database'])) {
-// 			$this->error = mysqli_error($this->conn);
-// 		}
 		return $this->conn;
 	}
 

@@ -127,7 +127,7 @@
 
 <?php
 		print_footer();
-		require_once(realpath(DOC_ROOT . '/footer.php'));
+		require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 	}
 	else {
 	  // These files are being included, because we do not want to include

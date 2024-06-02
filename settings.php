@@ -27,6 +27,7 @@
 			'simple_tree_mode'          => set_post_bool_var('settings_simple_tree_mode', false),
 			'show_public'               => set_post_bool_var('settings_show_public', false),
 			'private_mode'              => set_post_bool_var('settings_private_mode', false),
+			'debug_mode'                => set_post_bool_var('settings_debug_mode', false),
 			'theme'                     => set_post_string_var('settings_theme', ''),
 		];
 
@@ -52,6 +53,7 @@
 				`simple_tree_mode`          = '%d',
 				`show_public`               = '%d',
 				`private_mode`              = '%d',
+				`debug_mode`                = '%d',
 				`theme`                     = '%s'
 			WHERE `username` = '%s'",
 
@@ -74,6 +76,7 @@
 			$settings['simple_tree_mode'],
 			$settings['show_public'],
 			$settings['private_mode'],
+			$settings['debug_mode'],
 			$mysql->escape($settings['theme']),
 			$mysql->escape($username)
 		);
@@ -302,6 +305,13 @@
 				</tr>
 
 				<tr>
+					<td>Turn debug mode on</td>
+					<td>
+						<input type="checkbox" name="settings_debug_mode" <?php if ($settings['debug_mode'] == 1) { echo 'checked'; } ?>>
+					</td>
+				</tr>
+
+				<tr>
 					<td></td>
 					<td>
 						<input type="submit" value="Apply" name="settings_apply"> <?php echo $message; ?>
@@ -392,5 +402,5 @@
 
 <?php
 	print_footer();
-	require_once(realpath(DOC_ROOT . '/footer.php'));
+	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
 ?>
