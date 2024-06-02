@@ -206,6 +206,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 			$target = null;
 		}
 
+	  // *** Trigger this link with JavaScript to set the `last_visit` field in the bookmark table.
 		if ($show_link) {
 			$link = '<a class="bookmark_href" href="/bookmarks/trigger_db_call.php?id='. $value['id'] .'&url='. $value['url'] .'"'. $target .'>'. $value['title'] .'</a>';
 		}
@@ -230,5 +231,4 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 	}
 	echo '</form>' . PHP_EOL;
 }
-
 

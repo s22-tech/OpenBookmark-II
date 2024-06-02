@@ -168,4 +168,3 @@ class sidebar
 
 	require_once(realpath(DOC_ROOT .'/footer.inc.php'));
 ?>
-

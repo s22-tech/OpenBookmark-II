@@ -32,6 +32,7 @@
 				$('#' + $(this).attr('target')).toggle('blind', options, 300);
 			});
 
+//: 			setupFolderIntercepts();  // #1
 			setupBookmarkIntercepts();
 
 			$('#gsearchtext').focus();
@@ -68,6 +69,7 @@
 				var url = $(this).attr('href');
 				var bookmarkurl = url.replace('index.php', 'bookmarks/async_bookmarks.inc.php');
 
+//: 				$('.bookmarks').addClass('loading-anim');  // Continuously redraws loading.gif  Why???
 				$('.bookmarks').load(bookmarkurl, setupBookmarkIntercepts);
 
 				return false;

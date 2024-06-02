@@ -98,6 +98,10 @@
 
 
 ///////////////////////////
+//: SAVE Favicon
+//: Saving the favicon in a separate second step is done because
+//: we want to make sure the bookmark is saved in any case,
+//: since the favicon is not as important.
 ///////////////////////////
 		if ($settings['show_bookmark_icon']) {
 			require_once(realpath(DOC_ROOT . '/favicon.inc.php'));
