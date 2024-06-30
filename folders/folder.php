@@ -1,4 +1,5 @@
 <?php
+
 if (basename ($_SERVER['SCRIPT_NAME']) == basename (__FILE__)) {
 	die ('No direct access allowed.');
 }
@@ -26,19 +27,27 @@ class Folder
 		$this->get_children = [];
 		$this->level = 0;
 		$this->foreign_username = false;
+// echo '$user: '. $user . '<br>';
 
+// This section collapses the folder tree upon bookmark deletions, etc.  Why???
+		if ($user) {
+			$this->get_shared_data($user);
+		}
+		else {
+			$this->get_user_data();
+		}
 		$this->get_user_data();
 
 		if ($settings['simple_tree_mode']) {
 			$this->expand = $this->get_path_to_root($this->folderid);
 		}
 
-	  // Searching for invalid folderid in GET variable.
+	  // Check for invalid folderid in GET variable.
 		if (!array_key_exists($this->folderid, $this->folders)) {
 			$this->folderid = 0;
 		}
 
-	  // Searching for invalid expand entries.
+	  // Check for invalid expand entries.
 		foreach ($this->expand as $key => $value) {
 			if (!array_key_exists($value, $this->folders)) {
 				unset($this->expand[$key]);
@@ -51,10 +60,14 @@ class Folder
 		$query = sprintf("
 			SELECT `id`, `childof`, `name`, `public`
 			FROM `obm_folders`
-			WHERE `user`='%s' AND `deleted`!='1'
+			WHERE `user` = '%s' AND `deleted` != '1'
 			ORDER BY `name`",
 				$mysql->escape($_SESSION['username'])
 		);
+// echo '<pre>Result:' . PHP_EOL;
+// print_r(mysqli_fetch_assoc($mysql->result));
+// echo 'username: '. $_SESSION['username'] . PHP_EOL;
+// echo '</pre>';	
 		if ($mysql->query($query)) {
 			while ($row = mysqli_fetch_assoc($mysql->result)) {
 				$this->folders[$row['id']] = $row;
@@ -159,7 +172,7 @@ class Folder
 
 	  // Depending on who's bookmarks are being displayed, we set some variables differently.
 		if (!empty($this->foreign_username)) {
-			$root_folder_name = $this->foreign_username . "'s Bookmarks";
+			$root_folder_name = ucwords($this->foreign_username) . "'s Bookmarks";
 			$user_var = "&amp;user=$this->foreign_username";
 		}
 		else {
@@ -175,19 +188,26 @@ class Folder
 			'public' => 0,
 		];
 		if (isset($this->tree)) {
+		  // Add root folder to tree.
 			array_unshift($this->tree, $root_folder);
 		}
 
 	  // The top folder shows up too high at the top. Draw a little space there.
 		echo '<div class="foldertop"></div>' . PHP_EOL;
 
+// usort($this->tree, function ($folder1, $folder2) {
+//     return $folder1['name'] <=> $folder2['name'];
+// });
+// array_multisort(array_column($this->tree, 'name'), SORT_ASC, SORT_NATURAL|SORT_FLAG_CASE, $this->tree);
+// echo '<pre>'; print_r($this->tree); echo '</pre>';
 
 		foreach ($this->tree as $key => $value) {
 		  // This is the begining of the line that shows a folder
-		  // with the symbol (plus, minus or neutral).
+		  // with the symbol (plus, minus, or neutral).
 			$spacer = '<div style="margin-left:' . $value['level'] * 20 . 'px;">';
 			echo $spacer;
 
+// echo 'v: '. $value['id'] .' &mdash; f: '. $this->folderid . '<br>';
 			if ($value['id'] == $this->folderid) {
 				$folder_name = '<span class="active">' . $value['name'] . '</span>';
 				if (!$this->foreign_username && $value['public']) {
@@ -214,6 +234,7 @@ class Folder
 				$anchor = '';
 			}
 
+			$scroll = '';
 			if ($value['symbol'] == 'plus' || $value['symbol'] == 'minus') {
 				if ($value['symbol'] == 'plus') {
 					$symbol = $plus;
@@ -247,6 +268,8 @@ class Folder
 				echo '&folderid=' . $folderid  . $user_var . $anchor . '">' . $symbol . '</a>';
 			}
 			else {
+			  // When there are no sub-folders.
+				if (str_contains($_SERVER['PHP_SELF'], 'index.php')) $scroll = '&scroll=top';
 				$symbol = $neutral;
 				$expand_f = $this->expand;
 				echo $symbol;
@@ -255,8 +278,8 @@ class Folder
 		  // This prints the folder name with it's appropriate HTML link...
 			$bm_list = '';
 			if (!empty($bmlist)) $bm_list = '&bmlist='. $bmlist;
-			echo '<a folderid="'.$value['id'].'" class="f flink" href="' . $scriptname . '?expand=' . implode(',', $expand_f);
-			echo $bm_list . '&folderid=' . $value['id'] . $user_var . $anchor . '" name="' . $value['id'] . '">' . $folder_image . ' ' . $folder_name . '</a>';
+			echo '<a folderid="'.$value['id'] .'" class="f flink" href="'. $scriptname .'?expand='. implode(',', $expand_f);
+			echo $bm_list . '&folderid=' . $value['id'] . $user_var . $anchor . $scroll .'" name="'. $value['id'] . '">' . $folder_image .' '. $folder_name . '</a>';
 			echo '</div>' . PHP_EOL;
 		}
 	}
@@ -288,10 +311,15 @@ class Folder
 	### a given folder up to the root folder.
 	###
 	function get_path_to_root($id) {
+// echo '$id: '. $id . '<br>';
 		$path = [];
 		while ($id > 0) {
 			array_push($path, $id);
 
+// echo '<pre>';
+// print_r($path);
+// echo 'x: '. $this->folders[$id] . '<br>';
+// echo '</pre>';
 
 			if (empty($this->folders[$id])) {
 				echo "Folder #{$id} does not have a parent";  //:debug
@@ -333,4 +361,3 @@ class Folder
 		}
 	}
 }
-

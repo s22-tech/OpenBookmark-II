@@ -1,0 +1,19 @@
+Host: https://obm.s22.us
+
+###################################
+
+# https://www.beussery.com/blog/index.php/2014/06/robots-txt-disallow-20/
+
+# Disallowing a URL prevents search engines from seeing HTTP headers and meta tags, i.e.
+# adding a page to robots.txt that has "noindex" in the meta tag will prevent that meta tag from being read by search engines.
+
+# http://www.elegantthemes.com/blog/tips-tricks/how-to-create-and-configure-your-robots-txt-file
+
+
+# <meta name="robots" content="noindex,nofollow,noarchive" />
+# <meta name="robots" content="index,follow" />
+
+# <meta HTTP-EQUIV="REFRESH" content="0; url=http://www.your^domain.com/index.html">
+
+# Robots directives for Disallow/Allow are case-sensitive.
+# Use the correct capitalization to match your web site.

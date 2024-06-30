@@ -28,6 +28,7 @@ class mysql {
 		if (!$this->conn) {
 			$this->error = mysqli_error($this->conn);
 		}
+
 		return $this->conn;
 	}
 

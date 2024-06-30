@@ -1,5 +1,5 @@
 <?php
-	require_once(realpath(dirname(__DIR__, 1) . '/header.php'));
+	require_once(realpath(dirname(__DIR__, 1) . '/includes/header.php'));
 	logged_in_only();
 
 	$foldername = set_post_foldername();
@@ -119,5 +119,5 @@
 		}
 	}
 
-	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
+	require_once(realpath(DOC_ROOT . '/includes/footer.inc.php'));
 ?>

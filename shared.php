@@ -76,7 +76,7 @@
 	<div class="bookmarks" style="height: <?php echo (($table_height == 0) ? "auto" : $table_height); ?>;">
 
 <?php
-		require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
+		require_once(realpath(DOC_ROOT . '/bookmarks/bookmark.php'));
 		$query = sprintf("
 			SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(`date_created`) AS timestamp, `id`, `favicon`
 			FROM `obm_bookmarks`

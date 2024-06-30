@@ -5,11 +5,8 @@
 	$mysql = new mysql;
 
 	$id  = $_GET['id'];
-	$url = $_GET['url'];
 
 	set_last_visit($id);
-
-	header('Location: '. $url);
 
 
 	function set_last_visit($id) {
@@ -24,10 +21,5 @@
 		$mysql->query($update_query);
 	}
 
-	exit;
-
 __halt_compiler();
-
-
-$link = '<a class="bookmark_href" href="'. $value['url'] .'" title="'. $value['url'] .'"'. $target .'>'. $value['title'] .'</a>';
 

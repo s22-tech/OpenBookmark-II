@@ -1,6 +1,6 @@
 <?php
 
-	require_once(realpath(dirname(__DIR__, 1) . '/header.php'));
+	require_once(realpath(dirname(__DIR__, 1) . '/includes/header.php'));
 	global $conn;
 
 	$get_title = set_title();
@@ -13,6 +13,7 @@
 	$post_description = set_post_description();
 	$post_childof     = set_post_childof();
 	$post_public      = set_post_bool_var('public', false);
+	$folderid         = set_get_folderid();  // This allows the root folder to be selected in the list.
 
 	require_once(realpath(DOC_ROOT . '/folders/folder.php'));
 	$tree = new Folder();
@@ -58,7 +59,7 @@
 		<p><input type="button" value="Select folder" onclick="window.childof=document.forms['bmnew'].childof; window.path=document.forms['bmnew'].path; selectfolder('<?php echo $cfg['sub_dir']; ?>', '<?php echo $query_string; ?>')">
 		<br>
 		<input type="text" name="path" value="<?php echo $path; ?>" size="50" readonly>
-		<input type="text" name="childof" value="<?php echo $folderid; ?>" size="4" class="invisible" readonly></p>
+		<input type="text" name="childof" value="<?php echo $folderid; ?>" size="4" <?php /*class="invisible"*/ ?> readonly></p>
 		<p>Tags
 		<br>
 		<input type=text name="tags" size="50" value="Not yet working"></p>
@@ -74,6 +75,28 @@
 <?php
 	}
 	else {
+
+	  // Check length of URL and show message if too long.  Amazon links can be overly long.
+		$char_length_query = sprintf("
+			SELECT character_maximum_length
+			FROM information_schema.columns
+			WHERE TABLE_NAME = 'obm_bookmarks' AND COLUMN_NAME = 'url';
+		");
+
+		if ($mysql->query($char_length_query)) {
+			$row = mysqli_fetch_assoc($mysql->result);
+			$url_char_length = $row['character_maximum_length'];
+			if (strlen($post_url) > $url_char_length) {
+				die('&nbsp; <br>
+					<strong> URL is too long. </strong> <br>
+					Shorten it and try again. <br> <br>
+					<form action="'. $_SERVER['SCRIPT_NAME'] .'"?folderid="'. $folderid .'; ?>" id="bm-error" method="post">
+						<input type="submit" value=" OK " onclick="history.back();">
+					</form>
+				');
+			}
+		}
+		
 		$query = sprintf("
 			INSERT INTO `obm_bookmarks` (`user`, `title`, `url`, `description`, `childof`, `public`, `date_created`)
 			VALUES ('%s', '%s', '%s', '%s', '%d', '%d', '%s')",
@@ -90,22 +113,25 @@
 			$bm_id = mysqli_insert_id($mysql->conn);  // Returns the value generated for an AUTO_INCREMENT column by the last query.
 			// https://www.php.net/manual/en/mysqli.insert-id.php
 			// Using $mysql->insert_id produces "Undefined property: mysql::$insert_id".
+// 			$bm_id = $pdo->lastInsertId();  // PDO equivalent -- https://www.php.net/pdo.lastinsertid
 		}
 		else {
 			message($mysql->error);
 		}
 		unset($_SESSION['title'], $_SESSION['url']);
 
+debug_logger(variable:$post_url, name:'post_url', file:__FILE__, function:__FUNCTION__);
 
 ///////////////////////////
-//: SAVE Favicon
-//: Saving the favicon in a separate second step is done because
-//: we want to make sure the bookmark is saved in any case,
-//: since the favicon is not as important.
+// SAVE Favicon
+// Saving the favicon in a separate second step is done because
+// we want to make sure the bookmark is saved in any case,
+// since the favicon is not as important.
 ///////////////////////////
 		if ($settings['show_bookmark_icon']) {
-			require_once(realpath(DOC_ROOT . '/favicon.inc.php'));
+			require_once(realpath(DOC_ROOT . '/includes/favicon.inc.php'));
 			$favicon = new Favicon($post_url);
+debug_logger(variable:print_r($favicon, true), name:'favicon-object', file:__FILE__, function:__FUNCTION__);
 
 			if (!empty($favicon->favicon)) {
 				$update_query = sprintf("
@@ -117,6 +143,7 @@
 						$mysql->escape($username),
 						$mysql->escape($bm_id)
 				);
+debug_logger(variable:$update_query, name:'update-query', file:__FILE__, function:__FUNCTION__);
 				if (!$mysql->query($update_query)) {
 					message($mysql->error);
 				}
@@ -124,6 +151,8 @@
 			}
 			else {
 				$icon = $bookmark_image;
+debug_logger(variable:$icon, name:'favicon->favicon was NOT set', file:__FILE__, function:__FUNCTION__);
+debug_logger(variable:debug_backtrace(), name:'debug_backtrace()', file:__FILE__, function:__FUNCTION__);
 			}
 		}
 
@@ -140,5 +169,5 @@
 			echo '<script> self.close(); </script>';
 		}
 	}
-	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
+	require_once(realpath(DOC_ROOT . '/includes/footer.inc.php'));
 ?>

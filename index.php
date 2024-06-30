@@ -2,7 +2,7 @@
 
 	declare(strict_types = 1);  // When used, must be the first line called in a script.
 
-	require_once(realpath(__DIR__ . '/header.php'));
+	require_once(realpath(__DIR__ . '/includes/header.php'));
 	logged_in_only();
 	
 	if (isset($_GET['logout']) && $_GET['logout'] == 1) $auth->logout();
@@ -15,9 +15,9 @@
 		$search_mode = false;
 	}
 
-	$order = set_get_order();
-	
+	$order    = set_get_order();
 	$settings = $_SESSION['settings'];
+	$folderid = set_get_folderid();  // This allows the root folder to be selected in the list.
 ?>
 
 <?php if (!$search_mode) : ?>
@@ -32,7 +32,7 @@
 				$('#' + $(this).attr('target')).toggle('blind', options, 300);
 			});
 
-//: 			setupFolderIntercepts();  // #1
+// 			setupFolderIntercepts();  // #1
 			setupBookmarkIntercepts();
 
 			$('#gsearchtext').focus();
@@ -51,6 +51,7 @@
 				//	$('#folders').toggle('blind',{},300);
 
 				selected_folder_id = $(this).attr('folderid');
+				console.log(selected_folder_id);  //:debug
 
 				$('.folders').addClass('loading-anim');    // Continuously redraws loading.gif  Why???
 				$('.bookmarks').addClass('loading-anim');  //  ""     ""
@@ -126,11 +127,11 @@
 		<h2 class="nav mnu" target="mnu_bookmarks">Bookmarks</h2>
 		<ul class="nav" id="mnu_bookmarks">
 <?php if ($search_mode) : ?>
-		  <li><a href="<?= $cfg['sub_dir'] ?>/index.php"><?php echo $settings['root_folder_name']; ?></a></li>
+		  <li><a href="<?= $cfg['sub_dir'] ?>/index.php"><?= $settings['root_folder_name']; ?></a></li>
 <?php endif ?>
 		  <li><a href="javascript:bookmarknew('<?= $cfg['sub_dir'] ?>', '<?= $folderid; ?>')">New Bookmark</a></li>
 		  <li><a href="javascript:bookmarkedit('<?= $cfg['sub_dir'] ?>', checkselected())">Edit Bookmarks</a></li>
-		  <li><a href="javascript:bookmarkmove('<?= $cfg['sub_dir'] ?>', checkselected())">Move Bookmarks</a></li>
+		  <li><a href="javascript:bookmarkmove('<?= $cfg['sub_dir'] ?>', checkselected(), '<?= $folderid; ?>')">Move Bookmarks</a></li>
 		  <li><a href="javascript:bookmarkdelete('<?= $cfg['sub_dir'] ?>', checkselected())">Delete Bookmarks</a></li>
 		  <li><a href="<?= $cfg['sub_dir'] ?>/shared.php">Shared Bookmarks</a></li>
 		</ul>
@@ -140,9 +141,9 @@
 		<h2 class="nav mnu" target="mnu_folders">Folders</h2>
 		<ul class="nav" id="mnu_folders">
 			<li><a href="javascript:foldernew('<?= $cfg['sub_dir'] ?>', '<?= $folderid; ?>')">New Folder</a></li>
-			<li><a href="javascript:folderedit('<?= $cfg['sub_dir'] ?>', '<?php echo $folderid; ?>')">Edit Folder</a></li>
-			<li><a href="javascript:foldermove('<?= $cfg['sub_dir'] ?>', '<?php echo $folderid; ?>')">Move Folder</a></li>
-			<li><a href="javascript:folderdelete('<?= $cfg['sub_dir'] ?>', '<?php echo $folderid; ?>')">Delete Folder</a></li>
+			<li><a href="javascript:folderedit('<?= $cfg['sub_dir'] ?>', '<?= $folderid; ?>')">Edit Folder</a></li>
+			<li><a href="javascript:foldermove('<?= $cfg['sub_dir'] ?>', '<?= $folderid; ?>')">Move Folder</a></li>
+			<li><a href="javascript:folderdelete('<?= $cfg['sub_dir'] ?>', '<?= $folderid; ?>')">Delete Folder</a></li>
 			<li><a href="/index.php?expand=&amp;folderid=0">Collapse All</a></li>
 		</ul>
 		</div>
@@ -150,9 +151,9 @@
 		<div class="navblock">
 		<h2 class="nav mnu" target="mnu_tools">Tools</h2>
 		<ul class="nav" id="mnu_tools">
-<?php if (admin_only()) : ?>
+<?php if (admin_only()): ?>
 			<li><a href="<?= $cfg['sub_dir'] ?>/admin.php">Admin</a></li>
-<?php endif ?>
+<?php endif; ?>
 			<li><a href="<?= $cfg['sub_dir'] ?>/import.php">Import</a></li>
 			<li><a href="<?= $cfg['sub_dir'] ?>/export.php">Export</a></li>
 			<li><a href="<?= $cfg['sub_dir'] ?>/index.php?search=[dupe_check_bookmarks]">Find Duplicates</a></li>
@@ -167,8 +168,7 @@
 	<!-- Main content starts here. -->
 	<div id="main">
 
-			<?php if ($search_mode): ?>
-
+<?php if ($search_mode): ?>
 			<div style="height: <?php echo ($settings['table_height'] == 0) ? "auto" : $settings['table_height']; ?>; overflow:auto;">
 
 				<div class="bookmark">
@@ -203,20 +203,20 @@
 		}
 
 		if (count($bookmarks) > 0) {
-			require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
+			require_once(realpath(DOC_ROOT . '/bookmarks/bookmark.php'));
 			list_bookmarks(
-				bookmarks: $bookmarks,
+				bookmarks:     $bookmarks,
 				show_checkbox: true,
-				show_folder: true,
-				show_icon: $settings['show_bookmark_icon'],
-				show_link: true,
-				show_desc: $settings['show_bookmark_description'],
-				show_date: $settings['show_column_date'],
-				show_edit: $settings['show_column_edit'],
-				show_move: $settings['show_column_move'],
-				show_delete: $settings['show_column_delete'],
-				show_share: $settings['show_public'],
-				show_header: false
+				show_folder:   true,
+				show_icon:     $settings['show_bookmark_icon'],
+				show_link:     true,
+				show_desc:     $settings['show_bookmark_description'],
+				show_date:     $settings['show_column_date'],
+				show_edit:     $settings['show_column_edit'],
+				show_move:     $settings['show_column_move'],
+				show_delete:   $settings['show_column_delete'],
+				show_share:    $settings['show_public'],
+				show_header:   false
 			);
 		}
 		else {
@@ -227,10 +227,9 @@
 		message($mysql->error);
 	}
 ?>
-
 			</div>
 
-<?php else : ?>
+<?php else: ?>
 
 	<!-- Folders start here. -->
 	<h2 id="folders-head" class="mobile nav mnu" target="folders"> Folders </h2>
@@ -255,16 +254,17 @@
 	<div class="bookmarks" style="height: <?php echo ($settings['table_height'] == 0) ? 'auto' : $settings['table_height']; ?>;">
 
 <?php
-	require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
+	require_once(realpath(DOC_ROOT . '/bookmarks/bookmark.php'));
 	$query = sprintf("
-		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(`last_visit`) AS timestamp, UNIX_TIMESTAMP(`date_created`) AS creation, `id`, `favicon`, `public`
+		SELECT `title`, `url`, `description`, UNIX_TIMESTAMP(`last_visit`) AS `timestamp`, UNIX_TIMESTAMP(`date_created`) AS `creation`, `id`, `favicon`, `public`
 		FROM `obm_bookmarks`
 		WHERE `user` = '%s'
 		AND `childof` = '%d'
 		AND `deleted` != '1'
 		ORDER BY $order[1]",
 			$mysql->escape($username),
-			$mysql->escape($folderid));
+			$mysql->escape($folderid)
+	);
 
 	if ($mysql->query($query)) {
 		$bookmarks = [];
@@ -289,13 +289,17 @@
 		message($mysql->error);
 	}
 
+// echo 'folderid: '. $folderid . '<br>';
+// print_r_pre($_SESSION);
+// print_r_pre($_POST);
+
 ?>
 	<!--javascript:(function(){bmadd=window.open('https://domain.com/bookmarks/new_bookmark.php?title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'bmadd','toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes,width=500,height=500,left=50,top=50');setTimeout(function(){bmadd.focus();});})(); -->
 
 	<!-- Bookmarks ends here. -->
 	</div>
 
-<?php endif ?>
+<?php endif; ?>
 
 
 	<!-- Main content ends here. -->
@@ -306,8 +310,36 @@
 
 <?php
 	print_footer();
-	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
-
+	require_once(realpath(DOC_ROOT . '/includes/footer.inc.php'));
 
 	#1] This prevented GET variables from being accessible, e.g. $folderid.  Why???
+
 ?>
+
+<script>
+  // Scroll to top of screen only when changing folders and there are not sub-folders.
+	var parts = window.location.href.substr(1).split('&');
+	var $_GET = {};
+	for (var i = 0; i < parts.length; i++) {
+		var temp = parts[i].split('=');
+		$_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+	}
+	if ($_GET['scroll'] == 'top') {
+		$(document).ready(function() {
+			$(this).scrollTop(0);
+		});
+	}
+	else {
+		document.addEventListener('DOMContentLoaded', function (event) {
+			var scroll_pos = localStorage.getItem('scroll_pos');
+			if (scroll_pos) window.scrollTo(0, scroll_pos);
+		});
+
+		window.onscroll = function (e) {
+			localStorage.setItem('scroll_pos', window.scrollY);
+		};
+	}
+/*
+It listens for the onscroll event on the window and updates a localStorage item called "scroll_pos" each time the onscroll event fires.
+*/
+</script>

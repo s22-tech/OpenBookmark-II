@@ -1,1 +1,1 @@
-The /tmp directory will hold the downloaded favicons while the script converts them.
+This is the temporary directory for the downloaded favicons.

@@ -127,6 +127,7 @@ class HtmlDocument
 	{
 		if ($str) {
 			if (preg_match('#^http://#i', $str) || strlen($str) <= PHP_MAXPATHLEN && is_file($str)) {
+// 				$this->load_file($str);
 				$this->loadFile($str);
 			}
 			else {
@@ -206,7 +207,7 @@ class HtmlDocument
 			Debug::log('Support for server-side scripts has been deprecated and will be removed in the next major version of simplehtmldom.');
 		}
 
-		if ($options & HDOM_SMARTY_AS_TEXT) { // Strip Smarty scripts
+		if ($options & HDOM_SMARTY_AS_TEXT) {  // Strip Smarty scripts
 			$this->remove_noise("'(\{\w)(.*?)(\})'s", true);
 			// phpcs:ignore Generic.Files.LineLength
 			Debug::log('Support for Smarty scripts has been deprecated and will be removed in the next major version of simplehtmldom.');
@@ -574,7 +575,7 @@ class HtmlDocument
 					if (($this->pos + 3) > $this->size) { // End of document
 						Debug::log('Source document ended unexpectedly!');
 						break;
-					} elseif (substr($this->doc, $this->pos, 3) === '-->') { // end
+					} elseif (substr($this->doc, $this->pos, 3) === '-->') {  // end
 						$data .= $this->copy_until_char('>');
 						break;
 					}
@@ -1122,4 +1123,3 @@ class HtmlDocument
 		}
 	}
 }
-

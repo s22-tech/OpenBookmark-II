@@ -33,7 +33,8 @@ function message($message) {
 	if (isset($message)) {
 		echo '<p>' . $message . '</p>';
 	}
-	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
+	require_once(realpath(DOC_ROOT . '/includes/footer.inc.php'));
+	exit;
 }
 
 
@@ -42,10 +43,11 @@ function message($message) {
  * Displays a link to login if not and exit application.
  */
 function logged_in_only() {
-	if (empty($_SESSION['logged_in']) || ! $_SESSION['logged_in']) {
+	if (empty($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
 		global $auth;
 		$auth->display_login_form();
-		require_once(realpath(DOC_ROOT . '/footer.inc.php'));
+		require_once(realpath(DOC_ROOT . '/includes/footer.inc.php'));
+		exit;
 	}
 }
 
@@ -59,6 +61,7 @@ function input_validation($data, $charset = 'UTF-8') {
 	else {
 		$data = htmlentities(trim($data), ENT_QUOTES, $charset);
 	}
+// debug_logger(name:'LIB-data', variable:$data, file:__FILE__, function:__FUNCTION__);
 	return $data;
 }
 
@@ -93,12 +96,13 @@ function set_get_expand() {
 
 
 function set_get_folderid() {
-	if (empty($_GET['folderid']) || $_GET['folderid'] == '' || !is_numeric($_GET['folderid'])) {
+	if (!isset($_GET['folderid']) || $_GET['folderid'] === '' || !is_numeric($_GET['folderid'])) {
+	  // DO NOT check for "empty" here, as folderid='0' will be flagged as empty.
 		if (isset($_SESSION['folderid'])) {
 			$return = $_SESSION['folderid'];
 		}
 		else {
-			$return = 0;
+			$return = '0';
 		}
 	}
 	else {
@@ -106,7 +110,7 @@ function set_get_folderid() {
 	}
 	$return = input_validation($return);
 	$_SESSION['folderid'] = $return;
-	return ($return);
+	return $return;
 }
 
 
@@ -241,7 +245,7 @@ function set_get_order() {
 
 function set_post_childof() {
 	if (empty($_POST['childof']) || $_POST['childof'] == '' || !is_numeric($_POST['childof'])) {
-		$return = 0;
+		$return = '0';
 	}
 	else {
 		$return = $_POST['childof'];
@@ -305,9 +309,20 @@ function set_post_sourcefolder() {
 }
 
 
+function set_post_sourcefolderx($post) {
+	if (empty($post['sourcefolder']) || $post['sourcefolder'] == '' || !is_numeric($post['sourcefolder'])) {
+		$return = '';
+	}
+	else {
+		$return = $post['sourcefolder'];
+	}
+	return input_validation($return);
+}
+
+
 function set_post_parentfolder() {
 	if (empty($_POST['parentfolder']) || $_POST['parentfolder'] == '' || !is_numeric($_POST['parentfolder'])) {
-		$return = 0;
+		$return = '0';
 	}
 	else {
 		$return = $_POST['parentfolder'];
@@ -431,7 +446,7 @@ function set_post_string_var($varname, $default = '') {
 	return input_validation($return);
 }
 
-function set_post_num_var($varname, $default = 0) {
+function set_post_num_var($varname, $default = '0') {
 	if (empty($_POST[$varname]) || $_POST[$varname] == '' || !is_numeric($_POST[$varname])) {
 		$return = $default;
 	}
@@ -446,7 +461,7 @@ function set_post_bool_var($varname, $default = true) {
 	if (empty($_POST[$varname])) {
 		$return = $default;
 	}
-	elseif (! $_POST[$varname] ) {
+	elseif (!$_POST[$varname] ) {
 		$return = false;
 	}
 	elseif ($_POST[$varname] ) {
@@ -459,7 +474,7 @@ function set_post_bool_var($varname, $default = true) {
 }
 
 
-function set_get_num_list($varname) : array {
+function set_get_num_array($varname) : array {
 	if (empty($_GET[$varname]) || $_GET[$varname] == '') {
 		$return = [];
 	}
@@ -470,7 +485,7 @@ function set_get_num_list($varname) : array {
 }
 
 
-function set_post_num_list($varname) : array {
+function set_post_num_array($varname) : array {
 	if (empty($_POST[$varname]) || $_POST[$varname] == '') {
 		$return = [];
 	}
@@ -485,7 +500,7 @@ function set_post_num_list($varname) : array {
  * This function checks the values of each entry in an array.
  * It returns an array with unique and only numeric entries.
  */
-function set_num_array($array){
+function set_num_array($array) {
 	foreach ($array as $key => $value) {
 		if ($value == '' || !is_numeric($value)) {
 			unset($array[$key]);
@@ -565,6 +580,8 @@ function get_current_url($url) {
 	$code = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 	curl_close($ch);
 	
+// 		echo '<pre>'; print_r($parts); echo '</pre>';
+// 		$scheme = parse_url($code, PHP_URL_SCHEME);
 	$host   = parse_url($code, PHP_URL_HOST);
 
 	return $host;
@@ -573,8 +590,12 @@ function get_current_url($url) {
 
 function debug_logger($name, $variable, $file, $function, $newline=true, $time='') {
 	global $cfg, $settings;
-	[$function] = explode('(', $function);
-	if ($settings['debug_mode']) {
+	if ($_SESSION['settings']['debug_mode'] == 1) {
+		if (str_contains($name, '---')) {	
+			error_log('=================================================================' . PHP_EOL . PHP_EOL, 3, $cfg['debug_log']);
+			return;
+		}
+		[$function] = explode('(', $function);
 		if (is_array($variable)) {
 			$variable = print_r($variable, true);
 		}
@@ -587,10 +608,21 @@ function debug_logger($name, $variable, $file, $function, $newline=true, $time='
 }
 
 
-function print_r_pre($object) {
+function print_r_pre($object, $title='') {
 	echo '<pre>';
+	if (!empty($title)) echo '$'. $title .' -- ';
 	print_r($object);
 	echo  '</pre>';
+// 	if (is_array($object)) {
+// 		echo '<pre>';
+// 		print_r($object);
+// 		echo  '</pre>';
+// 	}
+// 	else {
+// 		echo '<pre>';
+//       var_dump($object);
+// 		echo  '</pre>';
+//     }
 }
 
 
@@ -601,4 +633,3 @@ if (!function_exists('mysql_result')) {
 		return $row[$field];
 	}
 }
-

@@ -55,13 +55,13 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 		echo '<div class="bookmarkcaption">' . PHP_EOL;
 		if ($show_folder) {
-			echo "\t" . '<div style="width:' . $column_width_folder . '; float: left;">&nbsp;</div>' . PHP_EOL;
+			echo $tab . '<div style="width:' . $column_width_folder . '; float: left;">&nbsp;</div>' . PHP_EOL;
 		}
 
 		if ($show_checkbox) {
-			echo "\t\t" . '<div class="bmleft">' . PHP_EOL;
-			echo "\t\t\t" . '<input type="checkbox" name="CheckAll" onclick="selectthem(\'checkall\', this.checked)">' . PHP_EOL;
-			echo "\t\t" . '</div>' . PHP_EOL;
+			echo $tab . $tab . '<div class="bmleft">' . PHP_EOL;
+			echo $tab . $tab . $tab . '<input type="checkbox" name="CheckAll" onclick="selectthem(\'checkall\', this.checked)">' . PHP_EOL;
+			echo $tab . $tab . '</div>' . PHP_EOL;
 		}
 
 		if ($show_date) {
@@ -75,34 +75,34 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 			}
 			$query_string = assemble_query_string($query_data);
 
-			echo "\t\t" . '<div class="bmright">' . PHP_EOL;
-			echo "\t\t\t" . '<span class="date">' . PHP_EOL;
-			echo "\t\t\t\t" . '<a href="' . $scriptname . '?' . $query_string . '" class="f blink"> Last Visit ' . $img_d . '</a>' . PHP_EOL;
-			echo "\t\t\t" . '</span>' . PHP_EOL;
+			echo $tab . $tab . '<div class="bmright">' . PHP_EOL;
+			echo $tab . $tab . $tab . '<span class="date">' . PHP_EOL;
+			echo $tab . $tab . $tab . $tab . '<a href="' . $scriptname . '?' . $query_string . '" class="f blink"> Last Visit ' . $img_d . '</a>' . PHP_EOL;
+			echo $tab . $tab . $tab . '</span>' . PHP_EOL;
 
 			if ($show_edit) {
-				echo "\t\t\t" . '<img src="'. $cfg['sub_dir'] .'/images/edit.gif"   alt="" class="invisible">' . PHP_EOL;
+				echo $tab . $tab . $tab . '<img src="'. $cfg['sub_dir'] .'/images/edit.gif"   alt="" class="invisible">' . PHP_EOL;
 			}
 			if ($show_move) {
-				echo "\t\t\t" . '<img src="'. $cfg['sub_dir'] .'/images/move.gif"   alt="" class="invisible">' . PHP_EOL;
+				echo $tab . $tab . $tab . '<img src="'. $cfg['sub_dir'] .'/images/move.gif"   alt="" class="invisible">' . PHP_EOL;
 			}
 			if ($show_delete) {
-				echo "\t\t\t" . '<img src="'. $cfg['sub_dir'] .'/images/delete.gif" alt="" class="invisible">' . PHP_EOL;
+				echo $tab . $tab . $tab . '<img src="'. $cfg['sub_dir'] .'/images/delete.gif" alt="" class="invisible">' . PHP_EOL;
 			}
-			echo "\t\t" . '</div>' . PHP_EOL;
+			echo $tab . $tab . '</div>' . PHP_EOL;
 		}
 		
-		echo "\t\t" . '<div class="link">' . PHP_EOL;
+		echo $tab . $tab . '<div class="link">' . PHP_EOL;
 		if ($show_icon) {
-			echo "\t\t\t" . '<img src="'. $cfg['sub_dir'] .'/images/bookmark.gif" alt="" class="invisible">' . PHP_EOL;
+			echo $tab . $tab . $tab . '<img src="'. $cfg['sub_dir'] .'/images/bookmark.png" alt="" class="invisible">' . PHP_EOL;
 		}
 		$query_data ['order'] = $sort_t;
 		$query_string = assemble_query_string($query_data);
 
-		echo "\t\t\t" . '<a href="' . $scriptname . '?' . $query_string . '" class="f blink"> Title ' . $img_t . '</a>' . PHP_EOL;
-		echo '<a id="openAll" style="font-weight:800;float:right; margin-right: 60px;" href="javascript:openAll();">[Open All]</a>';
-		echo "\t\t" . '</div>' . PHP_EOL;
-		echo "\t" . '</div>' . PHP_EOL . PHP_EOL;
+		echo $tab . $tab . $tab . '<a href="' . $scriptname . '?' . $query_string . '" class="f blink"> Title ' . $img_t . '</a>' . PHP_EOL;
+		echo '<a id="openAll" style="font-weight:800;float:right; margin-right: 60px;" href="javascript:open_all();">[Open All]</a>';
+		echo $tab . $tab . '</div>' . PHP_EOL;
+		echo $tab . '</div>' . PHP_EOL . PHP_EOL;
 	}
 
 
@@ -113,6 +113,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 	echo '<form name="bookmarks" action="" class="nav">' . PHP_EOL;
 
+debug_logger(name:'BOOKMARKS', variable: $bookmarks, file: __FILE__, function: __FUNCTION__);
 
 	foreach ($bookmarks as $value) {
 		echo '<div class="bookmark">' . PHP_EOL;
@@ -121,7 +122,7 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 		if ($show_folder) {
 			if ($value['fid'] == null) {
 				$value['name'] = $settings['root_folder_name'];
-				$value['fid'] = 0;
+				$value['fid'] = '0';
 			}
 			if ($value['fpublic']) {
 				$folder_image = $folder_opened_public;
@@ -131,25 +132,25 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 			}
 			$expand = $tree->get_path_to_root($value['fid']);
 			// (($settings['column_width_folder'] == 0) ? "auto" : $settings['column_width_folder'])
-			echo "\t" . '<div style="width:200px; float:left;">';
+			echo $tab . '<div style="width:200px; float:left;">';
 			echo '<a class="f flink" href="./index.php?expand=' . implode(',', $expand) .'&folderid='. $value['fid'] .'#'. $value['fid'] .'&test=BOOKMARKS">';
 			echo $folder_image . ' ' . $value['name'] . '</a>';
 			echo '</div>' . PHP_EOL;
 		}
 
 	  // The checkbox and favicon section.
-		echo "\t" . '<div class="bmleft">' . PHP_EOL;
+		echo $tab . '<div class="bmleft">' . PHP_EOL;
 	  // The checkbox.
 		if ($show_checkbox) {
-			echo "\t\t" . '<input type="checkbox" name="' . $value['id'] . '">' . PHP_EOL;
+			echo $tab . $tab . '<input type="checkbox" name="' . $value['id'] . '">' . PHP_EOL;
 		}
-		echo PHP_EOL . "\t</div>" . PHP_EOL;
+		echo PHP_EOL . $tab . '</div>' . PHP_EOL;
 
 	  // The share, date, and edit/move/delete icon section.
-		echo "\t" . '<div class="bmright">' . PHP_EOL;
+		echo $tab . '<div class="bmright">' . PHP_EOL;
 		if ($show_share) {
 			$share = $value['public'] ? 'public' : 'private';
-			echo "\t\t" . '<span class="' . $share . '">' . $share . '</span>' . PHP_EOL;
+			echo $tab . $tab . '<span class="' . $share . '">' . $share . '</span>' . PHP_EOL;
 		}
 
 		if ($show_date && isset($value['timestamp']) || isset($value['creation'])) {
@@ -159,36 +160,37 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 			else {
 				$date_used = $value['creation'];
 			}
-			echo "\t\t" . '<span class="date">';
+			echo $tab . $tab . '<span class="date">';
 			echo date($cfg['date_formats'][$settings['date_format']], $date_used);
-			echo "\t</span>" . PHP_EOL;
+			echo $tab . '</span>' . PHP_EOL;
 		}
 
 	  // The edit column.
 		if ($show_edit) {
-			echo "\t\t" . "<a href=\"javascript:bookmarkedit('" . $cfg['sub_dir'] ."', '" . $value['id'] . "')\">";
+			echo $tab . $tab . "<a href=\"javascript:bookmarkedit('" . $cfg['sub_dir'] ."', '" . $value['id'] . "')\">";
 			echo sprintf($edit_image, 'Edit');
 			echo '</a>' . PHP_EOL;
 		}
 
 	  // The move column.
 		if ($show_move) {
-			echo "\t\t" . '<a class="bookmark-move" href="javascript:bookmarkmove(\''. $cfg['sub_dir'] ."', '" . $value['id'] . "', '" . 'expand=' . implode(',', $expand) .'&amp;folderid='. $folderid ."')\">";
+			echo $tab . $tab . '<a class="bookmark-move" href="javascript:bookmarkmove(\''. $cfg['sub_dir'] ."', '" . $value['id'] . "', '" . 'expand=' . implode(',', $expand) .'&amp;folderid='. $folderid ."')\">";
 			echo sprintf($move_image, 'Move');
 			echo '</a>' . PHP_EOL;
 		}
 
 	  // The delete column.
 		if ($show_delete) {
-			echo "\t\t" . "<a href=\"javascript:bookmarkdelete('". $cfg['sub_dir'] ."', '" . $value['id'] . "')\">";
+			echo $tab . $tab .  "<a href=\"javascript:bookmarkdelete('". $cfg['sub_dir'] ."', '" . $value['id'] . "')\">";
 			echo sprintf($delete_image, 'Delete');
 			echo '</a>' . PHP_EOL;
 		}
-		echo "\t</div>" . PHP_EOL;
+		echo $tab . '</div>' . PHP_EOL;
 
 	  // The favicon.
-		echo "\t" . '<div class="link">' . PHP_EOL;
-		echo "\t\t";
+		echo $tab . '<div class="link">' . PHP_EOL;
+		echo $tab . $tab;
+// echo '<pre>'; print_r($value); echo '</pre>';  //:debug
 		if ($show_icon) {
 			if ($value['favicon']) {  /*  && is_file($value['favicon']) */
 				echo '<img src="'. $cfg['sub_dir'] .'/icons/'. $value['favicon'] .'" width="'. $cfg['icon_w'] .'" height="'. $cfg['icon_h'] .'" alt="">'. PHP_EOL;
@@ -203,18 +205,18 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 			$target = ' target="_blank"';
 		}
 		else {
-			$target = null;
+			$target = '';
 		}
 
-	  // *** Trigger this link with JavaScript to set the `last_visit` field in the bookmark table.
+	  // Set the `last_visit` field in the `obm_bookmarks` table via AJAX when a link is clicked.
 		if ($show_link) {
-			$link = '<a class="bookmark_href" href="/bookmarks/trigger_db_call.php?id='. $value['id'] .'&url='. $value['url'] .'"'. $target .'>'. $value['title'] .'</a>';
+			$link = '<a class="bookmark_href" href="'. $value['url'] .'"' . $target .' onclick="set_last_visit(\''. $value['id'] ."', '". $value['url'] .'\')">'. $value['title'] .'</a>';
 		}
 		else {
 			$link = $value['title'];
 		}
-		echo "\t\t$link" . PHP_EOL;
-		echo "\t</div>" . PHP_EOL;
+		echo $tab . $tab . $link . PHP_EOL;
+		echo $tab . '</div>'  . PHP_EOL;
 
 	  // The description, if not empty.
 		if ($show_desc && $value['description'] != '') {
@@ -224,11 +226,25 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 			else {
 				$css_extension = '';
 			}
-			echo "\t" . '<div class="description"'. $css_extension .'>'. $value['description'] .'</div>' . PHP_EOL;
+			echo $tab . '<div class="description"'. $css_extension .'> &emsp; &emsp;'. $value['description'] . '</div>' . PHP_EOL;
 		}
 
 		echo '</div>' . PHP_EOL;
 	}
 	echo '</form>' . PHP_EOL;
 }
+?>
 
+<script>
+  // Function invoking AJAX with pure JavaScript -- no jQuery required.
+	function set_last_visit($id) {
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+ 			if (this.readyState == 4 && this.status == 200) {
+ 				window.location.reload(false);
+ 			}
+		};
+		xmlhttp.open('GET', '/bookmarks/set_last_visit.inc.php?id=' + $id, true);
+		xmlhttp.send();
+	}
+</script>

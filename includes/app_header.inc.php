@@ -20,5 +20,23 @@
 
 	require_once(realpath(DOC_ROOT .'/lib/lib.php'));
 	require_once(realpath(DOC_ROOT .'/lib/login.php'));
+
+	if ($username) {
+		$query = sprintf("
+			SELECT * FROM `obm_users`
+			WHERE `username` = '%s'",
+				$mysql->escape($username)
+		);
+
+		if ($mysql->query($query)) {
+			$row = mysqli_fetch_assoc($mysql->result);
+		
+			$settings['private_mode'] = $row['private_mode'];
+		}
+	}
+	else {
+		$settings['private_mode'] = 1;
+	}
 	
-	$settings['private_mode'] = set_post_bool_var('settings_private_mode', false);
+// 	$settings['private_mode'] = set_post_bool_var('settings_private_mode', false);
+// It's too early to call this here.

@@ -1,16 +1,16 @@
 <?php
-	require_once(realpath(__DIR__ . '/includes/app_header.inc.php'));
+	require_once(realpath(__DIR__ . '/app_header.inc.php'));
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $cfg['locale']; ?>">
 	<head>
 		<title> OpenBookmark </title>
 		<meta charset="utf-8" />
-<?php if ($settings['private_mode'] == 1) : ?>
+<?php if ($settings['private_mode'] == 1): ?>
 		<meta name="robots" content="noindex,nofollow,noarchive" />
-<?php else : ?>
+<?php else: ?>
 		<meta name="robots" content="index,follow" />
-<?php endif ?>
+<?php endif; ?>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta http-equiv="Pragma" content="No-cache" />
@@ -27,9 +27,12 @@
 
 <?php
 
+// 	if (is_file(realpath(DOC_ROOT . '/install/install.php'))) {
+// 		message ('Remove "/install/install.php" before using OpenBookmark.');
+// 	}
 
 	if ($display_login_form) {
-		$auth->display_login_form ();
+		$auth->display_login_form();
 		require_once(realpath(DOC_ROOT .'/footer.inc.php'));
 	}
 

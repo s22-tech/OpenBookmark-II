@@ -1,8 +1,8 @@
 <?php
-	require_once(realpath(dirname(__DIR__, 1) . '/header.php'));
+	require_once(realpath(dirname(__DIR__, 1) . '/includes/header.php'));
 	logged_in_only();
 
-	$bmlist           = set_get_num_list('bmlist');
+	$bm_array         = set_get_num_array('bmlist');
 
 	$post_title       = set_post_title();
 	$post_url         = set_post_url();
@@ -11,21 +11,21 @@
 	$post_childof     = set_post_childof();
 	$post_public      = set_post_bool_var('public', false);
 
-	if (count($bmlist) > 1) {
+	if (count($bm_array) > 1) {
 	  // If there is more than one bookmark to edit, we just care about the public/projects field.
 		if (!isset($_POST['public'])) {
-			$qbmlist = implode(',', $bmlist);
+			$bmlist = implode(',', $bm_array);
 			$query = sprintf("
 				SELECT `title`, `id`, `public`, `favicon` 
 				FROM `obm_bookmarks` 
 				WHERE `id` IN (%s) AND `user`='%s' 
 				ORDER BY `title`",
-				$mysql->escape($qbmlist),
+				$mysql->escape($bmlist),
 				$mysql->escape($username)
 			);
 			if ($mysql->query($query)) {
-				require_once(realpath(DOC_ROOT . '/bookmarks/bookmarks.php'));
-				$query_string = '?bmlist=' . implode('_', $bmlist);
+				require_once(realpath(DOC_ROOT . '/bookmarks/bookmark.php'));
+				$query_string = '?bmlist=' . implode('_', $bm_array);
 ?>
 
 	<h2 class="title">Change public state:</h2>
@@ -73,14 +73,14 @@
 			}
 		}
 		else {
-			$bmlist = implode(',', $bmlist);
+			$bm_list = implode(',', $bm_array);
 			$query = sprintf("
 				UPDATE `obm_bookmarks` 
 				SET `public` = '%d'
 				WHERE `id` IN (%s)
 				AND `user` = '%s'",
 					$mysql->escape($post_public),
-					$mysql->escape($bmlist),
+					$mysql->escape($bm_list),
 					$mysql->escape($username)
 			);
 			if ($mysql->query($query)) {
@@ -93,7 +93,7 @@
 		}
 
 	}
-	elseif (count($bmlist) < 1) {
+	elseif (count($bm_array) < 1) {
 		message('No Bookmark to edit.');
 	}
 	elseif ($post_title == '' || $post_url == '' || $refresh_icon) {
@@ -104,7 +104,7 @@
 			WHERE `id` = '%d'
 			AND `user` = '%s'
 			AND `deleted` != '1'",
-				$mysql->escape($bmlist[0]),
+				$mysql->escape($bm_array[0]),
 				$mysql->escape($username)
 		);
 		$icon = $new_fav = '';
@@ -136,9 +136,10 @@
 					else {
 						$used_url = $row->url;
 					}
-					require_once(realpath(DOC_ROOT . '/favicon.inc.php'));
+					require_once(realpath(DOC_ROOT . '/includes/favicon.inc.php'));
 					$favicon = new Favicon($used_url);
 					$new_fav = $favicon->favicon;
+debug_logger(name:'favicon->favicon >>', variable:$new_fav, file:__FILE__, function:__FUNCTION__);
 					if ($new_fav) {
 						$update_query = sprintf("
 							UPDATE `obm_bookmarks` 
@@ -149,8 +150,9 @@
 								$mysql->escape($new_fav),
 								$mysql->escape($favicon->notes),
 								$mysql->escape($username),
-								$mysql->escape($bmlist[0])
+								$mysql->escape($bm_array[0])
 						);
+debug_logger(name:'bm-query', variable:$update_query, file:__FILE__, function:__FUNCTION__);
 						if (!$mysql->query($update_query)) {
 							message($mysql->error);
 						}
@@ -229,7 +231,7 @@
 				$mysql->escape($post_description),
 				$mysql->escape($post_childof),
 				$mysql->escape($post_public),
-				$mysql->escape($bmlist[0]),
+				$mysql->escape($bm_array[0]),
 				$mysql->escape($username)
 		);
 		if ($mysql->query($query)) {
@@ -241,6 +243,5 @@
 		}
 	}
 
-	require_once(realpath(DOC_ROOT . '/footer.inc.php'));
+	require_once(realpath(DOC_ROOT . '/includes/footer.inc.php'));
 ?>
-

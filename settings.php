@@ -12,10 +12,10 @@
 			'column_width_folder'       => check_num_var('settings_column_width_folder'),
 			'column_width_bookmark'     => check_num_var('settings_column_width_bookmark'),
 			'table_height'              => check_num_var('settings_table_height'),
-			'confirm_delete'            => set_post_bool_var('settings_confirm_delete', false),
+			'confirm_delete'            => set_post_bool_var('settings_confirm_delete', true),
 			'open_new_window'           => set_post_bool_var('settings_open_new_window', false),
 			'show_bookmark_description' => set_post_bool_var('settings_show_bookmark_description', false),
-			'show_bookmark_icon'        => set_post_bool_var('settings_show_bookmark_icon', false),
+			'show_bookmark_icon'        => set_post_bool_var('settings_show_bookmark_icon', true),
 			'show_column_date'          => set_post_bool_var('settings_show_column_date', false),
 			'date_format'               => check_date_format(),
 			'show_column_edit'          => set_post_bool_var('settings_show_column_edit', false),
@@ -26,7 +26,7 @@
 			'fast_symbol'               => set_post_bool_var('settings_fast_symbol', false),
 			'simple_tree_mode'          => set_post_bool_var('settings_simple_tree_mode', false),
 			'show_public'               => set_post_bool_var('settings_show_public', false),
-			'private_mode'              => set_post_bool_var('settings_private_mode', false),
+			'private_mode'              => set_post_bool_var('settings_private_mode', true),
 			'debug_mode'                => set_post_bool_var('settings_debug_mode', false),
 			'theme'                     => set_post_string_var('settings_theme', ''),
 		];
@@ -352,13 +352,13 @@
 				To show the OpenBookmark dialog in a new window, drag this link to the Link Bar.<br>
 
 				<a href="javascript:(function(){bmadd=window.open('<?php echo $js_url; ?>/bookmarks/new_bookmark.php?title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'bmadd','toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes,width=500,height=600,left=50,top=50');setTimeout(function(){bmadd.focus();});})();" title="bookmark">
-				<img src="<?= $cfg['sub_dir'] ?>/images/bookmark.gif" alt="bookmark" title="bookmark">
+				<img src="<?= $cfg['sub_dir'] ?>/images/bookmark.png" alt="bookmark" title="bookmark">
 				</a><br>
 			</p>
 			<p>
 				To open the OpenBookmark dialog in the same window, drag this link to the Link Bar.<br>
 				<a href="javascript:location.href='<?php echo $js_url; ?>/bookmarks/add_bookmark.php?title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href)" title="bookmark">
-				<img src="<?= $cfg['sub_dir'] ?>/images/bookmark.gif" alt="bookmark" title="bookmark">
+				<img src="<?= $cfg['sub_dir'] ?>/images/bookmark.png" alt="bookmark" title="bookmark">
 				</a><br>
 			</p>
 			<p>

@@ -40,7 +40,7 @@
 				unset($settings['password']);
 			}
 			else {
-			  // Instead of user preferences, set default settings.
+			  // If a user is not signed in, set default settings.
 				$settings = default_settings();
 				$username = '';
 				$auth->logout();
@@ -59,6 +59,7 @@
 	}
 
 	$_SESSION['settings'] = $settings;
+// echo '<pre>'; print_r($_SESSION['settings']); echo '</pre>';
 
 	function default_settings() {
 		$settings = [
@@ -103,5 +104,3 @@
   // Set some often used vars.
 	$folderid = set_get_folderid();
 	$expand   = set_get_expand();
-
-
