@@ -29,7 +29,7 @@ This script works great on the desktop but it's useless on a phone.  Since CSS i
 </ul>
 
 ## Screenshots
-![Main Screen](/images/screenshots/obm-main.png?raw=true "OBM II")
+![Main Screen](/images/screenshots/obm-main.jpg?raw=true "OBM II")
 
 ## Installation
 To install, simply copy the files to your server and adjust the values in `/config/config.php` to match your database and server.
