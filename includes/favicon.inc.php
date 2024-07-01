@@ -4,7 +4,7 @@ if (basename ($_SERVER['SCRIPT_NAME']) == basename (__FILE__)) {
 	die ('No direct access allowed!');
 }
 
-require_once(realpath(__DIR__ . '/includes/app_header.inc.php'));
+require_once(realpath(__DIR__ . '/app_header.inc.php'));
 include_once(realpath(DOC_ROOT . '/vendor/simplehtmldom/HtmlWeb.php'));
 use simplehtmldom\HtmlWeb;
 
@@ -22,7 +22,7 @@ class Favicon
 		global $cfg, $settings, $mysql;
 
 	  // Commonly saved favicons.  No need to download them again.
-		include_once(realpath(__DIR__ . '/includes/favicons_list.php'));
+		include_once(realpath(__DIR__ . '/favicons_list.php'));
 		foreach($favicons_array as $k => $v) {
 			if (str_contains($url, $k)) {
 				$this->favicon = $v;
