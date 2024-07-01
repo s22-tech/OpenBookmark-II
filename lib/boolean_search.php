@@ -3,7 +3,6 @@
 * Search lib by John-Paul Durrieu
 */
 
-// Token types
 define('TOKEN_STRING',       0);
 define('TOKEN_AND',          1);
 define('TOKEN_OR',           2);
@@ -272,4 +271,5 @@ function assemble_query($criteria, $searchfields) {
 
 	return $query;
 }
+
 

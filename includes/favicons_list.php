@@ -1,6 +1,5 @@
 <?php
 
-// Commonly saved favicons.
 
 $favicons_array = [
 	'amazon.com'       => 'amazon.png',
@@ -15,3 +14,4 @@ $favicons_array = [
 	'wikipedia.org'    => 'wikipedia.png',
 	'youtube.com'      => 'youtube.png',
 ];
+

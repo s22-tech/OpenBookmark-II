@@ -8,11 +8,6 @@
 	$tree = new Folder();
 	$parents = $tree->get_path_to_root($folderid);
 	
-// echo '$_SESSION[expand]: '. print_r($_SESSION['expand'], true) .'<br>'. PHP_EOL;
-// echo '$sourcefolder: '. $sourcefolder .'<br>'. PHP_EOL;
-// echo '$folderid: '. $folderid .'<br>'. PHP_EOL;
-// echo '$parents: '. print_r($parents, true) .'<br>'. PHP_EOL;
-// echo '$_POST: '. print_r($_POST, true) .'<br>'. PHP_EOL;
 
 /*
 	• A folder can't be moved up to the main level (folderid = 0).  Why???
@@ -28,10 +23,6 @@
 	<div style="width:100%; height:330px; overflow:auto;">
 
 		<?php
-debug_logger( name:'form-folderid', variable: $folderid, file: __FILE__, function: __FUNCTION__ );
-debug_logger( name:'form-expand', variable: $expand, file: __FILE__, function: __FUNCTION__ );
-debug_logger( name:'form-POST', variable: $_POST, file: __FILE__, function: __FUNCTION__ );
-debug_logger( name:'form-SESSION', variable: $_SESSION['expand'], file: __FILE__, function: __FUNCTION__ );
 			$tree->make_tree(0);
 			$tree->print_tree();
 		?>
@@ -47,7 +38,6 @@ debug_logger( name:'form-SESSION', variable: $_SESSION['expand'], file: __FILE__
 
 <script>
 	this.focus();
-// 	document.getElementById('fmove').sourcefolder.value = self.name;  // Prints "foldermove".
 	//console.log(self.name);
 </script>
 
@@ -70,17 +60,14 @@ debug_logger( name:'form-SESSION', variable: $_SESSION['expand'], file: __FILE__
 			);
 
 		if ($mysql->query ($query)) {
-debug_logger( name:'success-query', variable: $query, file: __FILE__, function: __FUNCTION__ );
 			echo 'Folder moved <br>' . PHP_EOL;
 			echo '<script>reloadclose();</script>';
 		}
 		else {
-debug_logger( name:'error-query', variable: $query, file: __FILE__, function: __FUNCTION__ );
 			message ($mysql->error);
 		}
 	}
 	
-debug_logger( name:'------------', variable: 'separator', file: __FILE__, function: __FUNCTION__ );
 
 	require_once(realpath(DOC_ROOT . '/includes/footer.inc.php'));
 ?>

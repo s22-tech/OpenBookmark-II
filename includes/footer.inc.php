@@ -28,14 +28,8 @@
 		echo '$_SERVER: '. print_r($_SERVER, true) . '<br> <br>';
 		echo '</pre>';
 	}
-// 	if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == 1) {
-// 		echo '<pre>';
-// 		echo '$_SESSION: '. print_r($_SESSION, true) . '<br> <br>';
-// 
-// 		echo '$_SERVER: '. print_r($_SERVER, true) . '<br> <br>';
-// 		echo '</pre>';
-// 	}
 ?>
 
 </body>
 </html>
+

@@ -27,9 +27,7 @@ class Folder
 		$this->get_children = [];
 		$this->level = 0;
 		$this->foreign_username = false;
-// echo '$user: '. $user . '<br>';
 
-// This section collapses the folder tree upon bookmark deletions, etc.  Why???
 		if ($user) {
 			$this->get_shared_data($user);
 		}
@@ -64,10 +62,6 @@ class Folder
 			ORDER BY `name`",
 				$mysql->escape($_SESSION['username'])
 		);
-// echo '<pre>Result:' . PHP_EOL;
-// print_r(mysqli_fetch_assoc($mysql->result));
-// echo 'username: '. $_SESSION['username'] . PHP_EOL;
-// echo '</pre>';	
 		if ($mysql->query($query)) {
 			while ($row = mysqli_fetch_assoc($mysql->result)) {
 				$this->folders[$row['id']] = $row;
@@ -195,11 +189,6 @@ class Folder
 	  // The top folder shows up too high at the top. Draw a little space there.
 		echo '<div class="foldertop"></div>' . PHP_EOL;
 
-// usort($this->tree, function ($folder1, $folder2) {
-//     return $folder1['name'] <=> $folder2['name'];
-// });
-// array_multisort(array_column($this->tree, 'name'), SORT_ASC, SORT_NATURAL|SORT_FLAG_CASE, $this->tree);
-// echo '<pre>'; print_r($this->tree); echo '</pre>';
 
 		foreach ($this->tree as $key => $value) {
 		  // This is the begining of the line that shows a folder
@@ -207,7 +196,6 @@ class Folder
 			$spacer = '<div style="margin-left:' . $value['level'] * 20 . 'px;">';
 			echo $spacer;
 
-// echo 'v: '. $value['id'] .' &mdash; f: '. $this->folderid . '<br>';
 			if ($value['id'] == $this->folderid) {
 				$folder_name = '<span class="active">' . $value['name'] . '</span>';
 				if (!$this->foreign_username && $value['public']) {
@@ -311,15 +299,10 @@ class Folder
 	### a given folder up to the root folder.
 	###
 	function get_path_to_root($id) {
-// echo '$id: '. $id . '<br>';
 		$path = [];
 		while ($id > 0) {
 			array_push($path, $id);
 
-// echo '<pre>';
-// print_r($path);
-// echo 'x: '. $this->folders[$id] . '<br>';
-// echo '</pre>';
 
 			if (empty($this->folders[$id])) {
 				echo "Folder #{$id} does not have a parent";  //:debug
@@ -361,3 +344,4 @@ class Folder
 		}
 	}
 }
+

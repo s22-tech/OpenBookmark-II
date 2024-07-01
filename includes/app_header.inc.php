@@ -38,5 +38,3 @@
 		$settings['private_mode'] = 1;
 	}
 	
-// 	$settings['private_mode'] = set_post_bool_var('settings_private_mode', false);
-// It's too early to call this here.

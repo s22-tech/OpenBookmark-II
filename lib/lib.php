@@ -61,7 +61,6 @@ function input_validation($data, $charset = 'UTF-8') {
 	else {
 		$data = htmlentities(trim($data), ENT_QUOTES, $charset);
 	}
-// debug_logger(name:'LIB-data', variable:$data, file:__FILE__, function:__FUNCTION__);
 	return $data;
 }
 
@@ -580,8 +579,6 @@ function get_current_url($url) {
 	$code = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 	curl_close($ch);
 	
-// 		echo '<pre>'; print_r($parts); echo '</pre>';
-// 		$scheme = parse_url($code, PHP_URL_SCHEME);
 	$host   = parse_url($code, PHP_URL_HOST);
 
 	return $host;
@@ -608,21 +605,10 @@ function debug_logger($name, $variable, $file, $function, $newline=true, $time='
 }
 
 
-function print_r_pre($object, $title='') {
 	echo '<pre>';
 	if (!empty($title)) echo '$'. $title .' -- ';
 	print_r($object);
 	echo  '</pre>';
-// 	if (is_array($object)) {
-// 		echo '<pre>';
-// 		print_r($object);
-// 		echo  '</pre>';
-// 	}
-// 	else {
-// 		echo '<pre>';
-//       var_dump($object);
-// 		echo  '</pre>';
-//     }
 }
 
 
@@ -633,3 +619,4 @@ if (!function_exists('mysql_result')) {
 		return $row[$field];
 	}
 }
+

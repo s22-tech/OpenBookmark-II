@@ -32,7 +32,6 @@
 				$('#' + $(this).attr('target')).toggle('blind', options, 300);
 			});
 
-// 			setupFolderIntercepts();  // #1
 			setupBookmarkIntercepts();
 
 			$('#gsearchtext').focus();
@@ -289,9 +288,6 @@
 		message($mysql->error);
 	}
 
-// echo 'folderid: '. $folderid . '<br>';
-// print_r_pre($_SESSION);
-// print_r_pre($_POST);
 
 ?>
 	<!--javascript:(function(){bmadd=window.open('https://domain.com/bookmarks/new_bookmark.php?title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'bmadd','toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes,width=500,height=500,left=50,top=50');setTimeout(function(){bmadd.focus();});})(); -->

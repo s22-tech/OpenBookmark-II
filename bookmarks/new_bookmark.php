@@ -113,25 +113,18 @@
 			$bm_id = mysqli_insert_id($mysql->conn);  // Returns the value generated for an AUTO_INCREMENT column by the last query.
 			// https://www.php.net/manual/en/mysqli.insert-id.php
 			// Using $mysql->insert_id produces "Undefined property: mysql::$insert_id".
-// 			$bm_id = $pdo->lastInsertId();  // PDO equivalent -- https://www.php.net/pdo.lastinsertid
 		}
 		else {
 			message($mysql->error);
 		}
 		unset($_SESSION['title'], $_SESSION['url']);
 
-debug_logger(variable:$post_url, name:'post_url', file:__FILE__, function:__FUNCTION__);
 
 ///////////////////////////
-// SAVE Favicon
-// Saving the favicon in a separate second step is done because
-// we want to make sure the bookmark is saved in any case,
-// since the favicon is not as important.
 ///////////////////////////
 		if ($settings['show_bookmark_icon']) {
 			require_once(realpath(DOC_ROOT . '/includes/favicon.inc.php'));
 			$favicon = new Favicon($post_url);
-debug_logger(variable:print_r($favicon, true), name:'favicon-object', file:__FILE__, function:__FUNCTION__);
 
 			if (!empty($favicon->favicon)) {
 				$update_query = sprintf("
@@ -143,7 +136,6 @@ debug_logger(variable:print_r($favicon, true), name:'favicon-object', file:__FIL
 						$mysql->escape($username),
 						$mysql->escape($bm_id)
 				);
-debug_logger(variable:$update_query, name:'update-query', file:__FILE__, function:__FUNCTION__);
 				if (!$mysql->query($update_query)) {
 					message($mysql->error);
 				}
@@ -151,8 +143,6 @@ debug_logger(variable:$update_query, name:'update-query', file:__FILE__, functio
 			}
 			else {
 				$icon = $bookmark_image;
-debug_logger(variable:$icon, name:'favicon->favicon was NOT set', file:__FILE__, function:__FUNCTION__);
-debug_logger(variable:debug_backtrace(), name:'debug_backtrace()', file:__FILE__, function:__FUNCTION__);
 			}
 		}
 

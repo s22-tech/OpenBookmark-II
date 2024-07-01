@@ -156,7 +156,6 @@ CSS;
 					unlink(DOC_ROOT .'/icons/'. $favicon);
 				}
 				else {
-					debug_logger(name: 'ERROR -- Favicon was not found: ', variable: $favicon, file: __FILE__, function: __FUNCTION__);
 				}
 			}
 		}

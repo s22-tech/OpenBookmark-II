@@ -27,9 +27,6 @@
 
 <?php
 
-// 	if (is_file(realpath(DOC_ROOT . '/install/install.php'))) {
-// 		message ('Remove "/install/install.php" before using OpenBookmark.');
-// 	}
 
 	if ($display_login_form) {
 		$auth->display_login_form();

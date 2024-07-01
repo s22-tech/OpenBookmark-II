@@ -127,7 +127,6 @@ class HtmlDocument
 	{
 		if ($str) {
 			if (preg_match('#^http://#i', $str) || strlen($str) <= PHP_MAXPATHLEN && is_file($str)) {
-// 				$this->load_file($str);
 				$this->loadFile($str);
 			}
 			else {
@@ -1123,3 +1122,4 @@ class HtmlDocument
 		}
 	}
 }
+

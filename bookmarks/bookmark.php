@@ -113,7 +113,6 @@ function list_bookmarks($bookmarks, $show_checkbox, $show_folder, $show_icon, $s
 
 	echo '<form name="bookmarks" action="" class="nav">' . PHP_EOL;
 
-debug_logger(name:'BOOKMARKS', variable: $bookmarks, file: __FILE__, function: __FUNCTION__);
 
 	foreach ($bookmarks as $value) {
 		echo '<div class="bookmark">' . PHP_EOL;
@@ -190,7 +189,6 @@ debug_logger(name:'BOOKMARKS', variable: $bookmarks, file: __FILE__, function: _
 	  // The favicon.
 		echo $tab . '<div class="link">' . PHP_EOL;
 		echo $tab . $tab;
-// echo '<pre>'; print_r($value); echo '</pre>';  //:debug
 		if ($show_icon) {
 			if ($value['favicon']) {  /*  && is_file($value['favicon']) */
 				echo '<img src="'. $cfg['sub_dir'] .'/icons/'. $value['favicon'] .'" width="'. $cfg['icon_w'] .'" height="'. $cfg['icon_h'] .'" alt="">'. PHP_EOL;
@@ -248,3 +246,4 @@ debug_logger(name:'BOOKMARKS', variable: $bookmarks, file: __FILE__, function: _
 		xmlhttp.send();
 	}
 </script>
+
